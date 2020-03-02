@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace si2.bll.MultiLingualSupport
+namespace si2.bll.Helpers.MultiLingualSupport
 {
     class UnsupportedLanguageException: Exception
     {

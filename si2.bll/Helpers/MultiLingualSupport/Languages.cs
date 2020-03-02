@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace si2.bll.MultiLingualSupport
+namespace si2.bll.Helpers.MultiLingualSupport
 {
     public class Languages
     {
