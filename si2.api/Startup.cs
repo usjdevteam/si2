@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using EntityFrameworkCore.TemporalTables.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,14 +39,22 @@ namespace si2.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<Si2DbContext>(
-                option => option.UseSqlServer(Configuration.GetConnectionString("Si2ConnectionString")
-            ));
+            services.AddDbContextPool<Si2DbContext>((provider, options) =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Si2ConnectionString"));
+                options.UseInternalServiceProvider(provider);
+            });
+            
+            services.AddEntityFrameworkSqlServer();
+            services.RegisterTemporalTablesForDatabase<Si2DbContext>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<Si2DbContext>();
+            
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDataflowRepository, DataflowRepository>();
@@ -64,7 +74,7 @@ namespace si2.api
                     cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = Configuration.GetValue<string>("Si2JwtBearerConstants:Issuer"),
-                        ValidAudience = Configuration.GetValue<string>("Si2JwtBearerConstants:ApiUser"),
+                        ValidAudience = Configuration.GetValue<string>("Si2JwtBearerConstants:Audience"),
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Si2JwtBearerConstants:Key")))
                     };
                 });
@@ -116,7 +126,7 @@ namespace si2.api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

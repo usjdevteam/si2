@@ -27,7 +27,7 @@ namespace si2.dal.Repositories
         IQueryable<TEntity> GetAll();
         Task<ICollection<TEntity>> GetAllAsync(CancellationToken ct);
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
-        Task<TEntity> GetAsync(int id, CancellationToken ct);
+        Task<TEntity> GetAsync(Guid id, CancellationToken ct);
         void Save();
         Task<int> SaveAsync(CancellationToken ct);
         TEntity Update(TEntity t, object key);

@@ -33,7 +33,7 @@ namespace si2.dal.Repositories
             return _db.Set<T>().Find(id);
         }
 
-        public virtual async Task<T> GetAsync(int id, CancellationToken ct)
+        public virtual async Task<T> GetAsync(Guid id, CancellationToken ct)
         {
             return await _db.Set<T>().FindAsync(new object[] { id }, ct);
         }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace si2.dal.Entities
 {
-    public abstract class Si2BaseDataEntity : Si2BaseEntity<Guid>, IHasConcurrency, IHasFullAudit
+    public abstract class Si2BaseDataEntity<TPrimaryKey> : Si2BaseEntity<TPrimaryKey>, IHasConcurrency, IHasFullAudit
     {
         [Timestamp]
         public byte[] RowVersion { get; set; }

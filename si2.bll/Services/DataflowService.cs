@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using si2.bll.Dtos;
+using si2.bll.Dtos.Requests;
+using si2.bll.Dtos.Results;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ namespace si2.bll.Services
         {
         }
 
-        public async Task CreateCourseAsync(CreatDataflowDto createDataflowDto, CancellationToken ct)
+        public async Task CreateDataflowAsync(CreateDataflowDto createDataflowDto, CancellationToken ct)
         {
             Dataflow dataflowEntity = null;
 
@@ -31,6 +30,19 @@ namespace si2.bll.Services
             {
 
             }
+        }
+
+        public async Task<DataFlowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct)
+        {
+            DataFlowDto dataflowDto = null;
+
+            var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            if (dataflowEntity != null)
+            {
+                dataflowDto = _mapper.Map<DataFlowDto>(dataflowEntity);
+            }
+
+            return dataflowDto;
         }
     }
 }

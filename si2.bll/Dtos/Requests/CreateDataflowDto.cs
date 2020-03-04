@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace si2.bll.Dtos
+namespace si2.bll.Dtos.Requests
 {
-    public class CreatDataflowDto
+    public class CreateDataflowDto
     {
         [Required]
         public string Name { get; set; }
