@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using si2.bll.Dtos;
-using si2.bll.Dtos.Requests;
+using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,13 +29,9 @@ namespace si2.api.Controllers
             if (createDataflowDto == null)
                 return BadRequest();
 
-            await _dataflowService.CreateDataflowAsync(createDataflowDto, ct);
+            var dataflowToReturn = await _dataflowService.CreateDataflowAsync(createDataflowDto, ct);
 
-            //if (courseToReturn == null)
-            //    throw new Exception("Creating a course failed on save.");
-
-            return null;
-            // return CreatedAtRoute("GetCourse", new { id = courseToReturn.Id }, courseToReturn);
+            return CreatedAtRoute("GetDataflow", new { id = dataflowToReturn.Id }, dataflowToReturn);
         }
 
         [HttpDelete("{id}")]
@@ -47,14 +40,10 @@ namespace si2.api.Controllers
         {
             await _dataflowService.DeleteDataflowByIdAsync(id, ct);
 
-            //if (courseToReturn == null)
-            //    throw new Exception("Creating a course failed on save.");
-
             return NoContent();
-            // return CreatedAtRoute("GetCourse", new { id = courseToReturn.Id }, courseToReturn);
         }
+
         [HttpGet("{id}", Name = "GetDataflow")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetDataflow(Guid id, CancellationToken ct)
         {
             var dataflowDto = await _dataflowService.GetDataflowByIdAsync(id, ct);
@@ -63,6 +52,17 @@ namespace si2.api.Controllers
                 return NotFound();
 
             return Ok(dataflowDto);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDataflows(CancellationToken ct)
+        {
+            var dataflowDtos = await _dataflowService.GetDataflowsAsync(ct);
+
+            if (dataflowDtos == null)
+                return NotFound();
+
+            return Ok(dataflowDtos);
         }
     }
 }

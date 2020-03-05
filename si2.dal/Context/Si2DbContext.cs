@@ -1,130 +1,79 @@
-﻿using EntityFrameworkCore.TemporalTables.Extensions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Entities;
 using si2.dal.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Z.EntityFramework.Plus;
 
 namespace si2.dal.Context
 {
+
     public class Si2DbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        public DbSet<AuditEntry> AuditEntries { get; set; }
+        public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
+
         public DbSet<Dataflow> Dataflows { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+
         public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
-        }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+			AuditManager.DefaultConfiguration.Exclude(x => true); // Exclude ALL
+			AuditManager.DefaultConfiguration.Include<IAuditable>();
+			AuditManager.DefaultConfiguration.AutoSavePreAction = (context, audit) =>
+				(context as Si2DbContext).AuditEntries.AddRange(audit.Entries);
+			
+		}
+
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.PreventTemporalTables();
 
-            builder.Entity<Dataflow>(b => b.UseTemporalTable());
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             // seed the database with dummy data
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken ct)
-        {
-            DateTime utcNow = DateTime.UtcNow;
+		public override int SaveChanges()
+		{
+			var audit = new Audit() { CreatedBy = _httpContextAccessor.HttpContext.User.Identity.Name };
+			audit.PreSaveChanges(this);
+			var rowAffecteds = base.SaveChanges();
+			audit.PostSaveChanges();
 
-            var newEntities = this.ChangeTracker.Entries()
-                .Where(
-                    x => x.State == EntityState.Added &&
-                    x.Entity != null &&
-                    x.Entity as IHasFullAudit != null
-                    )
-                .Select(x => x.Entity as IHasFullAudit);
+			if (audit.Configuration.AutoSavePreAction != null)
+			{
+				audit.Configuration.AutoSavePreAction(this, audit);
+				base.SaveChanges();
+			}
 
-            var modifiedEntities = this.ChangeTracker.Entries()
-                .Where(
-                    x => x.State == EntityState.Modified &&
-                    x.Entity != null &&
-                    x.Entity as IHasFullAudit != null
-                    )
-                .Select(x => x.Entity as IHasFullAudit);
+			return rowAffecteds;
+		}
 
-            var deletedEntities = this.ChangeTracker.Entries()
-                .Where(
-                    x => x.State == EntityState.Deleted &&
-                    x.Entity != null &&
-                    x.Entity as IHasFullAudit != null
-                    )
-                .Select(x => x.Entity as IHasFullAudit);
 
-            foreach (var newEntity in newEntities)
-            {
-                newEntity.CreatedOn = utcNow;
-                newEntity.CreatedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                newEntity.LastModifiedOn = utcNow;
-                newEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
+		public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+		{
+			var audit = new Audit() { CreatedBy = _httpContextAccessor.HttpContext.User.Identity.Name };
+			audit.PreSaveChanges(this);
+			var rowAffecteds = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+			audit.PostSaveChanges();
 
-            foreach (var modifiedEntity in modifiedEntities)
-            {
-                modifiedEntity.LastModifiedOn = utcNow;
-                modifiedEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
+			if (audit.Configuration.AutoSavePreAction != null)
+			{
+				audit.Configuration.AutoSavePreAction(this, audit);
+				await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+			}
 
-            foreach (var deletedEntity in deletedEntities)
-            {
-                deletedEntity.LastModifiedOn = utcNow;
-                deletedEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                deletedEntity.DeletedOn = utcNow;
-                deletedEntity.DeletedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-
-            return await base.SaveChangesAsync(ct);
-        }
-
-        public override int SaveChanges()
-        {
-            var newEntities = this.ChangeTracker.Entries()
-                .Where(
-                    x => x.State == EntityState.Added &&
-                    x.Entity != null &&
-                    x.Entity as IHasFullAudit != null
-                    )
-                .Select(x => x.Entity as IHasFullAudit);
-
-            var modifiedEntities = this.ChangeTracker.Entries()
-                .Where(
-                    x => x.State == EntityState.Modified &&
-                    x.Entity != null &&
-                    x.Entity as IHasFullAudit != null
-                    )
-                .Select(x => x.Entity as IHasFullAudit);
-
-            foreach (var newEntity in newEntities)
-            {
-                newEntity.CreatedOn = DateTime.UtcNow;
-                newEntity.CreatedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                newEntity.LastModifiedOn = DateTime.UtcNow;
-                newEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-
-            foreach (var modifiedEntity in modifiedEntities)
-            {
-                modifiedEntity.LastModifiedOn = DateTime.UtcNow;
-                modifiedEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-
-            return base.SaveChanges();
-        }
-    }
+			return rowAffecteds;
+		}
+	}
 }

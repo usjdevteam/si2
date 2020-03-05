@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using si2.bll.Dtos.Requests;
-using si2.bll.Dtos.Results;
+using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Results.Dataflow;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace si2.bll.Services
         {
         }
 
-        public async Task CreateDataflowAsync(CreateDataflowDto createDataflowDto, CancellationToken ct)
+        public async Task<DataflowDto> CreateDataflowAsync(CreateDataflowDto createDataflowDto, CancellationToken ct)
         {
             Dataflow dataflowEntity = null;
 
@@ -28,18 +29,19 @@ namespace si2.bll.Services
             }
             catch (Exception ex)
             {
-
+                return null;
             }
+            return _mapper.Map<DataflowDto>(dataflowEntity);
         }
 
-        public async Task<DataFlowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct)
+        public async Task<DataflowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct)
         {
-            DataFlowDto dataflowDto = null;
+            DataflowDto dataflowDto = null;
 
             var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
             if (dataflowEntity != null)
             {
-                dataflowDto = _mapper.Map<DataFlowDto>(dataflowEntity);
+                dataflowDto = _mapper.Map<DataflowDto>(dataflowEntity);
             }
 
             return dataflowDto;
@@ -50,6 +52,17 @@ namespace si2.bll.Services
             var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
             await _uow.Dataflows.DeleteAsync(dataflowEntity, ct);
             await _uow.SaveChangesAsync(ct);
+        }
+
+        public async Task<IEnumerable<DataflowDto>> GetDataflowsAsync(CancellationToken ct)
+        {
+            var dataflowEntities = await _uow.Dataflows.GetAllAsync(ct);
+            if (dataflowEntities != null)
+            {
+                var dataflowDtos = _mapper.Map<IEnumerable<DataflowDto>>(dataflowEntities);
+                return dataflowDtos;
+            }
+            return null; 
         }
     }
 }

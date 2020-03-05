@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using si2.bll.Dtos.Requests;
-using si2.bll.Dtos.Results;
+using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Results.Dataflow;
 using si2.dal.Entities;
 
 namespace si2.bll.Helpers
@@ -10,7 +10,7 @@ namespace si2.bll.Helpers
         public MappingProfile()
         {
             CreateMap<CreateDataflowDto, Dataflow>();
-            CreateMap<Dataflow, DataFlowDto>();
+            CreateMap<Dataflow, DataflowDto>();
         }
     }
 }

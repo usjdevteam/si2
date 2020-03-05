@@ -1,29 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
-using EntityFrameworkCore.TemporalTables.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using si2.bll.Helpers;
 using si2.bll.Services;
 using si2.dal.Context;
 using si2.dal.Entities;
+using si2.dal.Interfaces;
 using si2.dal.Repositories;
 using si2.dal.UnitOfWork;
+using System;
+using System.Text;
+using Z.EntityFramework.Plus;
 
 namespace si2.api
 {
@@ -46,8 +41,8 @@ namespace si2.api
             });
             
             services.AddEntityFrameworkSqlServer();
-            services.RegisterTemporalTablesForDatabase<Si2DbContext>();
-
+            
+           
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;

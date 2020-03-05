@@ -8,7 +8,7 @@ using System.Text;
 namespace si2.dal.Entities
 {
     [Table("Dataflow")]
-    public class Dataflow : Si2BaseDataEntity<Guid>
+    public class Dataflow : Si2BaseDataEntity<Guid>, IAuditable
     {
         [Required]
         public string Name { get; set; }

@@ -2,7 +2,7 @@
 
 namespace si2.dal.Migrations
 {
-    public partial class Added_Temporal_Table : Migration
+    public partial class v4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
