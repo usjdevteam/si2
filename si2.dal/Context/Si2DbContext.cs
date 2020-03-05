@@ -21,6 +21,7 @@ namespace si2.dal.Context
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public DbSet<Dataflow> Dataflows { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
@@ -30,6 +31,7 @@ namespace si2.dal.Context
         {
             base.OnModelCreating(builder);
             builder.PreventTemporalTables();
+
             builder.Entity<Dataflow>(b => b.UseTemporalTable());
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
@@ -39,6 +41,8 @@ namespace si2.dal.Context
 
         public override async Task<int> SaveChangesAsync(CancellationToken ct)
         {
+            DateTime utcNow = DateTime.UtcNow;
+
             var newEntities = this.ChangeTracker.Entries()
                 .Where(
                     x => x.State == EntityState.Added &&
@@ -55,18 +59,34 @@ namespace si2.dal.Context
                     )
                 .Select(x => x.Entity as IHasFullAudit);
 
+            var deletedEntities = this.ChangeTracker.Entries()
+                .Where(
+                    x => x.State == EntityState.Deleted &&
+                    x.Entity != null &&
+                    x.Entity as IHasFullAudit != null
+                    )
+                .Select(x => x.Entity as IHasFullAudit);
+
             foreach (var newEntity in newEntities)
             {
-                newEntity.CreatedOn = DateTime.UtcNow;
+                newEntity.CreatedOn = utcNow;
                 newEntity.CreatedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                newEntity.LastModifiedOn = DateTime.UtcNow;
+                newEntity.LastModifiedOn = utcNow;
                 newEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
             foreach (var modifiedEntity in modifiedEntities)
             {
-                modifiedEntity.LastModifiedOn = DateTime.UtcNow;
+                modifiedEntity.LastModifiedOn = utcNow;
                 modifiedEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+
+            foreach (var deletedEntity in deletedEntities)
+            {
+                deletedEntity.LastModifiedOn = utcNow;
+                deletedEntity.LastModifiedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                deletedEntity.DeletedOn = utcNow;
+                deletedEntity.DeletedBy = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
             return await base.SaveChangesAsync(ct);

@@ -10,5 +10,7 @@ namespace si2.bll.Services
     {
         Task CreateDataflowAsync(CreateDataflowDto createDataflowDto, CancellationToken ct);
         Task<DataFlowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct);
+
+        Task DeleteDataflowByIdAsync(Guid id, CancellationToken ct);
     }
 }

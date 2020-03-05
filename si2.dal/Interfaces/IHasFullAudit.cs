@@ -11,6 +11,6 @@ namespace si2.dal.Interfaces
         string LastModifiedBy { get; set; }
         DateTime? LastModifiedOn { get; set; }
         string DeletedBy { get; set; }
-        DateTime? DeleltedOn { get; set; }
+        DateTime? DeletedOn { get; set; }
     }
 }

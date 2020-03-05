@@ -41,6 +41,18 @@ namespace si2.api.Controllers
             // return CreatedAtRoute("GetCourse", new { id = courseToReturn.Id }, courseToReturn);
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> DeleteDataflow(Guid id, CancellationToken ct)
+        {
+            await _dataflowService.DeleteDataflowByIdAsync(id, ct);
+
+            //if (courseToReturn == null)
+            //    throw new Exception("Creating a course failed on save.");
+
+            return NoContent();
+            // return CreatedAtRoute("GetCourse", new { id = courseToReturn.Id }, courseToReturn);
+        }
         [HttpGet("{id}", Name = "GetDataflow")]
         //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetDataflow(Guid id, CancellationToken ct)

@@ -44,5 +44,12 @@ namespace si2.bll.Services
 
             return dataflowDto;
         }
+
+        public async Task DeleteDataflowByIdAsync(Guid id, CancellationToken ct)
+        {
+            var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            await _uow.Dataflows.DeleteAsync(dataflowEntity, ct);
+            await _uow.SaveChangesAsync(ct);
+        }
     }
 }

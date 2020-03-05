@@ -15,6 +15,6 @@ namespace si2.dal.Entities
         public string LastModifiedBy { get; set; }
         public DateTime? LastModifiedOn { get; set; }
         public string DeletedBy { get; set; }
-        public DateTime? DeleltedOn { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 }

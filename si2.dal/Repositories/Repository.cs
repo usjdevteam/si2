@@ -38,20 +38,14 @@ namespace si2.dal.Repositories
             return await _db.Set<T>().FindAsync(new object[] { id }, ct);
         }
 
-        public virtual T Add(T t)
+        public virtual void Add(T t)
         {
-
             _db.Set<T>().Add(t);
-            _db.SaveChanges();
-            return t;
         }
 
-        public virtual async Task<T> AddAsync(T t, CancellationToken ct)
+        public virtual async Task AddAsync(T t, CancellationToken ct)
         {
-            _db.Set<T>().Add(t);
-            await _db.SaveChangesAsync(ct);
-            return t;
-
+            await _db.Set<T>().AddAsync(t);
         }
 
         public virtual T Find(Expression<Func<T, bool>> match)
@@ -77,13 +71,11 @@ namespace si2.dal.Repositories
         public virtual void Delete(T entity)
         {
             _db.Set<T>().Remove(entity);
-            _db.SaveChanges();
         }
 
-        public virtual async Task<int> DeleteAsync(T entity, CancellationToken ct)
+        public virtual async Task DeleteAsync(T entity, CancellationToken ct)
         {
             _db.Set<T>().Remove(entity);
-            return await _db.SaveChangesAsync(ct);
         }
 
         public virtual T Update(T t, object key)
@@ -94,25 +86,21 @@ namespace si2.dal.Repositories
             if (exist != null)
             {
                 _db.Entry(exist).CurrentValues.SetValues(t);
-                _db.SaveChanges();
             }
             return exist;
         }
 
-        public virtual async Task<T> UpdateAsync(T t, object key, CancellationToken ct, byte[] rowVersion = null)
+        public virtual async Task UpdateAsync(T t, object key, CancellationToken ct, byte[] rowVersion = null)
         {
             if (t == null)
-                return null;
+                return;
             T exist = await _db.Set<T>().FindAsync(key);
             if (exist != null)
             {
                 if (rowVersion != null)
                     _db.Entry(exist).OriginalValues["RowVersion"] = rowVersion;
                 _db.Entry(exist).CurrentValues.SetValues(t);
-
-                await _db.SaveChangesAsync(ct);
             }
-            return exist;
         }
 
         public int Count()
@@ -127,7 +115,6 @@ namespace si2.dal.Repositories
 
         public virtual void Save()
         {
-
             _db.SaveChanges();
         }
 

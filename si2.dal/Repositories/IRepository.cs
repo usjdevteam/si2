@@ -10,12 +10,12 @@ namespace si2.dal.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        TEntity Add(TEntity t);
-        Task<TEntity> AddAsync(TEntity t, CancellationToken ct);
+        void Add(TEntity t);
+        Task AddAsync(TEntity t, CancellationToken ct);
         int Count();
         Task<int> CountAsync(CancellationToken ct);
         void Delete(TEntity entity);
-        Task<int> DeleteAsync(TEntity entity, CancellationToken ct);
+        Task DeleteAsync(TEntity entity, CancellationToken ct);
         void Dispose();
         TEntity Find(Expression<Func<TEntity, bool>> match);
         ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
@@ -31,6 +31,6 @@ namespace si2.dal.Repositories
         void Save();
         Task<int> SaveAsync(CancellationToken ct);
         TEntity Update(TEntity t, object key);
-        Task<TEntity> UpdateAsync(TEntity t, object key, CancellationToken ct, byte[] rowVersion = null);
+        Task UpdateAsync(TEntity t, object key, CancellationToken ct, byte[] rowVersion = null);
     }
 }
