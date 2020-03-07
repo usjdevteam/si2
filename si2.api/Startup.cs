@@ -41,7 +41,6 @@ namespace si2.api
             });
             
             services.AddEntityFrameworkSqlServer();
-            
            
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

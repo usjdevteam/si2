@@ -27,10 +27,12 @@ namespace si2.bll.Services
                 await _uow.Dataflows.AddAsync(dataflowEntity, ct);
                 await _uow.SaveChangesAsync(ct);
             }
-            catch (Exception ex)
+            catch (AutoMapperMappingException ex)
             {
-                return null;
+                _logger.LogError(ex, string.Empty);
             }
+           
+
             return _mapper.Map<DataflowDto>(dataflowEntity);
         }
 
@@ -49,7 +51,11 @@ namespace si2.bll.Services
 
         public async Task DeleteDataflowByIdAsync(Guid id, CancellationToken ct)
         {
+
             var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            if (dataflowEntity == null)
+                throw new Exception();
+
             await _uow.Dataflows.DeleteAsync(dataflowEntity, ct);
             await _uow.SaveChangesAsync(ct);
         }
