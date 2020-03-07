@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\si2.common\si2.common.csproj" />
     <ProjectReference Include="..\si2.dal\si2.dal.csproj" />
   </ItemGroup>
 

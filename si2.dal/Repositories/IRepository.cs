@@ -10,6 +10,7 @@ namespace si2.dal.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
+        Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
         void Add(TEntity t);
         Task AddAsync(TEntity t, CancellationToken ct);
         int Count();
@@ -20,7 +21,6 @@ namespace si2.dal.Repositories
         TEntity Find(Expression<Func<TEntity, bool>> match);
         ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
         Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
-        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
         IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate);
         Task<ICollection<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);
         TEntity Get(int id);

@@ -9,80 +9,80 @@ using System.Threading.Tasks;
 
 namespace si2.dal.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _db;
+
+        public virtual async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct)
+        {
+            return await _db.Set<TEntity>().Where(match).FirstAsync();
+        }
 
         public Repository(DbContext db)
         {
             _db = db;
         }
-        public IQueryable<T> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            return _db.Set<T>();
+            return _db.Set<TEntity>();
         }
 
-        public virtual async Task<ICollection<T>> GetAllAsync(CancellationToken ct)
+        public virtual async Task<ICollection<TEntity>> GetAllAsync(CancellationToken ct)
         {
 
-            return await _db.Set<T>().ToListAsync(ct);
+            return await _db.Set<TEntity>().ToListAsync(ct);
         }
 
-        public virtual T Get(int id)
+        public virtual TEntity Get(int id)
         {
-            return _db.Set<T>().Find(id);
+            return _db.Set<TEntity>().Find(id);
         }
 
-        public virtual async Task<T> GetAsync(Guid id, CancellationToken ct)
+        public virtual async Task<TEntity> GetAsync(Guid id, CancellationToken ct)
         {
-            return await _db.Set<T>().FindAsync(new object[] { id }, ct);
+            return await _db.Set<TEntity>().FindAsync(new object[] { id }, ct);
         }
 
-        public virtual void Add(T t)
+        public virtual void Add(TEntity t)
         {
-            _db.Set<T>().Add(t);
+            _db.Set<TEntity>().Add(t);
         }
 
-        public virtual async Task AddAsync(T t, CancellationToken ct)
+        public virtual async Task AddAsync(TEntity t, CancellationToken ct)
         {
-            await _db.Set<T>().AddAsync(t);
+            await _db.Set<TEntity>().AddAsync(t);
         }
 
-        public virtual T Find(Expression<Func<T, bool>> match)
+        public virtual TEntity Find(Expression<Func<TEntity, bool>> match)
         {
-            return _db.Set<T>().SingleOrDefault(match);
+            return _db.Set<TEntity>().SingleOrDefault(match);
         }
 
-        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match, CancellationToken ct)
+        public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match)
         {
-            return await _db.Set<T>().SingleOrDefaultAsync(match, ct);
+            return _db.Set<TEntity>().Where(match).ToList();
         }
 
-        public ICollection<T> FindAll(Expression<Func<T, bool>> match)
+        public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct)
         {
-            return _db.Set<T>().Where(match).ToList();
+            return await _db.Set<TEntity>().Where(match).ToListAsync(ct);
         }
 
-        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match, CancellationToken ct)
+        public virtual void Delete(TEntity entity)
         {
-            return await _db.Set<T>().Where(match).ToListAsync(ct);
+            _db.Set<TEntity>().SingleDelete(entity);
         }
 
-        public virtual void Delete(T entity)
+        public virtual async Task DeleteAsync(TEntity entity, CancellationToken ct)
         {
-            _db.Set<T>().Remove(entity);
+            await _db.Set<TEntity>().SingleDeleteAsync(entity);
         }
 
-        public virtual async Task DeleteAsync(T entity, CancellationToken ct)
-        {
-            await _db.Set<T>().SingleDeleteAsync(entity);
-        }
-
-        public virtual T Update(T t, object key)
+        public virtual TEntity Update(TEntity t, object key)
         {
             if (t == null)
                 return null;
-            T exist = _db.Set<T>().Find(key);
+            TEntity exist = _db.Set<TEntity>().Find(key);
             if (exist != null)
             {
                 _db.Entry(exist).CurrentValues.SetValues(t);
@@ -90,11 +90,11 @@ namespace si2.dal.Repositories
             return exist;
         }
 
-        public virtual async Task UpdateAsync(T t, object key, CancellationToken ct, byte[] rowVersion = null)
+        public virtual async Task UpdateAsync(TEntity t, object key, CancellationToken ct, byte[] rowVersion = null)
         {
             if (t == null)
                 return;
-            T exist = await _db.Set<T>().FindAsync(key);
+            TEntity exist = await _db.Set<TEntity>().FindAsync(key);
             if (exist != null)
             {
                 if (rowVersion != null)
@@ -105,12 +105,12 @@ namespace si2.dal.Repositories
 
         public int Count()
         {
-            return _db.Set<T>().Count();
+            return _db.Set<TEntity>().Count();
         }
 
         public async Task<int> CountAsync(CancellationToken ct)
         {
-            return await _db.Set<T>().CountAsync(ct);
+            return await _db.Set<TEntity>().CountAsync(ct);
         }
 
         public virtual void Save()
@@ -119,29 +119,29 @@ namespace si2.dal.Repositories
         }
 
         public async virtual Task<int> SaveAsync(CancellationToken ct)
-        {
+        { 
             return await _db.SaveChangesAsync(ct);
         }
 
-        public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
+        public virtual IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
         {
-            IQueryable<T> query = _db.Set<T>().Where(predicate);
+            IQueryable<TEntity> query = _db.Set<TEntity>().Where(predicate);
             return query;
         }
 
-        public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate, CancellationToken ct)
+        public virtual async Task<ICollection<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
         {
-            return await _db.Set<T>().Where(predicate).ToListAsync(ct);
+            return await _db.Set<TEntity>().Where(predicate).ToListAsync(ct);
         }
 
-        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
 
-            IQueryable<T> queryable = GetAll();
-            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+            IQueryable<TEntity> queryable = GetAll();
+            foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
             {
 
-                queryable = queryable.Include<T, object>(includeProperty);
+                queryable = queryable.Include<TEntity, object>(includeProperty);
             }
 
             return queryable;

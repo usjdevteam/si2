@@ -9,5 +9,6 @@ namespace si2.bll.Dtos.Results.Dataflow
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }    
+        public byte[] RowVersion { get; set; }
     }
 }

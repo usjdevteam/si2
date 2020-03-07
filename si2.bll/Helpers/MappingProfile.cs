@@ -10,6 +10,7 @@ namespace si2.bll.Helpers
         public MappingProfile()
         {
             CreateMap<CreateDataflowDto, Dataflow>();
+            CreateMap<UpdateDataflowDto, Dataflow>();
             CreateMap<Dataflow, DataflowDto>();
         }
     }

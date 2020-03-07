@@ -37,23 +37,19 @@ namespace si2.api.Controllers
                 return BadRequest();
 
             var dataflowToReturn = await _dataflowService.CreateDataflowAsync(createDataflowDto, ct);
+            if(dataflowToReturn == null)
+                return BadRequest();
 
             return CreatedAtRoute("GetDataflow", new { id = dataflowToReturn.Id }, dataflowToReturn);
         }
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteDataflow(Guid id, CancellationToken ct)
         {
-            try
-            {
-                await _dataflowService.DeleteDataflowByIdAsync(id, ct);
-            }
-            catch (EntityNotFoundException e)
-            {
-                _logger.LogError(e, e.Message);
-                return NotFound();
-            }
+            await _dataflowService.DeleteDataflowByIdAsync(id, ct);
+          
             return NoContent();
         }
 
@@ -82,15 +78,19 @@ namespace si2.api.Controllers
         }
 
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateDataflow([FromBody] UpdateDataflowDto updateDataflowDto, CancellationToken ct)
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DataflowDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> UpdateDataflow(Guid id, [FromBody] UpdateDataflowDto updateDataflowDto, CancellationToken ct)
         {
-            var dataflowDtos = await _dataflowService.GetDataflowsAsync(ct);
+            if (updateDataflowDto == null)
+                return BadRequest();
 
-            if (dataflowDtos == null)
-                return NotFound();
+            var dataflowToReturn = await _dataflowService.UpdateDataflowAsync(id, updateDataflowDto, ct);
+            if (dataflowToReturn == null)
+                return BadRequest();
 
-            return Ok(dataflowDtos);
+            return Ok(dataflowToReturn);
         }
     }
 }
