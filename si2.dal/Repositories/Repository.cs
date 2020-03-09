@@ -78,13 +78,15 @@ namespace si2.dal.Repositories
             await _db.Set<TEntity>().SingleDeleteAsync(entity);
         }
 
-        public virtual TEntity Update(TEntity t, object key)
+        public virtual TEntity Update(TEntity t, object key, byte[] rowVersion = null)
         {
             if (t == null)
                 return null;
             TEntity exist = _db.Set<TEntity>().Find(key);
             if (exist != null)
             {
+                if (rowVersion != null)
+                    _db.Entry(exist).OriginalValues["RowVersion"] = rowVersion;
                 _db.Entry(exist).CurrentValues.SetValues(t);
             }
             return exist;
