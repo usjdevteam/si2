@@ -30,7 +30,7 @@ namespace si2.dal.Repositories
         Task<TEntity> GetAsync(Guid id, CancellationToken ct);
         void Save();
         Task<int> SaveAsync(CancellationToken ct);
-        TEntity Update(TEntity t, object key);
+        TEntity Update(TEntity t, object key, byte[] rowVersion = null);
         Task UpdateAsync(TEntity t, object key, CancellationToken ct, byte[] rowVersion = null);
     }
 }
