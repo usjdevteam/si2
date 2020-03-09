@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
+using si2.bll.Helpers.PagedList;
 using si2.common;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -86,15 +88,22 @@ namespace si2.bll.Services
             }
         }
 
-        public async Task<IEnumerable<DataflowDto>> GetDataflowsAsync(CancellationToken ct)
+        public async Task<PagedList<DataflowDto>> GetDataflowsAsync(PagedResourceParameters pagedResourceParameters, CancellationToken ct)
         {
-            var dataflowEntities = await _uow.Dataflows.GetAllAsync(ct);
-            if (dataflowEntities != null)
-            {
-                var dataflowDtos = _mapper.Map<IEnumerable<DataflowDto>>(dataflowEntities);
-                return dataflowDtos;
-            }
-            return null; 
+            var dataflowEntities = _uow.Dataflows.GetAll().OrderBy(a => a.Name).ThenBy(c => c.Tag);
+
+            var pagedListEntities = await PagedList<Dataflow>.CreateAsync(dataflowEntities,
+                pagedResourceParameters.PageNumber, pagedResourceParameters.PageSize, ct);
+
+            var result = _mapper.Map<PagedList<DataflowDto>>(pagedListEntities);
+            result.TotalCount = pagedListEntities.TotalCount;
+            result.TotalPages = pagedListEntities.TotalPages;
+            result.CurrentPage = pagedListEntities.CurrentPage;
+            result.PageSize = pagedListEntities.PageSize;
+
+
+
+            return result;
         }
     }
 }

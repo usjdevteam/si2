@@ -1,5 +1,6 @@
 ﻿using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
+using si2.bll.Helpers.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,6 +14,6 @@ namespace si2.bll.Services
         Task<DataflowDto> UpdateDataflowAsync(Guid id, UpdateDataflowDto updateDataflowDto, CancellationToken ct);
         Task<DataflowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct);
         Task DeleteDataflowByIdAsync(Guid id, CancellationToken ct);
-        Task<IEnumerable<DataflowDto>> GetDataflowsAsync (CancellationToken ct);
+        Task<PagedList<DataflowDto>> GetDataflowsAsync (PagedResourceParameters pagedResourceParameters, CancellationToken ct);
     }
 }

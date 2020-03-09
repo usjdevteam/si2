@@ -2,10 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
+using si2.bll.Helpers.PagedList;
 using si2.bll.Services;
+using si2.common;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,11 +22,13 @@ namespace si2.api.Controllers
 
     public class DataflowsController : ControllerBase
     {
+        private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<DataflowsController> _logger;
         private readonly IDataflowService _dataflowService;
 
-        public DataflowsController(ILogger<DataflowsController> logger, IDataflowService dataflowService)
+        public DataflowsController(LinkGenerator linkGenerator, ILogger<DataflowsController> logger, IDataflowService dataflowService)
         {
+            _linkGenerator = linkGenerator;
             _logger = logger;
             _dataflowService = dataflowService;
         }
@@ -66,14 +72,28 @@ namespace si2.api.Controllers
             return Ok(dataflowDto);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetDataflows(CancellationToken ct)
+        [HttpGet(Name= "GetDataflows")]
+        public async Task<ActionResult> GetDataflows([FromQuery]PagedResourceParameters pagedResourceParameters, CancellationToken ct)
         {
-            var dataflowDtos = await _dataflowService.GetDataflowsAsync(ct);
+            var dataflowDtos = await _dataflowService.GetDataflowsAsync(pagedResourceParameters, ct);
+
+            var previousPageLink = dataflowDtos.HasPrevious ? CreateDataflowsResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
+            var nextPageLink = dataflowDtos.HasNext ? CreateDataflowsResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = dataflowDtos.TotalCount,
+                pageSize = dataflowDtos.PageSize,
+                currentPage = dataflowDtos.CurrentPage,
+                totalPages = dataflowDtos.TotalPages,
+                previousPageLink = previousPageLink,
+                nextPageLink = nextPageLink
+            };
 
             if (dataflowDtos == null)
                 return NotFound();
 
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(dataflowDtos);
         }
 
@@ -81,7 +101,7 @@ namespace si2.api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DataflowDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateDataflow(Guid id, [FromBody] UpdateDataflowDto updateDataflowDto, CancellationToken ct)
+        public async Task<ActionResult> UpdateDataflow([FromRoute]Guid id, [FromBody] UpdateDataflowDto updateDataflowDto, CancellationToken ct)
         {
             if (updateDataflowDto == null)
                 return BadRequest();
@@ -91,6 +111,39 @@ namespace si2.api.Controllers
                 return BadRequest();
 
             return Ok(dataflowToReturn);
+        }
+
+
+        private string CreateDataflowsResourceUri(PagedResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
+        {
+            switch (type)
+            {
+                case Enums.ResourceUriType.PreviousPage:
+                    return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber - 1,
+                            pageSize = pagedResourceParameters.PageSize
+
+                        }); // TDOD get teh aboslute path 
+                case Enums.ResourceUriType.NextPage:
+                    return _linkGenerator.GetPathByName("GetDataflows", 
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber + 1,
+                            pageSize = pagedResourceParameters.PageSize
+
+                        });// TDOD get teh aboslute path 
+                default:
+                    return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
+                       new
+                       {
+                           pageNumber = pagedResourceParameters.PageNumber,
+                           pageSize = pagedResourceParameters.PageSize
+
+                       });// TDOD get teh aboslute path 
+
+            }
         }
     }
 }
