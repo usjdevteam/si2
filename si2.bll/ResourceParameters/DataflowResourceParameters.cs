@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static si2.common.Enums;
 
-namespace si2.bll.Helpers.PagedList
+namespace si2.bll.Helpers.ResourceParameters
 {
-    public class PagedResourceParameters
+    public class DataflowResourceParameters
     {
         public int PageNumber { get; set; } = Constants.DEFAULT_PAGE_NUMBER;
         private int _pageSize = Constants.DEFAULT_PAGE_SIZE;
@@ -22,5 +23,9 @@ namespace si2.bll.Helpers.PagedList
                 _pageSize = (value > Constants.MAX_PAGE_SIZE) ? Constants.MAX_PAGE_SIZE : value;
             }
         }
+
+        public string SearchQuery { get; set; }
+
+        public string Status { get; set; }
     }
 }

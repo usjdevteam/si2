@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Helpers.PagedList;
+using si2.bll.Helpers.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
 using System;
@@ -73,7 +74,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name= "GetDataflows")]
-        public async Task<ActionResult> GetDataflows([FromQuery]PagedResourceParameters pagedResourceParameters, CancellationToken ct)
+        public async Task<ActionResult> GetDataflows([FromQuery]DataflowResourceParameters pagedResourceParameters, CancellationToken ct)
         {
             var dataflowDtos = await _dataflowService.GetDataflowsAsync(pagedResourceParameters, ct);
 
@@ -114,7 +115,7 @@ namespace si2.api.Controllers
         }
 
 
-        private string CreateDataflowsResourceUri(PagedResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
+        private string CreateDataflowsResourceUri(DataflowResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
             switch (type)
             {
@@ -122,27 +123,29 @@ namespace si2.api.Controllers
                     return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
                         new
                         {
+                            status = pagedResourceParameters.Status,
+                            searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber - 1,
                             pageSize = pagedResourceParameters.PageSize
-
-                        }); // TDOD get teh aboslute path 
+                        }); // TODO get the aboslute path 
                 case Enums.ResourceUriType.NextPage:
                     return _linkGenerator.GetPathByName("GetDataflows", 
                         new
                         {
+                            status = pagedResourceParameters.Status,
+                            searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber + 1,
                             pageSize = pagedResourceParameters.PageSize
-
-                        });// TDOD get teh aboslute path 
+                        });// TODO get the aboslute path 
                 default:
                     return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
                        new
                        {
+                           status = pagedResourceParameters.Status,
+                           searchQuery = pagedResourceParameters.SearchQuery,
                            pageNumber = pagedResourceParameters.PageNumber,
                            pageSize = pagedResourceParameters.PageSize
-
-                       });// TDOD get teh aboslute path 
-
+                       });// TODO get the aboslute path 
             }
         }
     }

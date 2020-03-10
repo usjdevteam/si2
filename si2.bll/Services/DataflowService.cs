@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Helpers.PagedList;
+using si2.bll.Helpers.ResourceParameters;
 using si2.common;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static si2.common.Enums;
 
 namespace si2.bll.Services
 {
@@ -88,20 +90,34 @@ namespace si2.bll.Services
             }
         }
 
-        public async Task<PagedList<DataflowDto>> GetDataflowsAsync(PagedResourceParameters pagedResourceParameters, CancellationToken ct)
+        public async Task<PagedList<DataflowDto>> GetDataflowsAsync(DataflowResourceParameters resourceParameters, CancellationToken ct)
         {
-            var dataflowEntities = _uow.Dataflows.GetAll().OrderBy(a => a.Name).ThenBy(c => c.Tag);
+            var dataflowEntities = _uow.Dataflows.GetAll();
+
+            if (!string.IsNullOrEmpty(resourceParameters.Status))
+            {
+                if (Enum.TryParse(resourceParameters.Status, true, out DataflowStatus status))
+                {
+                    dataflowEntities = dataflowEntities.Where(a => a.Status == status);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+            {
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                dataflowEntities = dataflowEntities
+                    .Where(a => a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                            || a.Tag.ToLowerInvariant().Contains(searchQueryForWhereClause));
+            }
 
             var pagedListEntities = await PagedList<Dataflow>.CreateAsync(dataflowEntities,
-                pagedResourceParameters.PageNumber, pagedResourceParameters.PageSize, ct);
+                resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
             var result = _mapper.Map<PagedList<DataflowDto>>(pagedListEntities);
             result.TotalCount = pagedListEntities.TotalCount;
             result.TotalPages = pagedListEntities.TotalPages;
             result.CurrentPage = pagedListEntities.CurrentPage;
             result.PageSize = pagedListEntities.PageSize;
-
-
 
             return result;
         }

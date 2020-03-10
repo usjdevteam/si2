@@ -26,6 +26,7 @@ namespace si2.bll.Helpers.PagedList
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             AddRange(items);
         }
+
         public PagedList()
         {
         }

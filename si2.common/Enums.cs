@@ -11,5 +11,11 @@ namespace si2.common
             PreviousPage,
             NextPage
         }
+        public enum DataflowStatus
+        {
+            Started = 1,
+            Ongoing = 2,
+            Completed = 3
+        }
     }
 }

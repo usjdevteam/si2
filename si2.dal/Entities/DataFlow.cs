@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static si2.common.Enums;
 
 namespace si2.dal.Entities
 {
@@ -14,5 +15,8 @@ namespace si2.dal.Entities
         public string Name { get; set; }
         [Required]
         public string Tag { get; set; }
+
+        [Required]
+        public DataflowStatus Status { get; set; }
     }
 }
