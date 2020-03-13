@@ -73,7 +73,7 @@ namespace si2.api.Controllers
             return Ok(dataflowDto);
         }
 
-        [HttpGet(Name= "GetDataflows")]
+        [HttpGet(Name = "GetDataflows")]
         public async Task<ActionResult> GetDataflows([FromQuery]DataflowResourceParameters pagedResourceParameters, CancellationToken ct)
         {
             var dataflowDtos = await _dataflowService.GetDataflowsAsync(pagedResourceParameters, ct);
@@ -87,8 +87,8 @@ namespace si2.api.Controllers
                 pageSize = dataflowDtos.PageSize,
                 currentPage = dataflowDtos.CurrentPage,
                 totalPages = dataflowDtos.TotalPages,
-                previousPageLink = previousPageLink,
-                nextPageLink = nextPageLink
+                previousPageLink,
+                nextPageLink
             };
 
             if (dataflowDtos == null)
@@ -120,7 +120,7 @@ namespace si2.api.Controllers
             switch (type)
             {
                 case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDataflows",
                         new
                         {
                             status = pagedResourceParameters.Status,
@@ -129,23 +129,23 @@ namespace si2.api.Controllers
                             pageSize = pagedResourceParameters.PageSize
                         }); // TODO get the aboslute path 
                 case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetPathByName("GetDataflows", 
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDataflows", 
                         new
                         {
                             status = pagedResourceParameters.Status,
                             searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber + 1,
                             pageSize = pagedResourceParameters.PageSize
-                        });// TODO get the aboslute path 
+                        });
                 default:
-                    return _linkGenerator.GetPathByName(this.HttpContext, "GetDataflows",
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDataflows",
                        new
                        {
                            status = pagedResourceParameters.Status,
                            searchQuery = pagedResourceParameters.SearchQuery,
                            pageNumber = pagedResourceParameters.PageNumber,
                            pageSize = pagedResourceParameters.PageSize
-                       });// TODO get the aboslute path 
+                       });
             }
         }
     }
