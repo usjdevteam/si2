@@ -1,13 +1,12 @@
-﻿using EarnedCard.Common.Exceptions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
-using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
@@ -40,9 +39,6 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DataflowDto))]
         public async Task<ActionResult> CreateDataflow([FromBody] CreateDataflowDto createDataflowDto, CancellationToken ct)
         {
-            if (createDataflowDto == null)
-                return BadRequest();
-
             var dataflowToReturn = await _dataflowService.CreateDataflowAsync(createDataflowDto, ct);
             if(dataflowToReturn == null)
                 return BadRequest();
@@ -61,6 +57,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetDataflow")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DataflowDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetDataflow(Guid id, CancellationToken ct)
@@ -98,16 +95,28 @@ namespace si2.api.Controllers
             return Ok(dataflowDtos);
         }
 
-
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DataflowDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateDataflow([FromRoute]Guid id, [FromBody] UpdateDataflowDto updateDataflowDto, CancellationToken ct)
         {
-            if (updateDataflowDto == null)
-                return BadRequest();
+            if (! await _dataflowService.ExistsAsync(id, ct))
+                return NotFound();
 
             var dataflowToReturn = await _dataflowService.UpdateDataflowAsync(id, updateDataflowDto, ct);
+            if (dataflowToReturn == null)
+                return BadRequest();
+
+            return Ok(dataflowToReturn);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> UpdateDataflow([FromRoute]Guid id, [FromBody] JsonPatchDocument<UpdateDataflowDto> patchDoc, CancellationToken ct)
+        {
+            if (! await _dataflowService.ExistsAsync(id, ct))
+                return NotFound();
+
+            var dataflowToReturn = await _dataflowService.PartialUpdateDataflowAsync(id, patchDoc, ct);
             if (dataflowToReturn == null)
                 return BadRequest();
 

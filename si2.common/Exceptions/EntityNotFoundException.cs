@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EarnedCard.Common.Exceptions
+namespace Si2.common.Exceptions
 {
     public class EntityNotFoundException : Exception
     {

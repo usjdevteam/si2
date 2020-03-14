@@ -3,25 +3,21 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using si2.bll.Helpers;
 using si2.bll.Services;
 using si2.dal.Context;
 using si2.dal.Entities;
-using si2.dal.Interfaces;
 using si2.dal.Repositories;
 using si2.dal.UnitOfWork;
 using System;
 using System.Text;
-using Z.EntityFramework.Plus;
 
 namespace si2.api
 {
@@ -82,7 +78,8 @@ namespace si2.api
                     };
                 });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(setupAction => setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

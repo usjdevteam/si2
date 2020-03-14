@@ -13,6 +13,7 @@ namespace si2.bll.Helpers
             CreateMap<CreateDataflowDto, Dataflow>();
             CreateMap<UpdateDataflowDto, Dataflow>();
             CreateMap<Dataflow, DataflowDto>();
+            CreateMap<Dataflow, UpdateDataflowDto>();
         }
     }
 }

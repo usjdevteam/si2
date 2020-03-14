@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
-using si2.common;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
+using Si2.common.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,23 +42,33 @@ namespace si2.bll.Services
         public async Task<DataflowDto> UpdateDataflowAsync(Guid id, UpdateDataflowDto updateDataflowDto, CancellationToken ct)
         {
             DataflowDto dataflowDto = null;
-            try
-            {
-                var updatedEntity = _mapper.Map<Dataflow>(updateDataflowDto);
-                updatedEntity.Id = id;
-                await _uow.Dataflows.UpdateAsync(updatedEntity, id, ct, updatedEntity.RowVersion);
-                await _uow.SaveChangesAsync(ct);
-                var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
-                dataflowDto = _mapper.Map<DataflowDto>(dataflowEntity);
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                _logger.LogError(ex, string.Empty);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, string.Empty);
-            }
+            
+            var updatedEntity = _mapper.Map<Dataflow>(updateDataflowDto);
+            updatedEntity.Id = id;
+            await _uow.Dataflows.UpdateAsync(updatedEntity, id, ct, updatedEntity.RowVersion);
+            await _uow.SaveChangesAsync(ct);
+            var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            dataflowDto = _mapper.Map<DataflowDto>(dataflowEntity);
+            
+            return dataflowDto;
+        }
+
+        public async Task<DataflowDto> PartialUpdateDataflowAsync(Guid id, JsonPatchDocument<UpdateDataflowDto> patchDoc, CancellationToken ct)
+        {
+            var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+
+            var updateDataflowDto = _mapper.Map<UpdateDataflowDto>(dataflowEntity);
+
+            patchDoc.ApplyTo(updateDataflowDto);
+
+            _mapper.Map(updateDataflowDto, dataflowEntity);
+
+            await _uow.Dataflows.UpdateAsync(dataflowEntity, id, ct, dataflowEntity.RowVersion);
+            await _uow.SaveChangesAsync(ct);
+
+            dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            var dataflowDto = _mapper.Map<DataflowDto>(dataflowEntity);
+
             return dataflowDto;
         }
 
@@ -120,6 +129,20 @@ namespace si2.bll.Services
             result.PageSize = pagedListEntities.PageSize;
 
             return result;
+        }
+
+        /// <summary>
+        /// Check if dataflow with the given id exists in the database
+        /// </summary>
+        /// <param name="id">The key of the dataflow</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>true if the entity with thet given key exists, false otherwise</returns>
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
+        {
+            if (await _uow.Dataflows.GetAsync(id, ct) != null)
+                return true;
+            
+            return false;
         }
     }
 }
