@@ -23,7 +23,7 @@ namespace si2.dal.Repositories
         Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
         IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate);
         Task<ICollection<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);
-        TEntity Get(int id);
+        TEntity Get(Guid id);
         IQueryable<TEntity> GetAll();
         Task<ICollection<TEntity>> GetAllAsync(CancellationToken ct);
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);

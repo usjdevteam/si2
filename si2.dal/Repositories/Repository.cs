@@ -33,7 +33,7 @@ namespace si2.dal.Repositories
             return await _db.Set<TEntity>().ToListAsync(ct);
         }
 
-        public virtual TEntity Get(int id)
+        public virtual TEntity Get(Guid id)
         {
             return _db.Set<TEntity>().Find(id);
         }
