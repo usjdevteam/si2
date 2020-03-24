@@ -202,6 +202,30 @@ namespace si2.tests.Helpers
 
         }
 
+        [Test]
+        public void RationalFromStringTest()
+        {
+            for(int i = 0; i < 50000; ++i)
+            {
+                Rational a = RandomNumber();
+                Rational b = new Rational(a.ToString());
+                Assert.AreEqual(a, b);
+                a = new Rational(generator.Next());
+                b = new Rational(a.ToString());
+                Assert.AreEqual(a, b);
+            }
+
+            Assert.Throws<RationalConversionException>(delegate {
+                Rational a = new Rational("1/2/3");
+            });
+
+            Assert.Throws<FormatException>(delegate {
+                Rational x = new Rational("3/5a");
+            });
+            Assert.Throws<FormatException>(delegate {
+                Rational x = new Rational("3a/5");
+            });
+        }
 
     }
 }

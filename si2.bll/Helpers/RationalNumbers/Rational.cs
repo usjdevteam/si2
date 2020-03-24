@@ -67,6 +67,37 @@ namespace si2.bll.Helpers.RationalNumbers
             _den = _den / p;
         }
 
+        public Rational(string s)
+        {
+            string[] parts = s.Split('/');
+            if (parts.Length == 1)
+            {
+                _num = int.Parse(parts[0]);
+                _den = 1;
+            }
+            else if (parts.Length == 2)
+            {
+                _num = int.Parse(parts[0]);
+                _den = int.Parse(parts[1]);
+                int p = pgcd(_num, _den);
+                if (_den < 0)
+                {
+                    _num = -_num / p;
+                    _den = -_den / p;
+                }
+                else
+                {
+                    _num = _num / p;
+                    _den = _den / p;
+                }
+
+            }
+            else
+            {
+                throw new RationalConversionException();
+            }
+        }
+
         public Rational(Rational x)
         {
             _num = x._num;
