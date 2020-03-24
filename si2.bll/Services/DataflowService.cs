@@ -53,13 +53,9 @@ namespace si2.bll.Services
             return dataflowDto;
         }
 
-        public async Task<DataflowDto> PartialUpdateDataflowAsync(Guid id, JsonPatchDocument<UpdateDataflowDto> patchDoc, CancellationToken ct)
+        public async Task<DataflowDto> PartialUpdateDataflowAsync(Guid id, UpdateDataflowDto updateDataflowDto, CancellationToken ct)
         {
             var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
-
-            var updateDataflowDto = _mapper.Map<UpdateDataflowDto>(dataflowEntity);
-
-            patchDoc.ApplyTo(updateDataflowDto);
 
             _mapper.Map(updateDataflowDto, dataflowEntity);
 
@@ -70,6 +66,13 @@ namespace si2.bll.Services
             var dataflowDto = _mapper.Map<DataflowDto>(dataflowEntity);
 
             return dataflowDto;
+        }
+
+        public async Task<UpdateDataflowDto> GetUpdateDataFlowDto(Guid id, CancellationToken ct)
+        {
+            var dataflowEntity = await _uow.Dataflows.GetAsync(id, ct);
+            var updateDataflowDto = _mapper.Map<UpdateDataflowDto>(dataflowEntity);
+            return updateDataflowDto;
         }
 
         public async Task<DataflowDto> GetDataflowByIdAsync(Guid id, CancellationToken ct)
@@ -131,12 +134,6 @@ namespace si2.bll.Services
             return result;
         }
 
-        /// <summary>
-        /// Check if dataflow with the given id exists in the database
-        /// </summary>
-        /// <param name="id">The key of the dataflow</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>true if the entity with thet given key exists, false otherwise</returns>
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
         {
             if (await _uow.Dataflows.GetAsync(id, ct) != null)

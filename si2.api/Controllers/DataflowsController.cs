@@ -116,7 +116,15 @@ namespace si2.api.Controllers
             if (! await _dataflowService.ExistsAsync(id, ct))
                 return NotFound();
 
-            var dataflowToReturn = await _dataflowService.PartialUpdateDataflowAsync(id, patchDoc, ct);
+            var dataflowToPatch = await _dataflowService.GetUpdateDataFlowDto(id, ct);
+            patchDoc.ApplyTo(dataflowToPatch, ModelState);
+
+            TryValidateModel(dataflowToPatch);
+
+            if (!ModelState.IsValid)
+                return new UnprocessableEntityObjectResult(ModelState);
+
+            var dataflowToReturn = await _dataflowService.PartialUpdateDataflowAsync(id, dataflowToPatch, ct);
             if (dataflowToReturn == null)
                 return BadRequest();
 
