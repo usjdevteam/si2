@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using si2.bll.Helpers.Credits;
+using System;
 
 namespace si2.tests.Helpers
 {
@@ -13,12 +11,14 @@ namespace si2.tests.Helpers
         public void CreditsCreation()
         {
             Credits c = new Credits(5);
-            Assert.AreEqual(5, c.Value);
+            Decimal r = new Decimal(5);
+            Assert.AreEqual(r, c.Value);
             Assert.Throws<NegativeCreditsException>(delegate {
                 new Credits(-1);
             });
             c = new Credits(0);
-            Assert.AreEqual(0, c.Value);
+            r = new Decimal(0);
+            Assert.AreEqual(r, c.Value);
         }
 
         [Test]
@@ -27,7 +27,8 @@ namespace si2.tests.Helpers
             Credits a = new Credits(5);
             Credits b = new Credits(7);
             Credits c = a + b;
-            Assert.AreEqual(12, c.Value);
+            Decimal r = new Decimal(12);
+            Assert.AreEqual(r, c.Value);
         }
 
         [Test]
@@ -36,10 +37,18 @@ namespace si2.tests.Helpers
             Credits a = new Credits(5);
             Credits b = new Credits(7);
             Credits c = b-a;
-            Assert.AreEqual(2, c.Value);
+            Decimal r = new Decimal(2);
+            Assert.AreEqual(r, c.Value);
             Assert.Throws<NegativeCreditsException>(delegate {
                 Credits d = a - b;
             });
+        }
+
+        [Test]
+        public void CreditsDisplay()
+        {
+            Credits a = new Credits(12.5F);
+            Assert.AreEqual("12.5 Cr.", a.ToString());
         }
     }
 }
