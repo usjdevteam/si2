@@ -70,12 +70,7 @@ namespace si2.dal.Repositories
 
         public virtual void Delete(TEntity entity)
         {
-            _db.Set<TEntity>().SingleDelete(entity);
-        }
-
-        public virtual async Task DeleteAsync(TEntity entity, CancellationToken ct)
-        {
-            await _db.Set<TEntity>().SingleDeleteAsync(entity);
+            _db.Set<TEntity>().Remove(entity);
         }
 
         public virtual TEntity Update(TEntity t, object key, byte[] rowVersion = null)

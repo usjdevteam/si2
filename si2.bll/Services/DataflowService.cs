@@ -93,7 +93,7 @@ namespace si2.bll.Services
             try
             {
                 var dataflowEntity = await _uow.Dataflows.FirstAsync(c => c.Id == id, ct);
-                await _uow.Dataflows.DeleteAsync(dataflowEntity, ct);
+                _uow.Dataflows.Delete(dataflowEntity);
                 await _uow.SaveChangesAsync(ct);
             }
             catch (InvalidOperationException e)

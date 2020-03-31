@@ -16,7 +16,6 @@ namespace si2.dal.Repositories
         int Count();
         Task<int> CountAsync(CancellationToken ct);
         void Delete(TEntity entity);
-        Task DeleteAsync(TEntity entity, CancellationToken ct);
         void Dispose();
         TEntity Find(Expression<Func<TEntity, bool>> match);
         ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
