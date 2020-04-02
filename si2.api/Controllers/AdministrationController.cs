@@ -69,7 +69,6 @@ namespace si2.api.Controllers
         public async Task<IActionResult> ManageUserClaims([FromBody] UserClaimsDto model, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
-            // test ab#2
 
             if (user == null)
             {
@@ -111,6 +110,48 @@ namespace si2.api.Controllers
             };
 
             return Ok(result);
+        }
+
+        [HttpGet("users")]
+        public IActionResult GetUsers(CancellationToken ct)
+        {
+            var Users = _userManager.Users;
+
+            if (Users == null)
+                return NotFound();
+
+            return Ok(Users);
+        }
+
+
+        [HttpGet("users/{userId}/roles")]
+        public async Task<IActionResult> GetRolesForUser([FromRoute]string userId, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(roles);
+        }
+
+        [HttpPost("users/{userId}/roles")]
+        public async Task<IActionResult> AddRolesToUser([FromRoute]string userId, [FromBody]RolesDto addRoles, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId); 
+            
+            if (user == null)
+                return NotFound();
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles.ToArray());
+            await _userManager.AddToRolesAsync(user, addRoles.Roles.ToArray());
+
+            var finalRoles = await _userManager.GetRolesAsync(user);
+
+            return Ok(finalRoles);
         }
     }
 }
