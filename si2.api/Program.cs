@@ -23,6 +23,7 @@ namespace si2.api
             {
                 logging.ClearProviders();
                 logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                //logging.AddEventLog();
                 logging.AddConsole();
                 logging.AddDebug();
                 logging.AddNLog();
