@@ -11,7 +11,6 @@ namespace si2.bll.Dtos.Results.Administration
             Claims = new List<UserClaimDto>();
         }
 
-        public string UserId { get; set; }
         public List<UserClaimDto> Claims { get; set; }
     }
 }

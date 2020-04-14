@@ -48,12 +48,6 @@ namespace si2.api
             
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            //services.AddScoped<IUrlHelper, UrlHelper>(implementationFactory => 
-            //{
-            //    var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
-            //    return new UrlHelper(actionContext);
-            //});
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDataflowRepository, DataflowRepository>();

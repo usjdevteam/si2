@@ -29,6 +29,19 @@ namespace si2.api.Controllers
             _roleManager = roleManager;
         }
 
+
+
+        [HttpGet("users")]
+        public IActionResult GetUsers(CancellationToken ct)
+        {
+            var Users = _userManager.Users;
+
+            if (Users == null)
+                return NotFound();
+
+            return Ok(Users);
+        }
+
         [HttpPost("roles")]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto model, CancellationToken ct)
         {
@@ -65,10 +78,11 @@ namespace si2.api.Controllers
             return Ok(Roles);
         }
 
-        [HttpPost("userclaims")]
-        public async Task<IActionResult> ManageUserClaims([FromBody] UserClaimsDto model, CancellationToken ct)
+
+        [HttpPost("users/{userId}/claims")]
+        public async Task<IActionResult> ManageUserClaims([FromRoute]string userId, [FromBody] UserClaimsDto model, CancellationToken ct)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -79,21 +93,21 @@ namespace si2.api.Controllers
             var result = await _userManager.RemoveClaimsAsync(user, existingClaims);
 
             if (!result.Succeeded)
-                return BadRequest(); // TDOD Bad request is not the best returned error 
+                return BadRequest(); // TODO Bad request is not the best returned error 
 
             var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.ClaimType));
 
             result = await _userManager.AddClaimsAsync(user, claims);
             if (!result.Succeeded)
-                return BadRequest(); // TDOD Bad request is not the best returned error 
+                return BadRequest(); // TODO Bad request is not the best returned error 
 
-            return CreatedAtRoute("GetUserClaims", new { id = model.UserId }, model);
+            return CreatedAtRoute("GetUserClaims", new { userId = userId }, model);
         }
 
-        [HttpGet("userclaims/{id}", Name = "GetUserClaims")]
-        public async Task<IActionResult> GetUserClaims([FromRoute]string id, CancellationToken ct)
+        [HttpGet("users/{userId}/claims", Name = "GetUserClaims")]
+        public async Task<IActionResult> GetUserClaims([FromRoute]string userId, CancellationToken ct)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -105,24 +119,11 @@ namespace si2.api.Controllers
 
             var result = new UserClaimsDto()
             {
-                UserId = id,
                 Claims = claims.ToList()
             };
 
             return Ok(result);
         }
-
-        [HttpGet("users")]
-        public IActionResult GetUsers(CancellationToken ct)
-        {
-            var Users = _userManager.Users;
-
-            if (Users == null)
-                return NotFound();
-
-            return Ok(Users);
-        }
-
 
         [HttpGet("users/{userId}/roles")]
         public async Task<IActionResult> GetRolesForUser([FromRoute]string userId, CancellationToken ct)
