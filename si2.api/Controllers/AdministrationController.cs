@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Administration;
 using si2.bll.Dtos.Results.Administration;
+using si2.bll.Models;
 using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
@@ -89,13 +90,20 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-            var existingClaims = await _userManager.GetClaimsAsync(user);
-            var result = await _userManager.RemoveClaimsAsync(user, existingClaims);
+            var existingUserClaims = await _userManager.GetClaimsAsync(user);
+
+            var result = await _userManager.RemoveClaimsAsync(user, existingUserClaims);
 
             if (!result.Succeeded)
                 return BadRequest(); // TODO Bad request is not the best returned error 
 
-            var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.ClaimType));
+            var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")).ToList();
+
+            foreach (Claim claim in ClaimsStore.AllClaims)
+            {
+                if (!claims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)))
+                    claims.Add (new Claim(claim.Type, claim.Value));
+            }
 
             result = await _userManager.AddClaimsAsync(user, claims);
             if (!result.Succeeded)
@@ -114,12 +122,29 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-            var existingClaims = await _userManager.GetClaimsAsync(user);
-            var claims = existingClaims.Select(c => new UserClaimDto() { ClaimType = c.Type, IsSelected = true });
+            var existingUserClaims = await _userManager.GetClaimsAsync(user);
+
+            var claimsDto = new List<UserClaimDto>(existingUserClaims.Select(claim => new UserClaimDto()
+            {
+                ClaimType = claim.Type,
+                IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false
+            }));
+
+            foreach (Claim claim in ClaimsStore.AllClaims)
+            {
+                if (!existingUserClaims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)))
+                {
+                    claimsDto.Add(new UserClaimDto()
+                    {
+                        ClaimType = claim.Type,
+                        IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false
+                    });
+                }
+            }
 
             var result = new UserClaimsDto()
             {
-                Claims = claims.ToList()
+                Claims = claimsDto.ToList()
             };
 
             return Ok(result);
