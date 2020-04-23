@@ -114,6 +114,8 @@ namespace si2.api.Controllers
 
             var results = new
             {
+                roles = userRoles, 
+                email = user.Email,
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 expiration = token.ValidTo
             };

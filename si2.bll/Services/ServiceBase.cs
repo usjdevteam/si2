@@ -13,9 +13,9 @@ namespace si2.bll.Services
     {
         protected readonly IUnitOfWork _uow;
         protected readonly IMapper _mapper;
-        protected readonly ILogger<ServiceBase> _logger;
+        protected readonly ILogger<IServiceBase> _logger;
 
-        public ServiceBase(IUnitOfWork uow, IMapper mapper, ILogger<ServiceBase> logger)
+        public ServiceBase(IUnitOfWork uow, IMapper mapper, ILogger<IServiceBase> logger)
         {
             _uow = uow;
             _mapper = mapper;

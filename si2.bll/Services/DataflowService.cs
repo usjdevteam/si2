@@ -18,7 +18,7 @@ namespace si2.bll.Services
 {
     public class DataflowService : ServiceBase, IDataflowService
     {
-        public DataflowService(IUnitOfWork uow, IMapper mapper, ILogger<DataflowService> logger) : base(uow, mapper, logger)
+        public DataflowService(IUnitOfWork uow, IMapper mapper, ILogger<IDataflowService> logger) : base(uow, mapper, logger)
         {
         }
 
@@ -118,7 +118,8 @@ namespace si2.bll.Services
             {
                 var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
                 dataflowEntities = dataflowEntities
-                    .Where(a => a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                    .Where(a => a.Title.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                            || a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause)
                             || a.Tag.ToLowerInvariant().Contains(searchQueryForWhereClause));
             }
 
