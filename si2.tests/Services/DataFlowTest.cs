@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static si2.common.Enums;
 
-namespace si2.tests.Helpers
+namespace si2.tests.Services
 {
     [TestFixture]
     class DataFlowTest
