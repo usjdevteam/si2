@@ -62,7 +62,7 @@ namespace si2.dal.Context
 
 		public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
 		{
-			var audit = new Audit() { CreatedBy = _httpContextAccessor.HttpContext.User.Identity.Name };
+			var audit = new Audit() { CreatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "Application" };
 			audit.PreSaveChanges(this);
 			var rowAffecteds = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 			audit.PostSaveChanges();
