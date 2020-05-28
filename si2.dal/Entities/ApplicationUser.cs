@@ -8,6 +8,5 @@ namespace si2.dal.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string firstname { get; set; }
     }
 }

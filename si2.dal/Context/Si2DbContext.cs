@@ -16,7 +16,6 @@ namespace si2.dal.Context
     public class Si2DbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-		new public DbSet<ApplicationRole> Roles { get; set; }
 
         public DbSet<AuditEntry> AuditEntries { get; set; }
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }

@@ -41,7 +41,7 @@ namespace si2.api
             
             services.AddEntityFrameworkSqlServer();
            
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<Si2DbContext>();
