@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -15,6 +16,7 @@ namespace si2.dal.Context
     public class Si2DbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+		new public DbSet<ApplicationRole> Roles { get; set; }
 
         public DbSet<AuditEntry> AuditEntries { get; set; }
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
@@ -26,22 +28,22 @@ namespace si2.dal.Context
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
 
-			AuditManager.DefaultConfiguration.Exclude(x => true); // Exclude ALL
-			AuditManager.DefaultConfiguration.Include<IAuditable>();
-			AuditManager.DefaultConfiguration.AutoSavePreAction = (context, audit) =>
-				(context as Si2DbContext).AuditEntries.AddRange(audit.Entries);
-			
-		}
+            AuditManager.DefaultConfiguration.Exclude(x => true); // Exclude ALL
+            AuditManager.DefaultConfiguration.Include<IAuditable>();
+            AuditManager.DefaultConfiguration.AutoSavePreAction = (context, audit) =>
+                (context as Si2DbContext).AuditEntries.AddRange(audit.Entries);
+
+        }
 
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-            // seed the database with dummy data
-        }
+			// Customize the ASP.NET Identity model and override the defaults if needed.
+			// For example, you can rename the ASP.NET Identity table names and more.
+			// Add your customizations after calling base.OnModelCreating(builder);
+			// seed the database with dummy data
+		}
 
 		public override int SaveChanges()
 		{

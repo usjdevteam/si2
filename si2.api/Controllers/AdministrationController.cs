@@ -20,10 +20,10 @@ namespace si2.api.Controllers
     {
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
         public AdministrationController(ILogger<AdministrationController> logger,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -46,7 +46,7 @@ namespace si2.api.Controllers
         [HttpPost("roles")]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto model, CancellationToken ct)
         {
-            var result = await _roleManager.CreateAsync(new IdentityRole() { Name = model.RoleName });
+            var result = await _roleManager.CreateAsync(new ApplicationRole() { Name = model.RoleName });
 
             if (result.Succeeded)
             {

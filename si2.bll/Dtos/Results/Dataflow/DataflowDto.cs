@@ -26,5 +26,10 @@ namespace si2.bll.Dtos.Results.Dataflow
                 && string.Equals(this.Status, obj.Status, StringComparison.OrdinalIgnoreCase)
                 && this.RowVersion.SequenceEqual(obj.RowVersion));
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

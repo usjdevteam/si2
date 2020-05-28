@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200310204506_added_Dataflow_Status_2")]
-    partial class added_Dataflow_Status_2
+    [Migration("20200528150554_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,10 @@ namespace si2.dal.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -46,6 +50,8 @@ namespace si2.dal.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -152,73 +158,6 @@ namespace si2.dal.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntry", b =>
-                {
-                    b.Property<int>("AuditEntryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EntitySetName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("EntityTypeName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StateName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.HasKey("AuditEntryID");
-
-                    b.ToTable("AuditEntries");
-                });
-
-            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntryProperty", b =>
-                {
-                    b.Property<int>("AuditEntryPropertyID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuditEntryID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NewValueFormatted")
-                        .HasColumnName("NewValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OldValueFormatted")
-                        .HasColumnName("OldValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("RelationName")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.HasKey("AuditEntryPropertyID");
-
-                    b.HasIndex("AuditEntryID");
-
-                    b.ToTable("AuditEntryProperties");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -271,6 +210,9 @@ namespace si2.dal.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<string>("firstname")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -284,55 +226,14 @@ namespace si2.dal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Dataflow", b =>
+            modelBuilder.Entity("si2.dal.Entities.ApplicationRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.Property<Guid?>("InstitutionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Dataflow");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vehicle");
+                    b.HasDiscriminator().HasValue("ApplicationRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -382,15 +283,6 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntryProperty", b =>
-                {
-                    b.HasOne("Z.EntityFramework.Plus.AuditEntry", "Parent")
-                        .WithMany("Properties")
-                        .HasForeignKey("AuditEntryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

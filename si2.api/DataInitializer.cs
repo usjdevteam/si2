@@ -10,7 +10,7 @@ namespace si2.api
     public class DataSeeder : IDataSeeder
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
         private readonly string SUPER_ADMIN_EMAIL = "superadmin@si2.com";
         private readonly string SUPER_ADMIN_PASSD = "Super_123";
@@ -18,7 +18,7 @@ namespace si2.api
 
         public DataSeeder(
                 UserManager<ApplicationUser> userManager,
-                RoleManager<IdentityRole> roleManager  )
+                RoleManager<ApplicationRole> roleManager  )
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -51,7 +51,7 @@ namespace si2.api
             {
                 if (!_roleManager.RoleExistsAsync(role).Result)
                 {
-                    IdentityRole identityRole = new IdentityRole();
+                    ApplicationRole identityRole = new ApplicationRole();
                     identityRole.Name = role;
                     IdentityResult roleResult = _roleManager.CreateAsync(identityRole).Result;
                 }
