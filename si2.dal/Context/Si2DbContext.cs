@@ -21,7 +21,8 @@ namespace si2.dal.Context
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
 
         public DbSet<Dataflow> Dataflows { get; set; }
-        public DbSet<Vehicle> Vehicles { get; set; }
+		public DbSet<Institution> Institutions { get; set; }
+		public DbSet<Vehicle> Vehicles { get; set; }
 
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Category> Categories { get; set; }
