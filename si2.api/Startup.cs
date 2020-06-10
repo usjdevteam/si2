@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
@@ -44,7 +45,10 @@ namespace si2.api
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<Si2DbContext>();
+                //options.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<Si2DbContext>()
+            .AddDefaultTokenProviders(); 
             
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -113,7 +117,7 @@ namespace si2.api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder )
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -145,6 +149,8 @@ namespace si2.api
             {
                 endpoints.MapControllers();
             });
+
+            loggerFactory.AddFile("Logs/myapp-{Date}.log");
         }
     }
 }
