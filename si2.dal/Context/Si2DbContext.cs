@@ -26,6 +26,8 @@ namespace si2.dal.Context
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Category> Categories { get; set; }
 
+		public DbSet<ContactInfo> ContactInfos { get; set; }
+
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
