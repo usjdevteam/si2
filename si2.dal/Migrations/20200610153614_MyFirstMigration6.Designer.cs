@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200610153614_MyFirstMigration6")]
+    partial class MyFirstMigration6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,14 +392,9 @@ namespace si2.dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("nameAr")
-                        .IsUnique();
+                    b.HasAlternateKey("nameEn");
 
-                    b.HasIndex("nameEn")
-                        .IsUnique();
-
-                    b.HasIndex("nameFr")
-                        .IsUnique();
+                    b.HasAlternateKey("nameFr");
 
                     b.ToTable("ProgramLevel");
                 });
