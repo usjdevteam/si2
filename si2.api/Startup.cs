@@ -51,11 +51,9 @@ namespace si2.api
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDataflowRepository, DataflowRepository>();
-            services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
-            services.AddTransient<IProgramLevelService, ProgramLevelService>();
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });

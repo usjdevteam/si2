@@ -356,65 +356,6 @@ namespace si2.dal.Migrations
                     b.ToTable("Dataflow");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institution");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<float>("credits")
-                        .HasColumnType("real");
-
-                    b.Property<string>("nameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("nameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("nameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<Guid>("universityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("universityId");
-
-                    b.ToTable("ProgramLevel");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
                 {
                     b.Property<Guid>("Id")
@@ -510,15 +451,6 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Category", "Category")
                         .WithMany("BookCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("universityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

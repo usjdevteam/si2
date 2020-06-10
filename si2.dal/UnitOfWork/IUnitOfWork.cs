@@ -10,7 +10,6 @@ namespace si2.dal.UnitOfWork
     public interface IUnitOfWork
     {
         IDataflowRepository Dataflows { get; }
-        IProgramLevelRepository ProgramLevels { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 
