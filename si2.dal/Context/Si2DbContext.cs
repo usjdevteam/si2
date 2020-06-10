@@ -22,6 +22,8 @@ namespace si2.dal.Context
 
         public DbSet<Dataflow> Dataflows { get; set; }
 		public DbSet<Institution> Institutions { get; set; }
+		public DbSet<Address> Address { get; set; }
+		public DbSet<ContactInfo> ContactInfo { get; set; }
 		public DbSet<Vehicle> Vehicles { get; set; }
 
 		public DbSet<Book> Books { get; set; }
@@ -41,6 +43,10 @@ namespace si2.dal.Context
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+			//builder.Entity<Institution>().HasAlternateKey(i => i.Code).HasName("AlternateKey_Code");
+
+			builder.Entity<Institution>().HasIndex(i => i.Code).IsUnique().HasName("Index_Institution_Code");
 
 			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
 			// Customize the ASP.NET Identity model and override the defaults if needed.

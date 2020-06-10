@@ -8,6 +8,7 @@ namespace si2.bll.Dtos.Results.Institution
 {
     public class InstitutionDto
     {
+        public Guid Id { get; set; }
         public string Code { get; set; }
         public string NameFr { get; set; }
         public string NameAr { get; set; }
@@ -20,7 +21,8 @@ namespace si2.bll.Dtos.Results.Institution
 
         public bool Equals(InstitutionDto obj)
         {
-            return (string.Equals(this.Code, obj.Code, StringComparison.OrdinalIgnoreCase)
+            return (this.Id == obj.Id
+                && string.Equals(this.Code, obj.Code, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(this.NameFr, obj.NameFr, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(this.NameAr, obj.NameAr, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(this.NameEn, obj.NameEn, StringComparison.OrdinalIgnoreCase)

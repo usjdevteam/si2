@@ -52,7 +52,7 @@ namespace si2.bll.Services
 
             return institutionDto;
         }
-
+/*
         public async Task<InstitutionDto> PartialUpdateInstitutionAsync(Guid id, UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
         {
             var institutionEntity = await _uow.Institutions.GetAsync(id, ct);
@@ -75,6 +75,7 @@ namespace si2.bll.Services
             return updateInstitutionDto;
         }
 
+      */
         public async Task<InstitutionDto> GetInstitutionByIdAsync(Guid id, CancellationToken ct)
         {
             InstitutionDto institutionDto = null;
@@ -87,7 +88,7 @@ namespace si2.bll.Services
 
             return institutionDto;
         }
-
+/*
         public async Task DeleteInstitutionByIdAsync(Guid id, CancellationToken ct)
         {
             try
@@ -101,18 +102,10 @@ namespace si2.bll.Services
                 _logger.LogError(e, string.Empty);
             }
         }
-
+*/
         public async Task<PagedList<InstitutionDto>> GetInstitutionsAsync(InstitutionResourceParameters resourceParameters, CancellationToken ct)
         {
             var institutionEntities = _uow.Institutions.GetAll();
-
-           /* if (!string.IsNullOrEmpty(resourceParameters.Status))
-            {
-                if (Enum.TryParse(resourceParameters.Status, true, out InstitutionStatus status))
-                {
-                    institutionEntities = institutionEntities.Where(a => a.Status == status);
-                }
-            }*/
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
@@ -135,6 +128,7 @@ namespace si2.bll.Services
             return result;
         }
 
+       
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
         {
             if (await _uow.Institutions.GetAsync(id, ct) != null)

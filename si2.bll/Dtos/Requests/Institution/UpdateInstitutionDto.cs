@@ -8,6 +8,9 @@ namespace si2.bll.Dtos.Requests.Institution
     public class UpdateInstitutionDto
     {
         [Required]
+        public string Code { get; set; }
+
+        [Required]
         public string NameFr { get; set; }
 
         [Required]

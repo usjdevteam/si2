@@ -19,10 +19,11 @@ namespace si2.dal.Entities
         public string NameAr { get; set; }
         [Required]
         public string NameEn { get; set; }
-
         [Required]
+        [ForeignKey("Address")]
         public Guid AddressId { get; set; }
         [Required]
+        [ForeignKey("ContactInfo")]
         public Guid ContactInfoId { get; set; }
     }
 }
