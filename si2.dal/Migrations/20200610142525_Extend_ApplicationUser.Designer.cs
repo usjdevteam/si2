@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200610142525_Extend_ApplicationUser")]
+    partial class Extend_ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,10 +274,14 @@ namespace si2.dal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("UserName")
+                        .HasName("IDX_Unique_ApplicationUser_UserName");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");

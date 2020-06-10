@@ -153,21 +153,22 @@ namespace si2.api.Controllers
             {
                 return View(model);
             }*/
-            /*var user = await _userManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-            }
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            //AddErrors(result);
-            //return View();
-            return BadRequest(result.Errors);
-        }*/
+        /*var user = await _userManager.FindByNameAsync(model.Email);
+        if (user == null)
+        {
+            // Don't reveal that the user does not exist
+        }
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+        //AddErrors(result);
+        //return View();
+        return BadRequest(result.Errors);
+    }*/
 
+        [HttpPost]
         [Route("ForgotPassword")]
         public async Task<ActionResult> ForgotPassword([FromBody] ForgotRequestDto model)
         {
@@ -210,6 +211,7 @@ namespace si2.api.Controllers
             return Ok("Ok");
         }
 
+        [HttpPost]
         [Route("ForgotPasswordReset")]
         public async Task<ActionResult> ForgotPasswordReset([FromBody] ResetRequestDto model)
         {
@@ -242,8 +244,8 @@ namespace si2.api.Controllers
             return BadRequest(result.Errors);
         }
 
-        [Route("ConfirmEmail")]
         [HttpGet]
+        [Route("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmRequestDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
