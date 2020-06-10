@@ -9,8 +9,10 @@ namespace si2.dal.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstNameFr { get; set; }
+        public string LastNameFr { get; set; }
+        public string FirstNameAr { get; set; }
+        public string LastNameAr { get; set; }
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using si2.bll.Dtos.Requests.Account;
 using si2.bll.Dtos.Requests.Administration;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Models;
@@ -102,7 +103,7 @@ namespace si2.api.Controllers
             foreach (Claim claim in ClaimsStore.AllClaims)
             {
                 if (!claims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)))
-                    claims.Add (new Claim(claim.Type, claim.Value));
+                    claims.Add(new Claim(claim.Type, claim.Value));
             }
 
             result = await _userManager.AddClaimsAsync(user, claims);
@@ -166,8 +167,8 @@ namespace si2.api.Controllers
         [HttpPost("users/{userId}/roles")]
         public async Task<IActionResult> AddRolesToUser([FromRoute]string userId, [FromBody]RolesDto addRoles, CancellationToken ct)
         {
-            var user = await _userManager.FindByIdAsync(userId); 
-            
+            var user = await _userManager.FindByIdAsync(userId);
+
             if (user == null)
                 return NotFound();
 
@@ -179,5 +180,33 @@ namespace si2.api.Controllers
 
             return Ok(finalRoles);
         }
+
+        [HttpPut("users/{userId}")]
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] RegisterRequestDto model,CancellationToken ct)
+        {
+            //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = await _userManager.FindByIdAsync(userId);
+
+            user.Email = model.Email;
+
+            user.FirstNameFr = model.FirstNameFr;
+            user.LastNameFr = model.LastNameFr;
+
+            user.FirstNameAr = model.FirstNameAr;
+            user.LastNameAr = model.LastNameAr;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+
+        }
+
     }
 }

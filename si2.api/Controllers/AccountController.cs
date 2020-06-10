@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using si2.bll.Helpers;
 
 namespace si2.api.Controllers
 {
@@ -42,10 +43,29 @@ namespace si2.api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model, CancellationToken ct)
         {
             var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
+
+            user.FirstNameFr = model.FirstNameFr;
+            user.LastNameFr = model.LastNameFr;
+
+            user.FirstNameAr = model.FirstNameAr;
+            user.LastNameAr = model.LastNameAr;
+
+            //set random password
+            //var password = "Abcd_123";
+            StaticHelpers helper = new StaticHelpers();
+            var password = helper.GenerateRandomPassword();
+
+            //var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
+                //set default user for newly created user
+                //IList<string> addRoles = new List<string>();
+                //addRoles.Add("DefaultUser");
+                //await _userManager.AddToRolesAsync(user, addRoles.ToArray());
+                await _userManager.AddToRoleAsync(user, "DefaultUser");
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return Ok();
             }
