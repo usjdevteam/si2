@@ -1,0 +1,77 @@
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using si2.dal.Entities;
+using si2.dal.UnitOfWork;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace si2.bll.Services
+{
+    public class AddressService : ServiceBase, IAddressService
+    {
+        public AddressService(IUnitOfWork uow, IMapper mapper, ILogger<IAddressService> logger) : base(uow, mapper, logger)
+        {
+        }
+
+        public async Task<Address> CreateAddressAsync(Address createAddress, CancellationToken ct)
+        {
+            Address address = null;
+
+            try
+            {
+                var addressEntity = _mapper.Map<Address>(createAddress);
+                await _uow.Addresses.AddAsync(addressEntity, ct);
+                await _uow.SaveChangesAsync(ct);
+                address = _mapper.Map<Address>(addressEntity);
+            }
+
+            catch (AutoMapperMappingException ex)
+            {
+                _logger.LogError(ex, string.Empty);
+            }
+
+            return address;
+
+        }
+
+        public async Task<Address> UpdateAddressAsync(Guid id, Address updateAddress, CancellationToken ct)
+        {
+            Address address = null;
+
+            try
+            {
+                var updatedEntity = _mapper.Map<Address>(updateAddress);
+                updatedEntity.Id = id;
+                await _uow.Addresses.UpdateAsync(updatedEntity, id, ct, updatedEntity.RowVersion);
+                await _uow.SaveChangesAsync(ct);
+                var addressEntity = await _uow.Addresses.GetAsync(id, ct);
+                address = _mapper.Map<Address>(addressEntity);
+            }
+
+            catch (AutoMapperMappingException ex)
+            {
+                _logger.LogError(ex, string.Empty);
+            }
+
+            return address;
+        }
+
+        public async Task DeleteAddressByIdAsync(Guid id, CancellationToken ct)
+        {
+            try
+            {
+                var addressEntity = await _uow.Addresses.FirstAsync(c => c.Id == id, ct);
+                _uow.Addresses.Delete(addressEntity);
+                await _uow.SaveChangesAsync(ct);
+            }
+            catch (InvalidOperationException e)
+            {
+                _logger.LogError(e, string.Empty);
+            }
+
+        }
+    }
+}
