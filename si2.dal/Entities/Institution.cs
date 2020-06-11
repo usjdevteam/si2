@@ -25,5 +25,11 @@ namespace si2.dal.Entities
         [Required]
         [ForeignKey("ContactInfo")]
         public Guid ContactInfoId { get; set; }
+        [ForeignKey("Institution")]
+        public Guid ParentInstitutionId { get; set; }
+
+        public virtual Address Address { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
+        //public virtual Institution InstitutionAttr { get; set; }
     }
 }

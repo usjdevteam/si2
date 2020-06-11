@@ -9,5 +9,7 @@ namespace si2.dal.Entities
     public class Address : Si2BaseEntity<Guid>
     {
         public string Location { get; set; }
+
+        public virtual Institution InstitutionAttr { get; set; }
     }
 }

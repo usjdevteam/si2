@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200610155954_Added_Index_CodeInstitution")]
-    partial class Added_Index_CodeInstitution
+    [Migration("20200610153944_MyFirstMigration7")]
+    partial class MyFirstMigration7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -219,20 +219,6 @@ namespace si2.dal.Migrations
                     b.ToTable("AuditEntryProperties");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Address", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -341,20 +327,6 @@ namespace si2.dal.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.ContactInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactInfo");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.Dataflow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -386,45 +358,50 @@ namespace si2.dal.Migrations
                     b.ToTable("Dataflow");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("ContactInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<float>("credits")
+                        .HasColumnType("real");
+
+                    b.Property<string>("nameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("nameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("nameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<Guid>("universityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("nameAr")
                         .IsUnique();
 
-                    b.ToTable("Institution");
+                    b.HasIndex("nameEn")
+                        .IsUnique();
+
+                    b.HasIndex("nameFr")
+                        .IsUnique();
+
+                    b.ToTable("ProgramLevel");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>

@@ -9,5 +9,7 @@ namespace si2.dal.Entities
     public class ContactInfo : Si2BaseEntity<Guid>
     {
         public string Name { get; set; }
+
+        public virtual Institution InstitutionAttr { get; set; }
     }
 }

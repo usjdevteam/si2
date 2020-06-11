@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200608204016_Added_Institution_Entity")]
-    partial class Added_Institution_Entity
+    [Migration("20200610135857_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -358,42 +358,47 @@ namespace si2.dal.Migrations
                     b.ToTable("Dataflow");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ContactInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<float>("credits")
+                        .HasColumnType("real");
+
+                    b.Property<string>("nameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("nameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("nameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<Guid>("universityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Institution");
+                    b.HasAlternateKey("nameAr");
+
+                    b.HasAlternateKey("nameEn");
+
+                    b.HasAlternateKey("nameFr");
+
+                    b.ToTable("ProgramLevel");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>

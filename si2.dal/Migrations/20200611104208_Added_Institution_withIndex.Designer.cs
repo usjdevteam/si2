@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200610173945_Added_Index_Institution_Code")]
-    partial class Added_Index_Institution_Code
+    [Migration("20200611104208_Added_Institution_withIndex")]
+    partial class Added_Institution_withIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -397,9 +397,12 @@ namespace si2.dal.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ContactInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("InstitutionAttrId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NameAr")
@@ -414,6 +417,9 @@ namespace si2.dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ParentInstitutionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -421,9 +427,13 @@ namespace si2.dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasName("Index_Institution_Code");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.HasIndex("ContactInfoId")
+                        .IsUnique();
+
+                    b.HasIndex("InstitutionAttrId");
 
                     b.ToTable("Institution");
                 });
@@ -525,6 +535,25 @@ namespace si2.dal.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Address", "Address")
+                        .WithOne("InstitutionAttr")
+                        .HasForeignKey("si2.dal.Entities.Institution", "AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("si2.dal.Entities.ContactInfo", "ContactInfo")
+                        .WithOne("InstitutionAttr")
+                        .HasForeignKey("si2.dal.Entities.Institution", "ContactInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("si2.dal.Entities.Institution", "InstitutionAttr")
+                        .WithMany()
+                        .HasForeignKey("InstitutionAttrId");
                 });
 #pragma warning restore 612, 618
         }
