@@ -233,7 +233,7 @@ namespace si2.api.Controllers
                 )
             );*/
 
-            var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = forgotPasswordRequestDto.Email, token = token }, Request.Scheme);
+            var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
 
             //_logger.Log(LogLevel.Warning, passwordResetLink);
             //_logger.Log(LogLevel.Warning, token);
@@ -271,7 +271,7 @@ namespace si2.api.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Ok");
+                return Ok("Email Reset Successfully");
             }
 
             //throw new InvalidOperationException(string.Join("\r\n", result.Errors));
