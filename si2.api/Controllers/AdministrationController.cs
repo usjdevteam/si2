@@ -104,12 +104,14 @@ namespace si2.api.Controllers
             if (!result.Succeeded)
                 return BadRequest(); // TODO Bad request is not the best returned error 
 
-            var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")).ToList();
+            //var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")).ToList();
+            var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList();
 
-            foreach (Claim claim in ClaimsStore.AllClaims)
+            //foreach (Claim claim in ClaimsStore.AllClaims)
+            foreach (UserClaimDto claim in model.Claims)
             {
-                if (!claims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)))
-                    claims.Add(new Claim(claim.Type, claim.Value));
+                if (!claims.Any(c => string.Equals(c.Type, claim.ClaimType, StringComparison.OrdinalIgnoreCase)))
+                    claims.Add(new Claim(claim.ClaimType, claim.ClaimValue));
             }
 
             result = await _userManager.AddClaimsAsync(user, claims);
@@ -135,17 +137,20 @@ namespace si2.api.Controllers
             var claimsDto = new List<UserClaimDto>(existingUserClaims.Select(claim => new UserClaimDto()
             {
                 ClaimType = claim.Type,
-                IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false
+                IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false,
+                ClaimValue = claim.Value
             }));
 
-            foreach (Claim claim in ClaimsStore.AllClaims)
+            //foreach (Claim claim in ClaimsStore.AllClaims)
+            foreach (Claim claim in existingUserClaims)
             {
                 if (!existingUserClaims.Any(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)))
                 {
                     claimsDto.Add(new UserClaimDto()
                     {
                         ClaimType = claim.Type,
-                        IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false
+                        IsSelected = string.Equals(claim.Value, "true", StringComparison.OrdinalIgnoreCase) ? true : false,
+                        ClaimValue = claim.Value
                     });
                 }
             }
