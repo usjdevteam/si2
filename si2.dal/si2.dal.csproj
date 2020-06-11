@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200611140225_Added_ParentChildren.cs" />
+    <Compile Remove="Migrations\20200611140225_Added_ParentChildren.Designer.cs" />
+    <Compile Remove="Migrations\20200611145029_Removed_IndexInstitution_AddressContactInfo.cs" />
+    <Compile Remove="Migrations\20200611145029_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
+    <Compile Remove="Migrations\20200611145314_Removed_IndexInstitution_AddressContactInfo.cs" />
+    <Compile Remove="Migrations\20200611145314_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
+    <Compile Remove="Migrations\20200611145846_Removed_IndexInstitution_AddressContactInfo.cs" />
+    <Compile Remove="Migrations\20200611145846_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
+    <Compile Remove="Migrations\20200611150202_Removed_IndexInstitution_AddressContactInfo.cs" />
+    <Compile Remove="Migrations\20200611150202_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
