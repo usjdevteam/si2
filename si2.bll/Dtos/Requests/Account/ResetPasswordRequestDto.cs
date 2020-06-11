@@ -5,7 +5,7 @@ using System.Text;
 
 namespace si2.bll.Dtos.Requests.Account
 {
-    public class ResetRequestDto
+    public class ResetPasswordRequestDto
     {
         [Required]
         [EmailAddress]
@@ -23,6 +23,6 @@ namespace si2.bll.Dtos.Requests.Account
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string Token { get; set; }
+        /*public string Token { get; set; }*/
     }
 }

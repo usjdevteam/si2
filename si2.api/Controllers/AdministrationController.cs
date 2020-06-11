@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Account;
@@ -34,6 +35,7 @@ namespace si2.api.Controllers
 
 
         [HttpGet("users")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetUsers(CancellationToken ct)
         {
             var Users = _userManager.Users;
@@ -45,6 +47,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost("roles")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto model, CancellationToken ct)
         {
             var result = await _roleManager.CreateAsync(new IdentityRole() { Name = model.RoleName });
@@ -59,6 +62,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("roles/{id}", Name = "GetRole")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetRoleById([FromRoute]string id, CancellationToken ct)
         {
             var Role = await _roleManager.FindByIdAsync(id);
@@ -70,6 +74,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("roles")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetRoles(CancellationToken ct)
         {
             var Roles = _roleManager.Roles;
@@ -82,6 +87,7 @@ namespace si2.api.Controllers
 
 
         [HttpPost("users/{userId}/claims")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ManageUserClaims([FromRoute]string userId, [FromBody] UserClaimsDto model, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -114,6 +120,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("users/{userId}/claims", Name = "GetUserClaims")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetUserClaims([FromRoute]string userId, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -152,6 +159,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("users/{userId}/roles")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetRolesForUser([FromRoute]string userId, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -165,6 +173,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost("users/{userId}/roles")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddRolesToUser([FromRoute]string userId, [FromBody]RolesDto addRoles, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -182,6 +191,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPut("users/{userId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] RegisterRequestDto model,CancellationToken ct)
         {
             //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -206,6 +216,24 @@ namespace si2.api.Controllers
                 return BadRequest(result.Errors);
             }
 
+        }
+
+
+        [HttpDelete("users/{userId}/roles")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> RevokeRolesFromUser([FromRoute]string userId, [FromBody]RolesDto removeRoles, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, removeRoles.Roles.ToArray());
+
+            var finalRoles = await _userManager.GetRolesAsync(user);
+
+            return Ok(finalRoles);
         }
 
     }

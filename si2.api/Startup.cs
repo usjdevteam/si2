@@ -45,7 +45,7 @@ namespace si2.api
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-                //options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
 
             }).AddEntityFrameworkStores<Si2DbContext>()
             .AddDefaultTokenProviders(); 
@@ -55,9 +55,11 @@ namespace si2.api
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+            services.AddTransient<IInstitutionRepository, InstitutionRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
+            services.AddTransient<IInstitutionService, InstitutionService>();
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
@@ -150,7 +152,7 @@ namespace si2.api
                 endpoints.MapControllers();
             });
 
-            loggerFactory.AddFile("Logs/myapp-{Date}.log");
+            //loggerFactory.AddFile("Logs/myapp-{Date}.log");
         }
     }
 }

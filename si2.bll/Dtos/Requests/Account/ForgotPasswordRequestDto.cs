@@ -5,14 +5,11 @@ using System.Text;
 
 namespace si2.bll.Dtos.Requests.Account
 {
-    public class ConfirmRequestDto
+    public class ForgotPasswordRequestDto
     {
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        public string Token { get; set; }
-
     }
 }

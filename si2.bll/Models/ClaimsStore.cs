@@ -9,9 +9,11 @@ namespace si2.bll.Models
     {
         public static List<Claim> AllClaims = new List<Claim>()
         {
-            new Claim ("Create Role", "false"),
-            new Claim ("Edit Role", "false"),
-            new Claim ("Delete Role", "false")
+            new Claim ("Create Role", null),
+            new Claim ("Edit Role", null),
+            new Claim ("Delete Role", null),
+            new Claim ("Create User Account" ,null),
+            new Claim ("Update User Account" ,null)
         };
     }
 }

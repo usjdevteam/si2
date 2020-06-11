@@ -17,6 +17,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using si2.bll.Helpers;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace si2.api.Controllers
 {
@@ -40,15 +42,16 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto model, CancellationToken ct)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto, CancellationToken ct)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = registerRequestDto.Email, Email = registerRequestDto.Email };
 
-            user.FirstNameFr = model.FirstNameFr;
-            user.LastNameFr = model.LastNameFr;
+            user.FirstNameFr = registerRequestDto.FirstNameFr;
+            user.LastNameFr = registerRequestDto.LastNameFr;
 
-            user.FirstNameAr = model.FirstNameAr;
-            user.LastNameAr = model.LastNameAr;
+            user.FirstNameAr = registerRequestDto.FirstNameAr;
+            user.LastNameAr = registerRequestDto.LastNameAr;
 
             //set random password
             //var password = "Abcd_123";
@@ -61,22 +64,25 @@ namespace si2.api.Controllers
             if (result.Succeeded)
             {
                 //set default user for newly created user
-                //IList<string> addRoles = new List<string>();
-                //addRoles.Add("DefaultUser");
-                //await _userManager.AddToRolesAsync(user, addRoles.ToArray());
                 await _userManager.AddToRoleAsync(user, "DefaultUser");
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok();
+
+                var token1 = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                    new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
+                return Ok(confirmationLink);
+
+                //return Ok();
             }
 
             //send Confirmation Email to the user---------------------------------------
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = Url.Action(nameof(model.Email), "Account", new { token, email = user.Email }, Request.Scheme);
-
+            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var confirmationLink = Url.Action(nameof(model.Email), "Account", new { token, email = user.Email }, Request.Scheme);
             //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
             //await _emailSender.SendEmailAsync(message);
-            _logger.Log(LogLevel.Warning, "the token is" + token);
+            //_logger.Log(LogLevel.Warning, "the token is" + token);
             //---------------------------------------------------------------------------
 
             return BadRequest(result.Errors);
@@ -84,31 +90,40 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("logout")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Logout(CancellationToken ct)
         {
+            //await _signInManager.SignOutAsync();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await _signInManager.SignOutAsync();
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
+
+            //return RedirectToAction("AccessDenied", "Error");
+
             return Ok();
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto model, CancellationToken ct)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto, CancellationToken ct)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(loginRequestDto.Email);
                 if (user == null)
                 {
                     return NotFound();
                 }
-                var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequestDto.Password, false);
 
                 //check if the user's email is confirmed-----
                 var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
                 //-------------------------------------------
 
-                if (result.Succeeded)
-                //if (result.Succeeded && resultConfirm == true)
+                //if (result.Succeeded)
+                if (result.Succeeded && resultConfirm == true)
                 {
                     var userClaims = await _userManager.GetClaimsAsync(user);
                     var userRoles = await _userManager.GetRolesAsync(user);
@@ -190,14 +205,15 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("ForgotPassword")]
-        public async Task<ActionResult> ForgotPassword([FromBody] ForgotRequestDto model)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(forgotPasswordRequestDto.Email);
 
             if (user == null)
             {
@@ -221,32 +237,35 @@ namespace si2.api.Controllers
                 )
             );*/
 
-            var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token = token }, Request.Scheme);
+            var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = forgotPasswordRequestDto.Email, token = token }, Request.Scheme);
 
             //_logger.Log(LogLevel.Warning, passwordResetLink);
-            _logger.Log(LogLevel.Warning, token);
+            //_logger.Log(LogLevel.Warning, token);
+
+            return Ok(passwordResetLink);
 
             //SendMailForgotPassword(user, token);
 
-            return Ok("Ok");
+            //return Ok("Ok");
         }
 
         [HttpPost]
         [Route("ForgotPasswordReset")]
-        public async Task<ActionResult> ForgotPasswordReset([FromBody] ResetRequestDto model)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> ForgotPasswordReset([FromQuery] string code1, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(resetRequestDto.Email);
             if (user == null)
             {
                 return Ok("Ok");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            var result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
 
             //update EmailConfirmed column------------------------
             //Can't be done here
@@ -264,9 +283,9 @@ namespace si2.api.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmRequestDto model)
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequestDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -282,6 +301,29 @@ namespace si2.api.Controllers
             {
                 return BadRequest();
             }
+        }*/
+
+        [Route("ConfirmEmail")]
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string code1,
+          [FromQuery] string code2, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return BadRequest();
+
+            var result = await _userManager.ConfirmEmailAsync(user, code2);
+
+            //return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+            if (result.Succeeded)
+            {
+                result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
+                if (result.Succeeded)
+                    return Ok("Email Confirmed and updated Successfully");
+            }
+
+            return BadRequest(result.Errors);
         }
     }
 }
