@@ -42,7 +42,6 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("register")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto, CancellationToken ct)
         {
             var user = new ApplicationUser { UserName = registerRequestDto.Email, Email = registerRequestDto.Email };
@@ -90,7 +89,6 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("logout")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Logout(CancellationToken ct)
         {
             //await _signInManager.SignOutAsync();
@@ -106,7 +104,6 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("login")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto, CancellationToken ct)
         {
             if (ModelState.IsValid)
@@ -205,7 +202,6 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("ForgotPassword")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequestDto)
         {
             if (!ModelState.IsValid)
@@ -251,7 +247,6 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("ForgotPasswordReset")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> ForgotPasswordReset([FromQuery] string code1, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
         {
             if (!ModelState.IsValid)
@@ -305,7 +300,6 @@ namespace si2.api.Controllers
 
         [Route("ConfirmEmail")]
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string code1,
           [FromQuery] string code2, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
         {

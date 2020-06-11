@@ -236,5 +236,24 @@ namespace si2.api.Controllers
             return Ok(finalRoles);
         }
 
+
+        /*[HttpDelete("users/{userId}/claims")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> RevokeClaimsFromUser([FromRoute]string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.RemoveClaimsAsync(user, removeClaims);
+
+            if (!result.Succeeded)
+                return BadRequest(); // TODO Bad request is not the best returned error 
+
+            return CreatedAtRoute("GetUserClaims", new { userId = userId }, removeClaims);
+        }*/
     }
 }
