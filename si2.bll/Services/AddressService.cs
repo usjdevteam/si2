@@ -28,7 +28,7 @@ namespace si2.bll.Services
                 address = _mapper.Map<Address>(addressEntity);
             }
 
-            catch (AutoMapperMappingException ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }
@@ -51,7 +51,7 @@ namespace si2.bll.Services
                 address = _mapper.Map<Address>(addressEntity);
             }
 
-            catch (AutoMapperMappingException ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }
@@ -67,11 +67,10 @@ namespace si2.bll.Services
                 _uow.Addresses.Delete(addressEntity);
                 await _uow.SaveChangesAsync(ct);
             }
-            catch (InvalidOperationException e)
+            catch (Exception ex)
             {
-                _logger.LogError(e, string.Empty);
+                _logger.LogError(ex, string.Empty);
             }
-
         }
     }
 }
