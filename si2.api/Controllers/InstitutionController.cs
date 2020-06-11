@@ -98,28 +98,31 @@ namespace si2.api.Controllers
         [HttpPost("{id}/institutions")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstitutionDto))]
-        public async Task<ActionResult> CreateChildInstitution([FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
+        public async Task<ActionResult> CreateChildInstitution([FromRoute]Guid id, [FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
         {
-            var institutionToReturn = await _institutionService.CreateInstitutionAsync(createInstitutionDto, ct);
+            if (!await _institutionService.ExistsAsync(id, ct))
+                return NotFound();
+
+            var institutionToReturn = await _institutionService.CreateChildInstitutionAsync(id, createInstitutionDto, ct);
             if (institutionToReturn == null)
                 return BadRequest();
 
-            return CreatedAtRoute("GetChildrenInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
+            return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
         [HttpGet("{id}/institutions", Name = "GetChildrenInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetChildrenInstitution(Guid id, CancellationToken ct)
+       /* public async Task<ActionResult> GetChildrenInstitution(Guid id, CancellationToken ct)
         {
-            var institutionDto = await _institutionService.GetInstitutionByIdAsync(id, ct);
+            var institutionDto = await _institutionService.GetChildrenInstitutionByIdAsync(id, ct);
 
             if (institutionDto == null)
                 return NotFound();
 
             return Ok(institutionDto);
-        }
+        }*/
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]

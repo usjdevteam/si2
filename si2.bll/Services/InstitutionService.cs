@@ -39,6 +39,30 @@ namespace si2.bll.Services
             return institutionDto;
         }
 
+        public async Task<InstitutionDto> CreateChildInstitutionAsync(Guid id, CreateInstitutionDto createInstitutionDto, CancellationToken ct)
+        {
+            InstitutionDto institutionDto = null;
+            try
+            {
+                var institutionEntity = _mapper.Map<Institution>(createInstitutionDto);
+
+                var institutionParentDto = await GetInstitutionByIdAsync(id, ct);
+
+                var institutionParentEntity = _mapper.Map<Institution>(institutionParentDto);
+
+                institutionEntity.Parent = institutionParentEntity;
+
+                await _uow.Institutions.AddAsync(institutionEntity, ct);
+                await _uow.SaveChangesAsync(ct);
+                institutionDto = _mapper.Map<InstitutionDto>(institutionEntity);
+            }
+            catch (AutoMapperMappingException ex)
+            {
+                _logger.LogError(ex, string.Empty);
+            }
+            return institutionDto;
+        }
+
         public async Task<InstitutionDto> UpdateInstitutionAsync(Guid id, UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
         {
             InstitutionDto institutionDto = null;
