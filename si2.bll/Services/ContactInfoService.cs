@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using si2.bll.Dtos.Requests.ContactInfo;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
@@ -16,7 +17,7 @@ namespace si2.bll.Services
         {
         }
 
-        public async Task<ContactInfo> CreateContactInfoAsync(ContactInfo createContactInfo, CancellationToken ct)
+        public async Task<ContactInfo> CreateContactInfoAsync(CreateContactInfoDto createContactInfo, CancellationToken ct)
         {
             ContactInfo contactInfo = null;
 
@@ -37,7 +38,7 @@ namespace si2.bll.Services
 
         }
 
-        public async Task<ContactInfo> UpdateContactInfoAsync(Guid id, ContactInfo updateContactInfo, CancellationToken ct)
+        public async Task<ContactInfo> UpdateContactInfoAsync(Guid id, UpdateContactInfoDto updateContactInfo, CancellationToken ct)
         {
             ContactInfo contactInfo = null;
 

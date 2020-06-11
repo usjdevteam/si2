@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class ContactInfo_object_migration1 : Migration
+    public partial class Added_ContactInfo_Entity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace si2.dal.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Email = table.Column<string>(maxLength: 100, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
                     Phone = table.Column<string>(maxLength: 30, nullable: false),
                     Fax = table.Column<string>(maxLength: 30, nullable: true)
                 },

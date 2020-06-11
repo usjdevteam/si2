@@ -1,17 +1,14 @@
-﻿using si2.dal.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace si2.dal.Entities
+namespace si2.bll.Dtos.Requests.ContactInfo
 {
-    [Table("ContactInfo")]
-    public class ContactInfo : Si2BaseDataEntity<Guid>, IAuditable
+    public class CreateContactInfoDto
     {
         [Required]
-        [MaxLength(256)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -20,6 +17,5 @@ namespace si2.dal.Entities
 
         [MaxLength(30)]
         public string Fax { get; set; }
-
     }
 }

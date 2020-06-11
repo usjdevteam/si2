@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200610115006_ContactInfo_object_migration1")]
-    partial class ContactInfo_object_migration1
+    [Migration("20200611182633_Added_ContactInfo_Entity")]
+    partial class Added_ContactInfo_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -335,8 +335,8 @@ namespace si2.dal.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<string>("Fax")
                         .HasColumnType("nvarchar(30)")
