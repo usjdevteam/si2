@@ -28,7 +28,7 @@ namespace si2.bll.Services
                 contactInfo = _mapper.Map<ContactInfo>(contactInfoEntity);
             }
 
-            catch (AutoMapperMappingException ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }
@@ -51,7 +51,7 @@ namespace si2.bll.Services
                 contactInfo = _mapper.Map<ContactInfo>(contactInfoEntity);
             }
 
-            catch (AutoMapperMappingException ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }
