@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class Address_object_migration1 : Migration
+    public partial class Added_Address_Entity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,8 +19,8 @@ namespace si2.dal.Migrations
                     CityAr = table.Column<string>(maxLength: 50, nullable: true),
                     CountryFr = table.Column<string>(maxLength: 50, nullable: false),
                     CountryAr = table.Column<string>(maxLength: 50, nullable: true),
-                    Longitude = table.Column<long>(maxLength: 200, nullable: false),
-                    Latitude = table.Column<long>(maxLength: 200, nullable: false)
+                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false)
                 },
                 constraints: table =>
                 {

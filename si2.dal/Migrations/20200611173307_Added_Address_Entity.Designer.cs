@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200610101803_Address_object_migration1")]
-    partial class Address_object_migration1
+    [Migration("20200611173307_Added_Address_Entity")]
+    partial class Added_Address_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -243,13 +243,11 @@ namespace si2.dal.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<long>("Latitude")
-                        .HasColumnType("bigint")
-                        .HasMaxLength(200);
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(8,6)");
 
-                    b.Property<long>("Longitude")
-                        .HasColumnType("bigint")
-                        .HasMaxLength(200);
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(9,6)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using si2.bll.Dtos.Requests.Address;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
@@ -16,7 +17,7 @@ namespace si2.bll.Services
         {
         }
 
-        public async Task<Address> CreateAddressAsync(Address createAddress, CancellationToken ct)
+        public async Task<Address> CreateAddressAsync(CreateAddressDto createAddress, CancellationToken ct)
         {
             Address address = null;
 
@@ -37,7 +38,7 @@ namespace si2.bll.Services
 
         }
 
-        public async Task<Address> UpdateAddressAsync(Guid id, Address updateAddress, CancellationToken ct)
+        public async Task<Address> UpdateAddressAsync(Guid id, UpdateAddressDto updateAddress, CancellationToken ct)
         {
             Address address = null;
 

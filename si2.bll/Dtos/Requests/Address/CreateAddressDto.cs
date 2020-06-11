@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using si2.dal.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace si2.dal.Entities
+namespace si2.bll.Dtos.Requests.Address
 {
-    [Table("Address")]
-    public class Address : Si2BaseDataEntity<Guid>, IAuditable
+    public class CreateAddressDto 
     {
         [Required]
         [MaxLength(100)]
@@ -32,11 +29,9 @@ namespace si2.dal.Entities
         public string CountryAr { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(9,6)")]
         public decimal Longitude { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(8,6)")]
         public decimal Latitude { get; set; }
     }
 }
