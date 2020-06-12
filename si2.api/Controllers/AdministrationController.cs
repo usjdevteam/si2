@@ -110,7 +110,8 @@ namespace si2.api.Controllers
             //foreach (Claim claim in ClaimsStore.AllClaims)
             foreach (UserClaimDto claim in model.Claims)
             {
-                if (!claims.Any(c => string.Equals(c.Type, claim.ClaimType, StringComparison.OrdinalIgnoreCase)))
+                if (!claims.Any(c => string.Equals(c.Type, claim.ClaimType, StringComparison.OrdinalIgnoreCase)) || 
+                    !claims.Any(c => string.Equals(c.Value, claim.ClaimValue, StringComparison.OrdinalIgnoreCase)))
                     claims.Add(new Claim(claim.ClaimType, claim.ClaimValue));
             }
 
@@ -242,7 +243,7 @@ namespace si2.api.Controllers
         }
 
 
-        /*[HttpDelete("users/{userId}/claims")]
+        [HttpDelete("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> RevokeClaimsFromUser([FromRoute]string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
         {
@@ -253,12 +254,24 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-            var result = await _userManager.RemoveClaimsAsync(user, removeClaims);
+            //var claims = model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")).ToList();
+            var claims = removeClaims.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList();
 
+            //foreach (Claim claim in ClaimsStore.AllClaims)
+            foreach (UserClaimDto claim in removeClaims.Claims)
+            {
+                if (!claims.Any(c => string.Equals(c.Type, claim.ClaimType, StringComparison.OrdinalIgnoreCase)))
+                    claims.Add(new Claim(claim.ClaimType, claim.ClaimValue));
+            }
+
+            var result = await _userManager.RemoveClaimsAsync(user, claims);
             if (!result.Succeeded)
                 return BadRequest(); // TODO Bad request is not the best returned error 
 
-            return CreatedAtRoute("GetUserClaims", new { userId = userId }, removeClaims);
-        }*/
+            var finalClaims = await _userManager.GetClaimsAsync(user);
+
+            return Ok(finalClaims);
+
+        }
     }
 }
