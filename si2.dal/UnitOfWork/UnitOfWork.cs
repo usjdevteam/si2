@@ -26,6 +26,8 @@ namespace si2.dal.UnitOfWork
         public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
         public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();
 
+        public IProgramRepository Programs => _serviceProvider.GetService<IProgramRepository>();
+
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {
             return await _db.SaveChangesAsync(ct);
