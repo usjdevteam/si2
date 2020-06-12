@@ -12,6 +12,7 @@ namespace si2.dal.UnitOfWork
         IDataflowRepository Dataflows { get; }
         IContactInfoRepository ContactInfos { get; }
         IAddressRepository Addresses { get; }
+        IInstitutionRepository Institutions { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 
