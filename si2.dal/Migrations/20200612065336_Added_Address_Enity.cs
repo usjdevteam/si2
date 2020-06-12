@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class Added_Address_Entity : Migration
+    public partial class Added_Address_Enity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

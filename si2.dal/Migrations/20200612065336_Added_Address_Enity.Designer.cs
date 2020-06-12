@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200611173307_Added_Address_Entity")]
-    partial class Added_Address_Entity
+    [Migration("20200612065336_Added_Address_Enity")]
+    partial class Added_Address_Enity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

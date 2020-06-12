@@ -26,8 +26,8 @@ namespace si2.dal.Context
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<ContactInfo> ContactInfos { get; set; }
-		public DbSet<Address> Address { get; set; }
-
+		public DbSet<Address> Addresses { get; set; }
+	
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
@@ -44,8 +44,6 @@ namespace si2.dal.Context
             base.OnModelCreating(builder);
 
 			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
-
-			
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.
