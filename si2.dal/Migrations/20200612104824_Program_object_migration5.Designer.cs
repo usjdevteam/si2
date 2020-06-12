@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200612104824_Program_object_migration5")]
+    partial class Program_object_migration5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

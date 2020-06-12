@@ -29,7 +29,7 @@ namespace si2.bll.Dtos.Requests.Program
 
         [Required]
         [Display(Name = "ProgramlevelId")]
-        public Guid ProgramlevelId { get; set; }
+        public Guid ProgramLevelId { get; set; } 
 
         [Required]
         [Display(Name = "InstitutionId")]

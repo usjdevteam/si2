@@ -7,6 +7,7 @@ using si2.bll.Dtos.Requests.Program;
 using si2.bll.Dtos.Results.Program;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 
 namespace si2.bll.Services
 {
@@ -14,6 +15,8 @@ namespace si2.bll.Services
     {
         Task<ProgramDto> CreateProgramAsync(CreateProgramDto createProgramDto, CancellationToken ct);
 
-        Task<PagedList<ProgramDto>> GetProgramAsync(CancellationToken ct);
+        Task<ProgramDto> GetProgramByIdAsync(Guid id, CancellationToken ct);
+
+        Task<PagedList<ProgramDto>> GetProgramAsync(ProgramResourceParameters pagedResourceParameters,CancellationToken ct);
     }
 }

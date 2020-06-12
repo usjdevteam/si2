@@ -4,6 +4,7 @@ using si2.bll.Dtos.Requests.Program;
 using si2.bll.Dtos.Results.Program;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
@@ -40,18 +41,36 @@ namespace si2.bll.Services
             return programDto;
         }
 
-
-        public async Task<PagedList<ProgramDto>> GetProgramAsync(CancellationToken ct)
+        public async Task<ProgramDto> GetProgramByIdAsync(Guid id, CancellationToken ct) 
         {
+            ProgramDto programDto = null;
 
+            try
+            {
+                var programEntity = await _uow.Programs.GetAsync(id, ct);
+                if (programEntity != null)
+                {
+                    programDto = _mapper.Map<ProgramDto>(programEntity);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Empty);
+            }
+
+            return programDto;
+        }
+
+        public async Task<PagedList<ProgramDto>> GetProgramAsync(ProgramResourceParameters resourceParameters, CancellationToken ct)
+        {
             PagedList<ProgramDto> result = new PagedList<ProgramDto>();
 
             try
             {
                 var programEntities = _uow.Programs.GetAll();
-
                 var pagedListEntities = await PagedList<Program>.CreateAsync(programEntities,
-                    1, programEntities.Count(), ct);
+                resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
                 result = _mapper.Map<PagedList<ProgramDto>>(pagedListEntities);
                 result.TotalCount = pagedListEntities.TotalCount;
@@ -59,8 +78,7 @@ namespace si2.bll.Services
                 result.CurrentPage = pagedListEntities.CurrentPage;
                 result.PageSize = pagedListEntities.PageSize;
             }
-
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }

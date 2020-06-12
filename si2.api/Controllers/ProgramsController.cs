@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Program;
 using si2.bll.Dtos.Results.Program;
 using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
 using System;
@@ -33,6 +34,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProgramDto))]
         public async Task<ActionResult> CreateProgram([FromBody] CreateProgramDto createProgramDto, CancellationToken ct)
@@ -45,15 +47,77 @@ namespace si2.api.Controllers
         }
 
 
-        [HttpGet(Name = "GetPrograms")]
-        public async Task<ActionResult> GetPrograms(CancellationToken ct)
-        {
-            var programDtos = await _programService.GetProgramAsync(ct);
+        [HttpGet("{id}", Name = "GetProgram")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProgramDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetProgram(Guid id, CancellationToken ct)
+        { 
+            var programDto = await _programService.GetProgramByIdAsync(id, ct);
 
-            if (programDtos == null)
+            if (programDto == null)
                 return NotFound();
 
+            return Ok(programDto);
+        }
+
+        [HttpGet(Name = "GetPrograms")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProgramDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> GetPrograms([FromQuery]ProgramResourceParameters pagedResourceParameters, CancellationToken ct)
+        {
+            var programDtos = await _programService.GetProgramAsync(pagedResourceParameters, ct);
+
+            var previousPageLink = programDtos.HasPrevious ? CreateProgramResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
+            var nextPageLink = programDtos.HasNext ? CreateProgramResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = programDtos.TotalCount,
+                pageSize = programDtos.PageSize,
+                currentPage = programDtos.CurrentPage,
+                totalPages = programDtos.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            if (programDtos.Count < 1)
+            {
+                return NoContent();
+            }
+
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(programDtos);
+        }
+
+        private string CreateProgramResourceUri(ProgramResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
+        {
+            switch (type)
+            {
+                case Enums.ResourceUriType.PreviousPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetPrograms",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber - 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                case Enums.ResourceUriType.NextPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetPrograms",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber + 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                default:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetPrograms",
+                       new
+                       {
+                           pageNumber = pagedResourceParameters.PageNumber,
+                           pageSize = pagedResourceParameters.PageSize
+                       });
+            }
         }
     }
 }

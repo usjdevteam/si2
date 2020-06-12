@@ -17,7 +17,7 @@ namespace si2.bll.Dtos.Results.Program
 
         public string NameEn { get; set; }
 
-        public Guid ProgramlevelId { get; set; }
+        public Guid ProgramLevelId { get; set; } 
 
         public Guid InstitutionId { get; set; }
 

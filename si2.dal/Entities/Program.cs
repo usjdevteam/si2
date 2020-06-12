@@ -29,11 +29,15 @@ namespace si2.dal.Entities
 
 
         [Required]
-        [ForeignKey("Programlevel")]
-        public Guid ProgramlevelId { get; set; }
+        [ForeignKey("ProgramLevel")]
+        public Guid ProgramLevelId { get; set; }
 
+        public ProgramLevel ProgramLevel { get; set; }
+         
         [Required]
         [ForeignKey("Institution")]
         public Guid InstitutionId { get; set; }
+
+        public Institution Institution { get; set; }
     }
 }

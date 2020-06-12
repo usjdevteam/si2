@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200611100604_Program_object_migration3")]
+    partial class Program_object_migration3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -414,13 +416,6 @@ namespace si2.dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("InstitutionId");
-
-                    b.HasIndex("ProgramLevelId");
-
                     b.ToTable("Program");
                 });
 
@@ -538,21 +533,6 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Category", "Category")
                         .WithMany("BookCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Program", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
-                        .WithMany()
-                        .HasForeignKey("ProgramLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
