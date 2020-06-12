@@ -103,19 +103,19 @@ namespace si2.api
                 {
                     Version = "V1",
                     Title = "Université Saint-Joseph de Beyrouth - SI2 Server",
-                    Description = "The university Web API for handling students registrations",
-                    TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "John Smith",
-                        Email = "John.Smit@email.com",
-                        Url = new Uri("https://twitter.com/usjliban?lang=en"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under USJ-LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
+                    //Description = "The university Web API for handling students registrations",
+                    //TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
+                    //Contact = new OpenApiContact
+                    //{
+                    //    Name = "John Smith",
+                    //    Email = "John.Smit@email.com",
+                    //    Url = new Uri("https://twitter.com/usjliban?lang=en"),
+                    //},
+                    //License = new OpenApiLicense
+                    //{
+                    //    Name = "Use under USJ-LICX",
+                    //    Url = new Uri("https://example.com/license"),
+                    //}
                 });
             });
         }
