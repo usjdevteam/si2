@@ -5,16 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200611140225_Added_ParentChildren.cs" />
-    <Compile Remove="Migrations\20200611140225_Added_ParentChildren.Designer.cs" />
-    <Compile Remove="Migrations\20200611145029_Removed_IndexInstitution_AddressContactInfo.cs" />
-    <Compile Remove="Migrations\20200611145029_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
-    <Compile Remove="Migrations\20200611145314_Removed_IndexInstitution_AddressContactInfo.cs" />
-    <Compile Remove="Migrations\20200611145314_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
-    <Compile Remove="Migrations\20200611145846_Removed_IndexInstitution_AddressContactInfo.cs" />
-    <Compile Remove="Migrations\20200611145846_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
-    <Compile Remove="Migrations\20200611150202_Removed_IndexInstitution_AddressContactInfo.cs" />
-    <Compile Remove="Migrations\20200611150202_Removed_IndexInstitution_AddressContactInfo.Designer.cs" />
+    <Compile Remove="Migrations\20200611173307_Added_Address_Entity.cs" />
+    <Compile Remove="Migrations\20200611173307_Added_Address_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200611182633_Added_ContactInfo_Entity.cs" />
+    <Compile Remove="Migrations\20200611182633_Added_ContactInfo_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612064004_Added_ContactInfo_Entity_2.cs" />
+    <Compile Remove="Migrations\20200612064004_Added_ContactInfo_Entity_2.Designer.cs" />
+    <Compile Remove="Migrations\20200612064424_Added_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200612064424_Added_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065111_Added_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200612065111_Added_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065454_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612065454_Added_Institution_Enity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.Designer.cs" />
+    <Compile Remove="Migrations\20200612071755_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612071755_Added_Institution_Enity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

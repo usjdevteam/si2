@@ -6,9 +6,9 @@ using System.Text;
 
 namespace si2.dal.Repositories
 {
-    public class InstitutionRepository : Repository<Institution>, IInstitutionRepository
+    public class ContactInfoRepository : Repository<ContactInfo>, IContactInfoRepository
     {
-        public InstitutionRepository(Si2DbContext _db) : base(_db)
+        public ContactInfoRepository(Si2DbContext _db) : base(_db)
         {
         }
     }

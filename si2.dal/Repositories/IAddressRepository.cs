@@ -5,7 +5,7 @@ using System.Text;
 
 namespace si2.dal.Repositories
 {
-    public interface IInstitutionRepository : IRepository<Institution>
+    public interface IAddressRepository : IRepository<Address>
     {
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using static si2.common.Enums;
 
 namespace si2.dal.Entities
 {
@@ -19,16 +18,18 @@ namespace si2.dal.Entities
         public string NameAr { get; set; }
         [Required]
         public string NameEn { get; set; }
+
         [Required]
         [ForeignKey("Address")]
         public Guid AddressId { get; set; }
+        public virtual Address Address { get; set; }
+
+
         [Required]
         [ForeignKey("ContactInfo")]
         public Guid ContactInfoId { get; set; }
-        public virtual Address Address { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        /* [ForeignKey("Institution")]
-         public Guid? ParentInstitutionId { get; set; }*/
+
         public virtual Institution Parent { get; set; }
         public virtual ICollection<Institution> Children { get; set; }
     }
