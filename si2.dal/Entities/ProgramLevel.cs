@@ -10,5 +10,7 @@ namespace si2.dal.Entities
     public class ProgramLevel : Si2BaseDataEntity<Guid>, IAuditable
     {
         public string Name { get; set; }
+
+        public ICollection<Program> Programs { get;  set; }
     }
 }

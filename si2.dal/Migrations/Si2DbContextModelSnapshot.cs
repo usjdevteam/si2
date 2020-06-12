@@ -545,13 +545,13 @@ namespace si2.dal.Migrations
             modelBuilder.Entity("si2.dal.Entities.Program", b =>
                 {
                     b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
+                        .WithMany("Programs")
                         .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
-                        .WithMany()
+                        .WithMany("Programs")
                         .HasForeignKey("ProgramLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

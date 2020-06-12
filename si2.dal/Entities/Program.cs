@@ -27,7 +27,6 @@ namespace si2.dal.Entities
         [MaxLength(100)]
         public string NameEn { get; set; }
 
-
         [Required]
         [ForeignKey("ProgramLevel")]
         public Guid ProgramLevelId { get; set; }
