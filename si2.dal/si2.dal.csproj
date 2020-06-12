@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200611071153_cohortMygration.cs" />
+    <Compile Remove="Migrations\20200611071153_cohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200611091623_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611091623_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200611101437_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611101437_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200611164705_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611164705_cohortMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />

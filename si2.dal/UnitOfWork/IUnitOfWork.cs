@@ -10,6 +10,8 @@ namespace si2.dal.UnitOfWork
     public interface IUnitOfWork
     {
         IDataflowRepository Dataflows { get; }
+        ICohortRepository Cohorts { get; }
+        IUserCohortRepository UserCohorts { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 
