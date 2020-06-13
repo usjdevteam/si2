@@ -27,15 +27,12 @@ namespace si2.api.Controllers
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<CohortController> _logger;
         private readonly ICohortService _cohortService;
-        private readonly IUserCohortService _userCohortService;
 
-        public CohortController(LinkGenerator linkGenerator, ILogger<CohortController> logger, ICohortService cohortService, IUserCohortService userCohortService)
-        //public CohortController(LinkGenerator linkGenerator, ILogger<CohortController> logger, ICohortService cohortService)
+        public CohortController(LinkGenerator linkGenerator, ILogger<CohortController> logger, ICohortService cohortService)
         {
             _linkGenerator = linkGenerator;
             _logger = logger;
             _cohortService = cohortService;
-            _userCohortService = userCohortService; 
         }
 
         /* APIs
@@ -49,7 +46,7 @@ namespace si2.api.Controllers
          */
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CohortDto))]
         public async Task<ActionResult> CreateStudent([FromBody] CreateCohortDto createCohortDto, CancellationToken ct)
@@ -62,7 +59,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCohort")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CohortDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCohort(Guid id, CancellationToken ct)
@@ -76,7 +73,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name = "GetCohorts")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetCohorts(CancellationToken ct)
         {
             var cohortDtos = await _cohortService.GetCohortsAsync(ct);
@@ -88,44 +85,35 @@ namespace si2.api.Controllers
         }
 
 
-      /*  [HttpPost("{id}")]
+        [HttpPost]
         [Route("{id}/users", Name = "AddUsersToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] JObject users, CancellationToken ct)
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
         {
             if (!await _cohortService.ExistsAsync(id, ct))
                 return NotFound();
 
-            var userArray = users.Children<JProperty>().FirstOrDefault(x => x.Name == "userIds").Value;
-
-
-            foreach (var userIdToAdd in userArray)
-            {
-                var userCohortToReturn = await _userCohortService.AssignUsersToCohortAsync(id, new Guid(userIdToAdd.ToString()), ct);
-                if (userCohortToReturn == null)
-                    return BadRequest();
-            }
+            await _cohortService.AssignUsersToCohortAsync(id, addUsersToCohortDto, ct);
 
             return Ok();
 
 
         }
-        */
-
+        
         [HttpGet("{id}")]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> GetUsersSubscribedToCohort([FromRoute]Guid cohortId, CancellationToken ct)
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> GetUsersSubscribedToCohort([FromRoute]Guid id, CancellationToken ct)
         {
 
-            var UsercohortDtos = await _userCohortService.GetUsersCohortAsync(cohortId,ct);
+            var userDtos = await _cohortService.GetUsersCohortAsync(id,ct);
 
-            if (UsercohortDtos == null)
-                return NotFound();
+           // if (userDtos == null)
+             //   return NotFound();
 
-            return Ok(UsercohortDtos);
+            return Ok(userDtos);
 
 
         }

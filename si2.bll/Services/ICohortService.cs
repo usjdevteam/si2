@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Helpers.PagedList;
@@ -17,7 +18,10 @@ namespace si2.bll.Services
         Task<CohortDto> CreateCohortAsync(CreateCohortDto createCohortDto, CancellationToken ct);
         Task<CohortDto> GetCohortByIdAsync(Guid id, CancellationToken ct);
         Task<PagedList<CohortDto>> GetCohortsAsync(CancellationToken ct);
-        
+
+        Task AssignUsersToCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct);
+
+        Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, CancellationToken ct);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken ct);
 

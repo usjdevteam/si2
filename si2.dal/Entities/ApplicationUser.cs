@@ -8,5 +8,7 @@ namespace si2.dal.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+
+        public ICollection<UserCohort> UserCohorts { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results;
+using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.UserCohort;
@@ -26,7 +27,7 @@ namespace si2.bll.Helpers
             CreateMap<Cohort, CohortDto>();
             CreateMap<Cohort, UpdateCohortDto>();
 
-            CreateMap<UserCohort, UserCohortDto>();
+            CreateMap<ApplicationUser, UserDto>();
 
 
         }

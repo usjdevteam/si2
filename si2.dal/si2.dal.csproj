@@ -13,6 +13,12 @@
     <Compile Remove="Migrations\20200611101437_cohortMigration.Designer.cs" />
     <Compile Remove="Migrations\20200611164705_cohortMigration.cs" />
     <Compile Remove="Migrations\20200611164705_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200612093541_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200612093541_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065131_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065131_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065256_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065256_MyCohortMygration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

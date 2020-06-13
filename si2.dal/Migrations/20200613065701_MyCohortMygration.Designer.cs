@@ -10,7 +10,7 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200612093541_MyCohortMygration")]
+    [Migration("20200613065701_MyCohortMygration")]
     partial class MyCohortMygration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -447,20 +447,15 @@ namespace si2.dal.Migrations
 
             modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("CohortId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "CohortId");
 
                     b.HasIndex("CohortId");
-
-                    b.HasIndex("UserId1");
 
                     b.HasIndex("UserId", "CohortId")
                         .IsUnique();
@@ -600,8 +595,10 @@ namespace si2.dal.Migrations
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                        .WithMany("UserCohorts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

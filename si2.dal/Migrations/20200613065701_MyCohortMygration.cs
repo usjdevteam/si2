@@ -81,9 +81,8 @@ namespace si2.dal.Migrations
                 name: "UserCohort",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    CohortId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false),
+                    CohortId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,11 +94,11 @@ namespace si2.dal.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserCohort_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserCohort_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -128,11 +127,6 @@ namespace si2.dal.Migrations
                 name: "IX_UserCohort_CohortId",
                 table: "UserCohort",
                 column: "CohortId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCohort_UserId1",
-                table: "UserCohort",
-                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCohort_UserId_CohortId",

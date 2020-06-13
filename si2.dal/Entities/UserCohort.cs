@@ -8,10 +8,10 @@ using static si2.common.Enums;
 namespace si2.dal.Entities
 {
     [Table("UserCohort")]
-    public class UserCohort : Si2BaseDataEntity<Guid>, IAuditable
+    public class UserCohort
     {
         [ForeignKey("ApplicationUser")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         [ForeignKey("Cohort")]
