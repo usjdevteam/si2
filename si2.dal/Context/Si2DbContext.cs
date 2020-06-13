@@ -50,13 +50,10 @@ namespace si2.dal.Context
         }
 
 		protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
+    {
+        base.OnModelCreating(builder);
 			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
-
 			builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
-
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.

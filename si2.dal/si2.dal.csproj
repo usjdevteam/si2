@@ -6,6 +6,24 @@
 
   <ItemGroup>
 
+    <Compile Remove="Migrations\20200609052620_Extend_IdentityUserRole.cs" />
+    <Compile Remove="Migrations\20200609052620_Extend_IdentityUserRole.Designer.cs" />
+    <Compile Remove="Migrations\20200609054659_Extend_ApplicationUserRole.cs" />
+    <Compile Remove="Migrations\20200609054659_Extend_ApplicationUserRole.Designer.cs" />
+    <Compile Remove="Migrations\20200609194225_Add_Constraint_UserName.cs" />
+    <Compile Remove="Migrations\20200609194225_Add_Constraint_UserName.Designer.cs" />
+    <Compile Remove="Migrations\20200610142525_Extend_ApplicationUser.cs" />
+    <Compile Remove="Migrations\20200610142525_Extend_ApplicationUser.Designer.cs" />
+    <Compile Remove="Migrations\20200610173558_Remove_Constraint_UserName.cs" />
+    <Compile Remove="Migrations\20200610173558_Remove_Constraint_UserName.Designer.cs" />
+    <Compile Remove="Migrations\20200610204840_Add_Ar_Attributes_ApplicationUser.cs" />
+    <Compile Remove="Migrations\20200610204840_Add_Ar_Attributes_ApplicationUser.Designer.cs" />
+    <Compile Remove="Migrations\20200611163324_Add_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200611163324_Add_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200611163725_Add_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200611163725_Add_Institution_Entity.Designer.cs" />
+
+
     <Compile Remove="Migrations\20200611095242_Program_object_migration1.cs" />
     <Compile Remove="Migrations\20200611095242_Program_object_migration1.Designer.cs" />
     <Compile Remove="Migrations\20200611095906_Program_object_migration2.cs" />
@@ -34,6 +52,7 @@
     <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.cs" />
     <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.Designer.cs" />
 
+
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +64,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.40" />
   </ItemGroup>
 

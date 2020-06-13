@@ -5,14 +5,14 @@ using System.Text;
 
 namespace si2.bll.Dtos.Requests.Account
 {
-    public class RegisterRequestDto
+    public class ResetPasswordRequestDto
     {
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        /*[Required]
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -21,12 +21,8 @@ namespace si2.bll.Dtos.Requests.Account
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }*/
+        public string ConfirmPassword { get; set; }
 
-        public string FirstNameFr;
-        public string LastNameFr;
-        public string FirstNameAr;
-        public string LastNameAr;
-
+        /*public string Token { get; set; }*/
     }
 }
