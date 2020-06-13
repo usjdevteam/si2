@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <Compile Remove="Migrations\20200609052620_Extend_IdentityUserRole.cs" />
     <Compile Remove="Migrations\20200609052620_Extend_IdentityUserRole.Designer.cs" />
     <Compile Remove="Migrations\20200609054659_Extend_ApplicationUserRole.cs" />
@@ -21,6 +22,37 @@
     <Compile Remove="Migrations\20200611163324_Add_Institution_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200611163725_Add_Institution_Entity.cs" />
     <Compile Remove="Migrations\20200611163725_Add_Institution_Entity.Designer.cs" />
+
+
+    <Compile Remove="Migrations\20200611095242_Program_object_migration1.cs" />
+    <Compile Remove="Migrations\20200611095242_Program_object_migration1.Designer.cs" />
+    <Compile Remove="Migrations\20200611095906_Program_object_migration2.cs" />
+    <Compile Remove="Migrations\20200611095906_Program_object_migration2.Designer.cs" />
+    <Compile Remove="Migrations\20200611100604_Program_object_migration3.cs" />
+    <Compile Remove="Migrations\20200611100604_Program_object_migration3.Designer.cs" />
+    <Compile Remove="Migrations\20200612092230_Program_object_migration4.cs" />
+    <Compile Remove="Migrations\20200612092230_Program_object_migration4.Designer.cs" />
+    <Compile Remove="Migrations\20200612100551_Program_object_migration4.cs" />
+    <Compile Remove="Migrations\20200612100551_Program_object_migration4.Designer.cs" />
+    <Compile Remove="Migrations\20200612104824_Program_object_migration5.cs" />
+    <Compile Remove="Migrations\20200612104824_Program_object_migration5.Designer.cs" />
+
+    <Compile Remove="Migrations\20200611173307_Added_Address_Entity.cs" />
+    <Compile Remove="Migrations\20200611173307_Added_Address_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200611182633_Added_ContactInfo_Entity.cs" />
+    <Compile Remove="Migrations\20200611182633_Added_ContactInfo_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612064004_Added_ContactInfo_Entity_2.cs" />
+    <Compile Remove="Migrations\20200612064004_Added_ContactInfo_Entity_2.Designer.cs" />
+    <Compile Remove="Migrations\20200612064424_Added_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200612064424_Added_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065111_Added_Institution_Entity.cs" />
+    <Compile Remove="Migrations\20200612065111_Added_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065454_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612065454_Added_Institution_Enity.Designer.cs" />
+    <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.Designer.cs" />
+
+
   </ItemGroup>
 
   <ItemGroup>

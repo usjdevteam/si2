@@ -10,6 +10,10 @@ namespace si2.dal.UnitOfWork
     public interface IUnitOfWork
     {
         IDataflowRepository Dataflows { get; }
+        IContactInfoRepository ContactInfos { get; }
+        IAddressRepository Addresses { get; }
+
+        IProgramRepository Programs { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 
