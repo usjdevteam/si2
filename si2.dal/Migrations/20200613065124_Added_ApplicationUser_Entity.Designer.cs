@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200611163725_Add_Institution_Entity")]
-    partial class Add_Institution_Entity
+    [Migration("20200613065124_Added_ApplicationUser_Entity")]
+    partial class Added_ApplicationUser_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -368,30 +368,6 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Dataflow");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institution");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>

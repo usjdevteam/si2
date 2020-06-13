@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace si2.bll.Helpers
 {
-    public class StaticHelpers
+    public static class StaticHelpers
     {
-        public string GenerateRandomPassword(PasswordOptions opts = null)
+        public static string GenerateRandomPassword(PasswordOptions opts = null)
         {
             if (opts == null) opts = new PasswordOptions()
             {

@@ -52,10 +52,8 @@ namespace si2.api.Controllers
             user.FirstNameAr = registerRequestDto.FirstNameAr;
             user.LastNameAr = registerRequestDto.LastNameAr;
 
-            //set random password
-            //var password = "Abcd_123";
-            StaticHelpers helper = new StaticHelpers();
-            var password = helper.GenerateRandomPassword();
+
+            var password = StaticHelpers.GenerateRandomPassword();
 
             //var result = await _userManager.CreateAsync(user, model.Password);
             var result = await _userManager.CreateAsync(user, password);
@@ -235,14 +233,7 @@ namespace si2.api.Controllers
 
             var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
 
-            //_logger.Log(LogLevel.Warning, passwordResetLink);
-            //_logger.Log(LogLevel.Warning, token);
-
             return Ok(passwordResetLink);
-
-            //SendMailForgotPassword(user, token);
-
-            //return Ok("Ok");
         }
 
         [HttpPost]
@@ -277,26 +268,6 @@ namespace si2.api.Controllers
             //throw new InvalidOperationException(string.Join("\r\n", result.Errors));
             return BadRequest(result.Errors);
         }
-
-        /*[HttpGet]
-        [Route("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequestDto model)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-                return BadRequest();
-
-            var result = await _userManager.ConfirmEmailAsync(user, model.Token);
-            //return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
-            if (result.Succeeded)
-            {
-                return Ok(nameof(ConfirmEmail));
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }*/
 
         [Route("ConfirmEmail")]
         [HttpPost]

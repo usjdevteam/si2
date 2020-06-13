@@ -368,30 +368,6 @@ namespace si2.dal.Migrations
                     b.ToTable("Dataflow");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institution");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
                 {
                     b.Property<Guid>("Id")
