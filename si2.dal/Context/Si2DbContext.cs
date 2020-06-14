@@ -22,21 +22,15 @@ namespace si2.dal.Context
 
         public DbSet<Dataflow> Dataflows { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-
-		public DbSet<Book> Books { get; set; }
-		public DbSet<Category> Categories { get; set; }
-
-
-		public DbSet<Program> Programs { get; set; }
-
+		
 		public DbSet<Institution> Institutions { get; set; }
 
 		public DbSet<ProgramLevel> ProgramLevels { get; set; }
 
-
-		public DbSet<ContactInfo> ContactInfos { get; set; }
 		public DbSet<Address> Addresses { get; set; }
-	
+		public DbSet<ContactInfo> ContactInfos { get; set; }
+		public DbSet<Program> Programs { get; set; }
+
 
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
@@ -52,7 +46,6 @@ namespace si2.dal.Context
 		protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
 			builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.

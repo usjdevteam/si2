@@ -3,10 +3,73 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class Added_Program_Entity : Migration
+    public partial class v4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "FirstNameAr",
+                table: "AspNetUsers",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "FirstNameFr",
+                table: "AspNetUsers",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "LastNameAr",
+                table: "AspNetUsers",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "LastNameFr",
+                table: "AspNetUsers",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    StreetFr = table.Column<string>(maxLength: 100, nullable: false),
+                    StreetAr = table.Column<string>(maxLength: 100, nullable: true),
+                    CityFr = table.Column<string>(maxLength: 50, nullable: false),
+                    CityAr = table.Column<string>(maxLength: 50, nullable: true),
+                    CountryFr = table.Column<string>(maxLength: 50, nullable: false),
+                    CountryAr = table.Column<string>(maxLength: 50, nullable: true),
+                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactInfo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Phone = table.Column<string>(maxLength: 30, nullable: false),
+                    Fax = table.Column<string>(maxLength: 30, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactInfo", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Institution",
                 columns: table => new
@@ -83,6 +146,12 @@ namespace si2.dal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "ContactInfo");
+
+            migrationBuilder.DropTable(
                 name: "Program");
 
             migrationBuilder.DropTable(
@@ -90,6 +159,22 @@ namespace si2.dal.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProgramLevel");
+
+            migrationBuilder.DropColumn(
+                name: "FirstNameAr",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "FirstNameFr",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "LastNameAr",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "LastNameFr",
+                table: "AspNetUsers");
         }
     }
 }
