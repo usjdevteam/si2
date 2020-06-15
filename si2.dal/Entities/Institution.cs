@@ -1,4 +1,4 @@
-﻿using si2.dal.Interfaces;
+using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +24,6 @@ namespace si2.dal.Entities
         public Guid AddressId { get; set; }
         public virtual Address Address { get; set; }
 
-
         [Required]
         [ForeignKey("ContactInfo")]
         public Guid ContactInfoId { get; set; }
@@ -32,5 +31,8 @@ namespace si2.dal.Entities
 
         public virtual Institution Parent { get; set; }
         public virtual ICollection<Institution> Children { get; set; }
+
+        public ICollection<Program> Programs { get; set; }
     }
 }
+

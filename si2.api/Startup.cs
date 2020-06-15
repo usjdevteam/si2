@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
@@ -44,23 +45,30 @@ namespace si2.api
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<Si2DbContext>();
+                options.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<Si2DbContext>()
+            .AddDefaultTokenProviders(); 
             
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+    
             services.AddTransient<IDataflowRepository, DataflowRepository>();
             services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IInstitutionRepository, InstitutionRepository>();
+            services.AddTransient<IProgramRepository, ProgramRepository>();
+
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IInstitutionService, InstitutionService>();
-
+            services.AddTransient<IProgramService, ProgramService>();
+          
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
             IMapper mapper = mappingConfig.CreateMapper();
@@ -100,26 +108,26 @@ namespace si2.api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "V1",
-                    Title = "Université Saint-Joseph de Beyrouth - SI2 Server",
-                    Description = "The university Web API for handling students registrations",
-                    TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "John Smith",
-                        Email = "John.Smit@email.com",
-                        Url = new Uri("https://twitter.com/usjliban?lang=en"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under USJ-LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
+                    Title = "Université Saint-Joseph de Beyrouth - SI2 Server"
+                    //Description = "The university Web API for handling students registrations",
+                    //TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
+                    //Contact = new OpenApiContact
+                    //{
+                    //    Name = "John Smith",
+                    //    Email = "John.Smit@email.com",
+                    //    Url = new Uri("https://twitter.com/usjliban?lang=en"),
+                    //},
+                    //License = new OpenApiLicense
+                    //{
+                    //    Name = "Use under USJ-LICX",
+                    //    Url = new Uri("https://example.com/license"),
+                    //}
                 });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder )
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -151,6 +159,8 @@ namespace si2.api
             {
                 endpoints.MapControllers();
             });
+
+            //loggerFactory.AddFile("Logs/myapp-{Date}.log");
         }
     }
 }
