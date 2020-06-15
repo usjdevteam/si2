@@ -60,6 +60,12 @@ namespace si2.bll.Services
         {
             var programLevelEntities = _uow.ProgramLevels.GetAll();
 
+
+            if (programLevelEntities.Count() < 1)
+            {
+                return null;
+            }
+
             var pagedListEntities = await PagedList<ProgramLevel>.CreateAsync(programLevelEntities,
                   1, programLevelEntities.Count(), ct);
 

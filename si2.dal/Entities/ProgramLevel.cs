@@ -20,22 +20,25 @@ namespace si2.dal.Entities
          */
 
         [Required]
-        public float credits { get; set; }
+        [Column(TypeName = "decimal(5,2)")]
+        public Decimal Credits { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string nameFr { get; set; }
+        public string NameFr { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string nameAr { get; set; }
+        public string NameAr { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string nameEn { get; set; }
+        public string NameEn { get; set; }
 
         [ForeignKey("Institution")]
-        public Guid universityId { get; set; }
+        public Guid InstitutionId { get; set; }
+
+        public Institution Institution { get; set; }
 
     }
 }

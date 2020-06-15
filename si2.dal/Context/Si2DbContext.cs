@@ -46,9 +46,9 @@ namespace si2.dal.Context
 			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
 
 
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.nameFr).IsUnique();
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.nameEn).IsUnique();
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.nameAr).IsUnique();
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameFr).IsUnique().HasName("IX_ProgramLevel_NameFr"); ;
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameEn).IsUnique().HasName("IX_ProgramLevel_NameEn"); ;
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameAr).IsUnique().HasName("IX_ProgramLevel_NameAr"); ;
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.

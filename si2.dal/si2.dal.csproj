@@ -5,6 +5,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200610135857_MyFirstMigration.cs" />
+    <Compile Remove="Migrations\20200610135857_MyFirstMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200610142653_MyFirstMigration2.cs" />
+    <Compile Remove="Migrations\20200610142653_MyFirstMigration2.Designer.cs" />
+    <Compile Remove="Migrations\20200610150020_MyFirstMigration3.cs" />
+    <Compile Remove="Migrations\20200610150020_MyFirstMigration3.Designer.cs" />
+    <Compile Remove="Migrations\20200610152128_MyFirstMigration4.cs" />
+    <Compile Remove="Migrations\20200610152128_MyFirstMigration4.Designer.cs" />
+    <Compile Remove="Migrations\20200610152408_MyFirstMigration5.cs" />
+    <Compile Remove="Migrations\20200610152408_MyFirstMigration5.Designer.cs" />
+    <Compile Remove="Migrations\20200610153614_MyFirstMigration6.cs" />
+    <Compile Remove="Migrations\20200610153614_MyFirstMigration6.Designer.cs" />
+    <Compile Remove="Migrations\20200610153944_MyFirstMigration7.cs" />
+    <Compile Remove="Migrations\20200610153944_MyFirstMigration7.Designer.cs" />
+    <Compile Remove="Migrations\20200615063122_MyProgramLevelMigration.cs" />
+    <Compile Remove="Migrations\20200615063122_MyProgramLevelMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200615064716_MyProgramLevelMigration.cs" />
+    <Compile Remove="Migrations\20200615064716_MyProgramLevelMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200615070944_MyProgramLevelMigration.cs" />
+    <Compile Remove="Migrations\20200615070944_MyProgramLevelMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />

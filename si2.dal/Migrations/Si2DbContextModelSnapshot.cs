@@ -356,7 +356,7 @@ namespace si2.dal.Migrations
                     b.ToTable("Dataflow");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
+            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -367,37 +367,62 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<float>("credits")
-                        .HasColumnType("real");
-
-                    b.Property<string>("nameAr")
+                    b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("nameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("nameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<Guid>("universityId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("nameAr")
-                        .IsUnique();
+                    b.ToTable("Institution");
+                });
 
-                    b.HasIndex("nameEn")
-                        .IsUnique();
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("nameFr")
-                        .IsUnique();
+                    b.Property<decimal>("Credits")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<Guid>("InstitutionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("NameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("NameAr")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameAr");
+
+                    b.HasIndex("NameEn")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameEn");
+
+                    b.HasIndex("NameFr")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameFr");
 
                     b.ToTable("ProgramLevel");
                 });
@@ -497,6 +522,15 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Category", "Category")
                         .WithMany("BookCategories")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

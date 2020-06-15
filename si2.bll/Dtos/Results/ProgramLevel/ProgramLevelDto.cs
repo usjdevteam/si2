@@ -19,7 +19,7 @@ namespace si2.bll.Dtos.Results.ProgramLevel
 
         public string NameEn { get; set; }
 
-        public Guid UniversityId { get; set; }
+        public Guid InstitutionId { get; set; }
 
         public byte[] RowVersion { get; set; }
     }
