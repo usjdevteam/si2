@@ -117,7 +117,7 @@ namespace si2.bll.Services
             
             var cohortsEntity = _userManager.Users
                 .Where(c => c.Id == userId)
-                .Include(u => u.UserCohorts)
+                .Include(u => u.UserCohorts) 
                 .ThenInclude(u => u.CohortId).ToList();
 
             /*var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
