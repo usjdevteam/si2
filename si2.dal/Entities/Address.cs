@@ -38,5 +38,7 @@ namespace si2.dal.Entities
         [Required]
         [Column(TypeName = "decimal(8,6)")]
         public decimal Latitude { get; set; }
+
+        public ICollection<Institution> Institutions { get; set; }
     }
 }

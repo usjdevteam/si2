@@ -31,7 +31,6 @@ namespace si2.dal.Context
 		public DbSet<ContactInfo> ContactInfos { get; set; }
 		public DbSet<Program> Programs { get; set; }
 
-
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
@@ -47,6 +46,7 @@ namespace si2.dal.Context
     {
         base.OnModelCreating(builder);
 			builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
+			builder.Entity<Institution>().HasIndex(i => i.Code).IsUnique().HasName("IX_Institution_Code");
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.
