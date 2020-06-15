@@ -9,6 +9,14 @@
     <Compile Remove="Migrations\20200609054659_Extend_ApplicationUserRole.Designer.cs" />
     <Compile Remove="Migrations\20200611163324_Add_Institution_Entity.cs" />
     <Compile Remove="Migrations\20200611163324_Add_Institution_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.Designer.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,6 +13,8 @@ namespace si2.dal.Entities
         public string LastNameFr { get; set; }
         public string FirstNameAr { get; set; }
         public string LastNameAr { get; set; }
+
+        public ICollection<UserCohort> UserCohorts { get; set; }
     }
 }
 
