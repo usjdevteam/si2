@@ -1,16 +1,19 @@
 ﻿using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static si2.common.Enums;
+
 
 namespace si2.dal.Entities
 {
     [Table("ProgramLevel")]
     public class ProgramLevel : Si2BaseDataEntity<Guid>, IAuditable
     {
+
         /*
          * credits : float - mandatory
          * nameFr : string - mandatory - 30
@@ -39,6 +42,7 @@ namespace si2.dal.Entities
         public Guid InstitutionId { get; set; }
 
         public Institution Institution { get; set; }
+
 
     }
 }
