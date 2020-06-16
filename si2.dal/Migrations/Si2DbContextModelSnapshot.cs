@@ -547,23 +547,10 @@ namespace si2.dal.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
-
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institution");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
 
                     b.HasKey("Id");
 
@@ -581,41 +568,21 @@ namespace si2.dal.Migrations
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Program", b =>
-
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-
-                    b.Property<decimal>("Credits")
-                        .HasColumnType("decimal(5,2)");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(6)")
                         .HasMaxLength(6);
 
-
                     b.Property<Guid>("InstitutionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
-
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
@@ -632,30 +599,12 @@ namespace si2.dal.Migrations
                     b.Property<Guid>("ProgramLevelId")
                         .HasColumnType("uniqueidentifier");
 
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
-
-
-                    b.HasIndex("InstitutionId");
-
-                    b.HasIndex("NameAr")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameAr");
-
-                    b.HasIndex("NameEn")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameEn");
-
-                    b.HasIndex("NameFr")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameFr");
-
-                    b.ToTable("ProgramLevel");
 
                     b.HasIndex("Code")
                         .IsUnique();
@@ -673,8 +622,26 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("Credits")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<Guid>("InstitutionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("NameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -682,6 +649,20 @@ namespace si2.dal.Migrations
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("NameAr")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameAr");
+
+                    b.HasIndex("NameEn")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameEn");
+
+                    b.HasIndex("NameFr")
+                        .IsUnique()
+                        .HasName("IX_ProgramLevel_NameFr");
 
                     b.ToTable("ProgramLevel");
                 });
@@ -740,7 +721,6 @@ namespace si2.dal.Migrations
                         .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("UserCourse");
-
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
@@ -888,8 +868,17 @@ namespace si2.dal.Migrations
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
-                        .WithMany("Programs")
+                        .WithMany()
                         .HasForeignKey("ProgramLevelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -918,15 +907,6 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
