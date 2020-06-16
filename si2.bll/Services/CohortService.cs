@@ -6,13 +6,17 @@ using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
+using si2.bll.Dtos.Results.Course;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using Si2.common.Exceptions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using static si2.common.Enums;
@@ -63,16 +67,20 @@ namespace si2.bll.Services
         {
             var cohortEntities = _uow.Cohorts.GetAll();
 
-            var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities,
-                  1, cohortEntities.Count(), ct);
+            if(cohortEntities.Count() > 1 )
+            {
+                var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities,1, cohortEntities.Count(), ct);
 
-            var result = _mapper.Map<PagedList<CohortDto>>(pagedListEntities);
-            result.TotalCount = pagedListEntities.TotalCount;
-            result.TotalPages = pagedListEntities.TotalPages;
-            result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;
+                var result = _mapper.Map<PagedList<CohortDto>>(pagedListEntities);
+                result.TotalCount = pagedListEntities.TotalCount;
+                result.TotalPages = pagedListEntities.TotalPages;
+                result.CurrentPage = pagedListEntities.CurrentPage;
+                result.PageSize = pagedListEntities.PageSize;
 
-            return result;
+                return result;
+            }
+            return null;
+
         }
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
         {
@@ -84,31 +92,34 @@ namespace si2.bll.Services
 
         public async Task AssignUsersToCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
         {
+            var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == id).ToList();
 
-            var users = await _userManager.Users.Where(c => addUsersToCohortDto.UsersIds.Any(u => u == c.Id)).ToListAsync(ct);
-
-            var cohortEntity = await _uow.Cohorts.GetAsync(id, ct);
-
-            foreach (var userid in addUsersToCohortDto.UsersIds)
+            
+            var usersCohortToAdd = addUsersToCohortDto.UsersIds.Where(u => !usersCohort.Any(uc => uc.UserId == u));
+            
+            foreach (var userId in usersCohortToAdd)
             {
-                //_uow.UserCohorts.Add(new UserCohort() { CohortId = id, UserId = new Guid(userid) });
-                _uow.UserCohorts.Add(new UserCohort() { CohortId = id, UserId = userid });
+                if(!usersCohort.Any(uc => uc.UserId == userId && uc.CohortId == id))
+                {
+                    _uow.UserCohorts.Add(new UserCohort() { CohortId = id, UserId = userId });
+                }
+                
             }
-
+            
             await _uow.SaveChangesAsync(ct);
         }
 
 
-        public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, CancellationToken ct)
+        public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
-            var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.CohortId == cohortId, ct); ;
+            var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.CohortId == cohortId, ct);
             
             var usersIds = cohortUsersIds.Select(c => c.UserId);
 
             var usersEntity = _userManager.Users.Where(user => usersIds.Contains(user.Id));
 
 
-            var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(usersEntity, 1, usersEntity.Count(), ct);
+            var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(usersEntity, resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
             var result = _mapper.Map<PagedList<UserDto>>(pagedListEntities);
             result.TotalCount = pagedListEntities.TotalCount;
@@ -129,5 +140,70 @@ namespace si2.bll.Services
             
         }
 
+        public async Task UpdateUsersCohort(Guid cohortId, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
+        {
+
+            // Get Item from database
+            var usersCohort  = _uow.UserCohorts.FindBy(c => c.CohortId == cohortId).ToList();
+
+            var usersCohortToDelete = usersCohort.Where(uc => !addUsersToCohortDto.UsersIds.Contains(uc.UserId)).ToList();
+
+            var usersCohortToAdd = addUsersToCohortDto.UsersIds.Where(u=> !usersCohort.Any(uc => uc.UserId == u));
+            
+
+            foreach (var user in usersCohortToDelete)
+            {
+                var userCohortEntity = await _uow.UserCohorts.FirstAsync(uc => uc.CohortId == cohortId && uc.UserId == user.UserId, ct);
+                _uow.UserCohorts.Delete(userCohortEntity);
+            }
+
+            foreach (var userid in usersCohortToAdd)
+            {
+                _uow.UserCohorts.Add(new UserCohort() { CohortId = cohortId, UserId = userid });
+            }
+
+            await _uow.SaveChangesAsync(ct);
+            
+        }
+
+
+
+
+        public async Task AddCoursesToCohortAsync(Guid id, AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct)
+        {
+            foreach (var courseId in addCoursesToCohortDto.CourseIds)
+            {
+
+                _uow.CourseCohorts.Add(new CourseCohort() { CohortId = id, CourseId = new Guid(courseId) });
+            }
+
+            await _uow.SaveChangesAsync(ct);
+
+        }
+
+        public async Task<PagedList<CourseDto>> GetCoursesCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
+        {
+            var courseCohortIds = await _uow.CourseCohorts.FindByAsync(c => c.CohortId == cohortId, ct);
+
+            var usersIds = courseCohortIds.Select(c => c.CourseId);
+
+            //var courseEntity = _uow.Courses.
+
+            return null;
+            /*
+            var courseEntity = _userManager.Users.Where(user => usersIds.Contains(user.Id));
+
+
+            var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(courseEntity, resourceParameters.PageNumber, resourceParameters.PageSize, ct);
+
+            var result = _mapper.Map<PagedList<UserDto>>(pagedListEntities);
+            result.TotalCount = pagedListEntities.TotalCount;
+            result.TotalPages = pagedListEntities.TotalPages;
+            result.CurrentPage = pagedListEntities.CurrentPage;
+            result.PageSize = pagedListEntities.PageSize;
+
+            return result; */
+
+        }
     }
 }

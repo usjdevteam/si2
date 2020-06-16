@@ -26,6 +26,9 @@ namespace si2.dal.UnitOfWork
         public ICohortRepository Cohorts => _serviceProvider.GetService<ICohortRepository>();
         public IUserCohortRepository UserCohorts => _serviceProvider.GetService<IUserCohortRepository>();
 
+        public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
+        public ICourseRepository Courses => _serviceProvider.GetService<ICourseRepository>();
+
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {
             return await _db.SaveChangesAsync(ct);

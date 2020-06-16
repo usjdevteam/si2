@@ -387,7 +387,8 @@ namespace si2.dal.Migrations
                     b.HasIndex("CohortId");
 
                     b.HasIndex("CourseId", "CohortId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("IX_CourseCohort_CourseId_CohortId");
 
                     b.ToTable("CourseCohort");
                 });
@@ -456,7 +457,8 @@ namespace si2.dal.Migrations
                     b.HasIndex("CohortId");
 
                     b.HasIndex("UserId", "CohortId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("IX_UserCohort_UserId_CohortId");
 
                     b.ToTable("UserCohort");
                 });

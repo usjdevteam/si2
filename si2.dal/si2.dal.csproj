@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20200613065131_MyCohortMygration.Designer.cs" />
     <Compile Remove="Migrations\20200613065256_MyCohortMygration.cs" />
     <Compile Remove="Migrations\20200613065256_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065701_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065701_MyCohortMygration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

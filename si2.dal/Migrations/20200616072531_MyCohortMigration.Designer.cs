@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200613065701_MyCohortMygration")]
-    partial class MyCohortMygration
+    [Migration("20200616072531_MyCohortMigration")]
+    partial class MyCohortMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -389,7 +389,8 @@ namespace si2.dal.Migrations
                     b.HasIndex("CohortId");
 
                     b.HasIndex("CourseId", "CohortId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("IX_CourseCohort_CourseId_CohortId");
 
                     b.ToTable("CourseCohort");
                 });
@@ -458,7 +459,8 @@ namespace si2.dal.Migrations
                     b.HasIndex("CohortId");
 
                     b.HasIndex("UserId", "CohortId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("IX_UserCohort_UserId_CohortId");
 
                     b.ToTable("UserCohort");
                 });

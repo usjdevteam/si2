@@ -4,6 +4,7 @@ using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Results;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
+using si2.bll.Dtos.Results.Course;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.UserCohort;
 using si2.bll.Helpers.PagedList;
@@ -28,6 +29,7 @@ namespace si2.bll.Helpers
             CreateMap<Cohort, UpdateCohortDto>();
 
             CreateMap<ApplicationUser, UserDto>();
+            CreateMap<Course, CourseDto>();
 
 
         }

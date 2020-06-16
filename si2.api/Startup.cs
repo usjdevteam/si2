@@ -53,6 +53,8 @@ namespace si2.api
             services.AddTransient<IDataflowRepository, DataflowRepository>();
             services.AddTransient<ICohortRepository, CohortRepository>();
             services.AddTransient<IUserCohortRepository, UserCohortRepository>();
+            services.AddTransient<ICourseCohortRepository, CourseCohortRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();

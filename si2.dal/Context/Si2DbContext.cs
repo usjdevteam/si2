@@ -55,8 +55,8 @@ namespace si2.dal.Context
 				builder.Entity<CourseCohort>().HasKey(cc => new { cc.CourseId, cc.CohortId });
 
 			builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
-			builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
-			builder.Entity<CourseCohort>().HasIndex(cc => new { cc.CourseId, cc.CohortId }).IsUnique();
+			builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique().HasName("IX_UserCohort_UserId_CohortId"); ;
+			builder.Entity<CourseCohort>().HasIndex(cc => new { cc.CourseId, cc.CohortId }).IsUnique().HasName("IX_CourseCohort_CourseId_CohortId"); ;
 
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.

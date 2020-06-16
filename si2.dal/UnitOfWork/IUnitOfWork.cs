@@ -12,6 +12,10 @@ namespace si2.dal.UnitOfWork
         IDataflowRepository Dataflows { get; }
         ICohortRepository Cohorts { get; }
         IUserCohortRepository UserCohorts { get; }
+        ICourseCohortRepository CourseCohorts { get; }
+        ICourseRepository Courses { get; }
+
+
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 

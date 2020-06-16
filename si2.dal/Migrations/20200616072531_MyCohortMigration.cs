@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class MyCohortMygration : Migration
+    public partial class MyCohortMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
