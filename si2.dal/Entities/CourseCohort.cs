@@ -9,14 +9,15 @@ using static si2.common.Enums;
 namespace si2.dal.Entities
 {
     [Table("CourseCohort")]
-    public class CourseCohort
+    public class CourseCohort : Si2BaseDataEntity<Guid>, IAuditable
     {
         [ForeignKey("Course")]
         public Guid CourseId { get; set; }
-        public Course Course { get; set; }
+        public virtual Course Course { get; set; }
 
         [ForeignKey("Cohort")]
         public Guid CohortId { get; set; }
-        public Cohort Cohort { get; set; }
+        public virtual Cohort Cohort { get; set; }
+
     }
 }

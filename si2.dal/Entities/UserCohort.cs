@@ -8,11 +8,11 @@ using static si2.common.Enums;
 namespace si2.dal.Entities
 {
     [Table("UserCohort")]
-    public class UserCohort
-    {
-        [ForeignKey("ApplicationUser")]
+
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
+
 
         [ForeignKey("Cohort")]
         public Guid CohortId { get; set; }

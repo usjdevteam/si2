@@ -23,17 +23,23 @@ namespace si2.dal.UnitOfWork
         }
 
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
+
+        public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
+        public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();
+        public IInstitutionRepository Institutions => _serviceProvider.GetService<IInstitutionRepository>();
+        public IProgramRepository Programs => _serviceProvider.GetService<IProgramRepository>();
         public ICohortRepository Cohorts => _serviceProvider.GetService<ICohortRepository>();
         public IUserCohortRepository UserCohorts => _serviceProvider.GetService<IUserCohortRepository>();
-
-        public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
         public ICourseRepository Courses => _serviceProvider.GetService<ICourseRepository>();
+        public IUserCourseRepository UserCourses => _serviceProvider.GetService<IUserCourseRepository>();
+        public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
+
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {
             return await _db.SaveChangesAsync(ct);
         }
-
+         
         public int SaveChanges()
         {
             return _db.SaveChanges();
