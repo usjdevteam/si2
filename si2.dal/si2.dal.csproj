@@ -93,6 +93,14 @@
     <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.Designer.cs" />
     <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.cs" />
     <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.Designer.cs" />
+    <Compile Remove="Migrations\20200615073604_v4.cs" />
+    <Compile Remove="Migrations\20200615073604_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200616072520_added_document_entity.cs" />
+    <Compile Remove="Migrations\20200616072520_added_document_entity.Designer.cs" />
+    <Compile Remove="Migrations\20200616074908_added_usercohort_entity.cs" />
+    <Compile Remove="Migrations\20200616074908_added_usercohort_entity.Designer.cs" />
+    <Compile Remove="Migrations\20200616075021_v4.cs" />
+    <Compile Remove="Migrations\20200616075021_v4.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

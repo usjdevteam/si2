@@ -14,7 +14,6 @@ namespace si2.dal.UnitOfWork
         IAddressRepository Addresses { get; }
         IInstitutionRepository Institutions { get; }
         IProgramRepository Programs { get; }
-        IInstitutionRepository Institutions { get; }
         ICohortRepository Cohorts { get; }
         IUserCohortRepository UserCohorts { get; }
 

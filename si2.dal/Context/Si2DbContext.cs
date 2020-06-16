@@ -28,7 +28,6 @@ namespace si2.dal.Context
         public DbSet<UserCohort> UserCohorts { get; set; }
 
         public DbSet<ProgramLevel> ProgramLevels { get; set; }
-
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Program> Programs { get; set; }

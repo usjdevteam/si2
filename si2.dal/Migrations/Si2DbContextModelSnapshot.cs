@@ -351,6 +351,33 @@ namespace si2.dal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("si2.dal.Entities.Cohort", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProgramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Promotion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Promotion")
+                        .IsUnique();
+
+                    b.ToTable("Cohort");
+                });
+
             modelBuilder.Entity("si2.dal.Entities.ContactInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -379,33 +406,6 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ContactInfo");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Cohort", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProgramId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Promotion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Promotion")
-                        .IsUnique();
-
-                    b.ToTable("Cohort");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Dataflow", b =>
@@ -689,19 +689,6 @@ namespace si2.dal.Migrations
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Cohort", "Cohort")
-                        .WithMany("UserCohorts")
-                        .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany("UserCohorts")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.Program", b =>
                 {
                     b.HasOne("si2.dal.Entities.Institution", "Institution")
@@ -715,6 +702,19 @@ namespace si2.dal.Migrations
                         .HasForeignKey("ProgramLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Cohort", "Cohort")
+                        .WithMany("UserCohorts")
+                        .HasForeignKey("CohortId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("si2.dal.Entities.ApplicationUser", "User")
+                        .WithMany("UserCohorts")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
