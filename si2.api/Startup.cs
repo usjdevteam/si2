@@ -56,6 +56,7 @@ namespace si2.api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+            services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
 
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
@@ -70,6 +71,9 @@ namespace si2.api
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
+
+            services.AddTransient<IProgramLevelService, ProgramLevelService>();
+
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IInstitutionService, InstitutionService>();

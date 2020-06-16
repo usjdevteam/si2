@@ -36,7 +36,8 @@ namespace si2.dal.Context
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Program> Programs { get; set; }
 
-        public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
+
+		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
 
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
@@ -60,6 +61,14 @@ namespace si2.dal.Context
 
             base.OnModelCreating(builder);
 
+
+
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameFr).IsUnique().HasName("IX_ProgramLevel_NameFr"); ;
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameEn).IsUnique().HasName("IX_ProgramLevel_NameEn"); ;
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameAr).IsUnique().HasName("IX_ProgramLevel_NameAr"); ;
+
+
+
         builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
         builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
         builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
@@ -73,6 +82,7 @@ namespace si2.dal.Context
             // Add your customizations after calling base.OnModelCreating(builder);
             // seed the database with dummy data
         }
+
 
 		public override int SaveChanges()
 		{
