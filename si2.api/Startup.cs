@@ -56,11 +56,12 @@ namespace si2.api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
             services.AddTransient<IDataflowRepository, DataflowRepository>();
-            services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
-            services.AddTransient<IInstitutionRepository, InstitutionRepository>();
+            services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IProgramRepository, ProgramRepository>();
-
+            services.AddTransient<IInstitutionRepository, InstitutionRepository>();
+            services.AddTransient<ICohortRepository, CohortRepository>();
+            services.AddTransient<IUserCohortRepository, UserCohortRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
@@ -68,7 +69,9 @@ namespace si2.api
             services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IInstitutionService, InstitutionService>();
             services.AddTransient<IProgramService, ProgramService>();
-          
+            services.AddTransient<ICohortService, CohortService>();
+            services.AddTransient<IUserCohortService, UserCohortService>();
+
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
             IMapper mapper = mappingConfig.CreateMapper();

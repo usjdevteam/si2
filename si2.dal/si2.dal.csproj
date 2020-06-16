@@ -85,6 +85,14 @@
     <Compile Remove="Migrations\20200615073334_v4.Designer.cs" />
 
 
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.Designer.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

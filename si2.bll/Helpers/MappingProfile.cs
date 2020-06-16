@@ -9,6 +9,8 @@ using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Requests.Institution;
 using si2.bll.Dtos.Results.Institution;
 using si2.bll.Dtos.Results.Program;
+using si2.bll.Dtos.Results.Institution;
+using si2.bll.Dtos.Results.UserCohort;
 using si2.bll.Helpers.PagedList;
 
 using si2.dal.Entities;
@@ -39,6 +41,8 @@ namespace si2.bll.Helpers
             CreateMap<UpdateInstitutionDto, Institution>();
             CreateMap<Institution, InstitutionDto>();
             CreateMap<Institution, UpdateInstitutionDto>();
+            
+            CreateMap<UserCohort, UserCohortDto>();
         }
     }
 }

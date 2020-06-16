@@ -27,6 +27,9 @@ namespace si2.dal.UnitOfWork
         public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();
         public IInstitutionRepository Institutions => _serviceProvider.GetService<IInstitutionRepository>();
         public IProgramRepository Programs => _serviceProvider.GetService<IProgramRepository>();
+        public IInstitutionRepository Institutions => _serviceProvider.GetService<IInstitutionRepository>();
+        public ICohortRepository Cohorts => _serviceProvider.GetService<ICohortRepository>();
+        public IUserCohortRepository UserCohorts => _serviceProvider.GetService<IUserCohortRepository>();
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {

@@ -25,6 +25,8 @@ namespace si2.dal.Entities
         [Required]
         [MaxLength(50)]
         public string LastNameAr { get; set; }
+
+        public ICollection<UserCohort> UserCohorts { get; set; }
     }
 }
 
