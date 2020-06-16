@@ -26,6 +26,9 @@ namespace si2.dal.Context
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Cohort> Cohorts { get; set; }
         public DbSet<UserCohort> UserCohorts { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<CourseCohort> CourseCohorts { get; set; }
 
         public DbSet<ProgramLevel> ProgramLevels { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -51,12 +54,15 @@ namespace si2.dal.Context
         builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
         builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
         builder.Entity<Institution>().HasIndex(i => i.Code).IsUnique().HasName("IX_Institution_Code");
+        builder.Entity<Course>().HasIndex(c => c.Code).IsUnique().HasName("IX_Course_Code");
+        builder.Entity<UserCourse>().HasIndex(uc => new { uc.UserId, uc.CourseId }).IsUnique();
+        builder.Entity<CourseCohort>().HasIndex(uc => new { uc.CourseId, uc.CohortId }).IsUnique();
 
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
-        // seed the database with dummy data
-		}
+            // Customize the ASP.NET Identity model and override the defaults if needed.
+            // For example, you can rename the ASP.NET Identity table names and more.
+            // Add your customizations after calling base.OnModelCreating(builder);
+            // seed the database with dummy data
+        }
 
 		public override int SaveChanges()
 		{

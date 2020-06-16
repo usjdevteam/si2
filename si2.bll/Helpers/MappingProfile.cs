@@ -14,6 +14,10 @@ using si2.bll.Dtos.Results.UserCohort;
 using si2.bll.Helpers.PagedList;
 
 using si2.dal.Entities;
+using si2.bll.Dtos.Requests.Course;
+using si2.bll.Dtos.Results.Course;
+using si2.bll.Dtos.Results.CourseCohortDto;
+using si2.bll.Dtos.Results.UserCourse;
 
 namespace si2.bll.Helpers
 {
@@ -43,6 +47,14 @@ namespace si2.bll.Helpers
             CreateMap<Institution, UpdateInstitutionDto>();
             
             CreateMap<UserCohort, UserCohortDto>();
+
+            CreateMap<CreateCourseDto, Course>();
+            CreateMap<UpdateCourseDto, Course>();
+            CreateMap<Course, CourseDto>();
+            CreateMap<Course, UpdateCourseDto>();
+
+            CreateMap<CourseCohort, CourseCohortDto>();
+            CreateMap<UserCourse, UserCourseDto>();
         }
     }
 }

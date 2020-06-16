@@ -6,12 +6,11 @@ using System.Linq;
 using System.Text;
 using static si2.common.Enums;
 
-namespace si2.bll.Dtos.Results.UserCohort
+namespace si2.bll.Dtos.Results.UserCourse
 {
-    public class UserCohortDto
+    public class UserCourseDto
     {
         public ICollection<ApplicationUser> Users { get; set; }
-
-        public ICollection<si2.dal.Entities.Cohort> Cohorts { get; set; }
+        public ICollection<si2.dal.Entities.Course> Courses { get; set; }
     }
 }

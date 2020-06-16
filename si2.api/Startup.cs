@@ -63,6 +63,10 @@ namespace si2.api
             services.AddTransient<ICohortRepository, CohortRepository>();
             services.AddTransient<IUserCohortRepository, UserCohortRepository>();
 
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<IUserCourseRepository, UserCourseRepository>();
+            services.AddTransient<ICourseCohortRepository, CourseCohortRepository>();
+
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
             services.AddTransient<IAddressService, AddressService>();
@@ -71,6 +75,10 @@ namespace si2.api
             services.AddTransient<IProgramService, ProgramService>();
             services.AddTransient<ICohortService, CohortService>();
             services.AddTransient<IUserCohortService, UserCohortService>();
+
+            services.AddTransient<ICourseService, CourseService>();
+            services.AddTransient<IUserCourseService, UserCourseService>();
+            services.AddTransient<ICourseCohortService, CourseCohortService>();
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
