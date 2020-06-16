@@ -16,6 +16,9 @@ namespace si2.dal.UnitOfWork
         IProgramRepository Programs { get; }
         ICohortRepository Cohorts { get; }
         IUserCohortRepository UserCohorts { get; }
+        ICourseRepository Courses { get; }
+        IUserCourseRepository UserCourses { get; }
+        ICourseCohortRepository CourseCohorts { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 
