@@ -273,23 +273,6 @@ namespace si2.api.Controllers
 
         }
 
-        /*[Route("api/users/{userId}/cohorts")]
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(BookDto))]
-        public async Task<ActionResult> AddCohortsToStudent(Guid userId, [FromBody] JArray cohorts, CancellationToken ct)
-        {
-            foreach (JObject cohortToAdd in cohorts)
-            {
-                var userToReturn = await _userCohortService.AssignUsersToCohortAsync(userId, new Guid(cohortToAdd.GetValue("cohortId").ToString()), ct);
-                if (userToReturn == null)
-                    return BadRequest();
-            }
-
-            return Ok();
-        }*/
-
         [HttpPost]
         [Route("users/{userId}/cohorts")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -324,24 +307,5 @@ namespace si2.api.Controllers
             return Ok(cohortDtos);
 
         }
-
-        /*[HttpPut]
-        [Route("users/{userId}/cohorts", Name = "UpdateCohortsUser")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateCohortsUser([FromRoute]String userId, [FromBody] AddCohortsToUserDto addCohortsToUserDto, CancellationToken ct)
-        {
-            if (!await _userCohortService.ExistsAsync(userId, ct))
-                return NotFound();
-
-            //delete cohorts from the user
-            await _userCohortService.DeleteCohortsUser(userId, ct);
-            //-----------------------------
-
-            await _userCohortService.AssignCohortsToUserAsync(userId, addCohortsToUserDto, ct);
-
-            return Ok();
-
-        }*/
     }
 }

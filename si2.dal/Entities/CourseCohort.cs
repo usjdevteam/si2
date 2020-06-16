@@ -11,13 +11,13 @@ namespace si2.dal.Entities
     [Table("CourseCohort")]
     public class CourseCohort : Si2BaseDataEntity<Guid>, IAuditable
     {
-        [ForeignKey("Course")]
-        public Guid CourseId { get; set; }
+        [ForeignKey("CourseId")]
         public virtual Course Course { get; set; }
+        public Guid CourseId { get; set; }
+       
 
-        [ForeignKey("Cohort")]
+        [ForeignKey("CohortId")]
+        public Cohort Cohort { get; set; }
         public Guid CohortId { get; set; }
-        public virtual Cohort Cohort { get; set; }
-
     }
 }

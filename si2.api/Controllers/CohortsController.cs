@@ -1,23 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Results.Cohort;
-using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-
-using si2.bll.ResourceParameters;
 
 
 namespace si2.api.Controllers
@@ -26,15 +19,15 @@ namespace si2.api.Controllers
     [Route("api/cohorts")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
-    public class CohortController : ControllerBase
+    public class CohortsController : ControllerBase
 
     {
         private readonly LinkGenerator _linkGenerator;
-        private readonly ILogger<CohortController> _logger;
+        private readonly ILogger<CohortsController> _logger;
         private readonly ICohortService _cohortService;
 
 
-        public CohortController(LinkGenerator linkGenerator, ILogger<CohortController> logger, ICohortService cohortService)
+        public CohortsController(LinkGenerator linkGenerator, ILogger<CohortsController> logger, ICohortService cohortService)
 
         {
             _linkGenerator = linkGenerator;
@@ -119,7 +112,7 @@ namespace si2.api.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[Authorize(AuthenticationSchemes = "Bearer")]
@@ -182,9 +175,6 @@ namespace si2.api.Controllers
 
 
         }
-
-
-
 
         private string CreateUserResourceUri(ApplicationUserResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {

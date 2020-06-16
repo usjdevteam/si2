@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Entities;
 using si2.dal.Interfaces;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
@@ -30,7 +31,6 @@ namespace si2.dal.Context
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
         public DbSet<CourseCohort> CourseCohorts { get; set; }
-
         public DbSet<ProgramLevel> ProgramLevels { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
@@ -51,7 +51,14 @@ namespace si2.dal.Context
 		protected override void OnModelCreating(ModelBuilder builder)
 
     {
-        base.OnModelCreating(builder);
+            var cascadeFKs = builder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
+            base.OnModelCreating(builder);
 
         builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
         builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();

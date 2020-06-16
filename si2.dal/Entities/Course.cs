@@ -31,12 +31,11 @@ namespace si2.dal.Entities
         [Required]
         public float Credits { get; set; }
 
-        [Required]
-        [ForeignKey("Institution")]
+        [ForeignKey("InstitutionId")]
+        public Institution Institution { get; set; }
         public Guid InstitutionId { get; set; }
 
-        public virtual Institution Institution { get; set; }
-
+     
         public ICollection<CourseCohort> CourseCohorts { get; set; }
 
         public ICollection<UserCourse> UserCourses { get; set; }
