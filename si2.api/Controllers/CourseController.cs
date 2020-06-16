@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace si2.api.Controllers
 {
     [ApiController]
-    [Route("api/Courses")]
+    [Route("api/courses")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
     public class CoursesController : ControllerBase
