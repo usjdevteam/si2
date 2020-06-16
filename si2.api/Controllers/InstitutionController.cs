@@ -39,7 +39,7 @@ namespace si2.api.Controllers
         public async Task<ActionResult> CreateInstitution([FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
         {
             var institutionToReturn = await _institutionService.CreateInstitutionAsync(createInstitutionDto, ct);
-            if(institutionToReturn == null)
+            if (institutionToReturn == null)
                 return BadRequest();
 
             return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
@@ -110,7 +110,7 @@ namespace si2.api.Controllers
             return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
-        [HttpGet("{id}/institutions", Name = "GetChildrenInstitution")]
+        /*[HttpGet("{id}/institutions", Name = "GetChildrenInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -122,14 +122,14 @@ namespace si2.api.Controllers
                 return NotFound();
 
             return Ok(institutionDto);
-        }
+        }*/
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateInstitution([FromRoute]Guid id, [FromBody] UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
         {
-            if (! await _institutionService.ExistsAsync(id, ct))
+            if (!await _institutionService.ExistsAsync(id, ct))
                 return NotFound();
 
             var institutionToReturn = await _institutionService.UpdateInstitutionAsync(id, updateInstitutionDto, ct);
@@ -139,29 +139,29 @@ namespace si2.api.Controllers
             return Ok(institutionToReturn);
         }
 
-/*
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> UpdateInstitution([FromRoute]Guid id, [FromBody] JsonPatchDocument<UpdateInstitutionDto> patchDoc, CancellationToken ct)
-        {
-            if (! await _institutionService.ExistsAsync(id, ct))
-                return NotFound();
+        /*
+                [HttpPatch("{id}")]
+                public async Task<ActionResult> UpdateInstitution([FromRoute]Guid id, [FromBody] JsonPatchDocument<UpdateInstitutionDto> patchDoc, CancellationToken ct)
+                {
+                    if (! await _institutionService.ExistsAsync(id, ct))
+                        return NotFound();
 
-            var institutionToPatch = await _institutionService.GetUpdateInstitutionDto(id, ct);
-            patchDoc.ApplyTo(institutionToPatch, ModelState);
+                    var institutionToPatch = await _institutionService.GetUpdateInstitutionDto(id, ct);
+                    patchDoc.ApplyTo(institutionToPatch, ModelState);
 
-            TryValidateModel(institutionToPatch);
+                    TryValidateModel(institutionToPatch);
 
-            if (!ModelState.IsValid)
-                return new UnprocessableEntityObjectResult(ModelState);
+                    if (!ModelState.IsValid)
+                        return new UnprocessableEntityObjectResult(ModelState);
 
-            var institutionToReturn = await _institutionService.PartialUpdateInstitutionAsync(id, institutionToPatch, ct);
-            if (institutionToReturn == null)
-                return BadRequest();
+                    var institutionToReturn = await _institutionService.PartialUpdateInstitutionAsync(id, institutionToPatch, ct);
+                    if (institutionToReturn == null)
+                        return BadRequest();
 
-            return Ok(institutionToReturn);
-        }
+                    return Ok(institutionToReturn);
+                }
 
-*/
+        */
         private string CreateInstitutionsResourceUri(InstitutionResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
             switch (type)
@@ -176,7 +176,7 @@ namespace si2.api.Controllers
                             pageSize = pagedResourceParameters.PageSize
                         }); // TODO get the aboslute path 
                 case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetInstitutions", 
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetInstitutions",
                         new
                         {
                             status = pagedResourceParameters.Status,

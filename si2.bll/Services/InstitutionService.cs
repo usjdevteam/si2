@@ -115,7 +115,7 @@ namespace si2.bll.Services
             return institutionDto;
         }
 
-        public async Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct)
+        /*public async Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct)
         {
             InstitutionDto institutionDto = null;
 
@@ -127,7 +127,7 @@ namespace si2.bll.Services
             }
 
             return institutionDto;
-        }
+        }*/
         /*
                 public async Task DeleteInstitutionByIdAsync(Guid id, CancellationToken ct)
                 {
@@ -149,11 +149,12 @@ namespace si2.bll.Services
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
                 institutionEntities = institutionEntities
-                    .Where(a => a.NameFr.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.NameAr.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.NameEn.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(a => a.NameFr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameAr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameEn.ToLower().Contains(searchQueryForWhereClause)
+                            || a.Code.ToLower().Contains(searchQueryForWhereClause)).AsQueryable<Institution>();
             }
 
             var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
@@ -174,6 +175,11 @@ namespace si2.bll.Services
                 return true;
 
             return false;
+        }
+
+        public Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct)
+        {
+            throw new NotImplementedException();
         }
     }
 }
