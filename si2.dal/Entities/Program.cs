@@ -28,17 +28,15 @@ namespace si2.dal.Entities
         [MaxLength(100)]
         public string NameEn { get; set; }
 
-        [Required]
-        [ForeignKey("ProgramLevel")]
+
+        [ForeignKey("ProgramLevelId")]
+        public ProgramLevel ProgramLevel { get; set; }
         public Guid ProgramLevelId { get; set; }
 
-        public ProgramLevel ProgramLevel { get; set; }
-         
-        [Required]
-        [ForeignKey("Institution")]
-        public Guid InstitutionId { get; set; }
+        
 
+        [ForeignKey("InstitutionId")]
         public Institution Institution { get; set; }
-
+        public Guid InstitutionId { get; set; }
     }
 }

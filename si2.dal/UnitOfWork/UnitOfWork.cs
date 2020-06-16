@@ -23,6 +23,7 @@ namespace si2.dal.UnitOfWork
         }
 
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
+        public IProgramLevelRepository ProgramLevels => _serviceProvider.GetService<IProgramLevelRepository>();
 
         public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
         public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();

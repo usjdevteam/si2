@@ -7,11 +7,10 @@ using System.Text;
 
 namespace si2.dal.Repositories
 {
-    public class CourseRepository : Repository<Course>, ICourseRepository
+    public class ProgramLevelRepository : Repository<ProgramLevel>, IProgramLevelRepository
     {
-        public CourseRepository(Si2DbContext _db) : base(_db)
+        public ProgramLevelRepository(Si2DbContext _db) : base(_db)
         {
         }
     }
 }
-
