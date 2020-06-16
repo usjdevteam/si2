@@ -23,14 +23,17 @@ namespace si2.bll.Services
 
         Task AssignUsersToCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct);
 
-        Task UpdateUsersCohort(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct);
+        Task UpdateUsersCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct);
 
         Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct);
 
         Task AddCoursesToCohortAsync(Guid id, AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct);
 
-        Task<PagedList<CourseDto>> GetCoursesCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct);
+        Task<PagedList<CourseDto>> GetCoursesCohortAsync(Guid cohortId, CourseResourceParameters resourceParameters, CancellationToken ct);
 
+
+        Task UpdateCourseCohortAsync(Guid id, AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct);
+        
         Task<bool> ExistsAsync(Guid id, CancellationToken ct);
 
 
