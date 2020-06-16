@@ -40,254 +40,254 @@ namespace si2.api.Controllers
             _configuration = configuration;
         }
 
-    //    [HttpPost]
-    //    [Route("register")]
-    //    public async Task<IActionResult> Register([FromBody] RegisterRequestDto model, CancellationToken ct)
-    //    {
-    //        var user = await _userManager.FindByEmailAsync(model.Email);
-    //        if (user != null)
-    //            return BadRequest("user email already in use");
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto model, CancellationToken ct)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+                return BadRequest("user email already in use");
 
-    //        user = new ApplicationUser 
-    //        { 
-    //            UserName = model.Email, 
-    //            Email = model.Email,
-    //            FirstNameAr = model.FirstNameAr,
-    //            LastNameAr = model.LastNameAr,
-    //            FirstNameFr = model.FirstNameFr,
-    //            LastNameFr = model.LastNameFr
-    //        };
-            
-    //        var password = StaticHelpers.GenerateRandomPassword();
+            user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstNameAr = model.FirstNameAr,
+                LastNameAr = model.LastNameAr,
+                FirstNameFr = model.FirstNameFr,
+                LastNameFr = model.LastNameFr
+            };
 
-    //        var result = await _userManager.CreateAsync(user, password);
+            var password = StaticHelpers.GenerateRandomPassword();
 
-    //        if (result.Succeeded)
-    //        {
-    //            await _signInManager.SignInAsync(user, isPersistent: false);
+            var result = await _userManager.CreateAsync(user, password);
 
-    //            var token1 = await _userManager.GeneratePasswordResetTokenAsync(user);
-    //            var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-    //            var confirmationLink = Url.Action("ConfirmEmail", "Account", new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
-    //            return Created("", new object[] { confirmationLink, user });
-    //        }
+                var token1 = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action("ConfirmEmail", "Account", new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
 
-    //        //send Confirmation Email to the user---------------------------------------
-    //        //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-    //        //var confirmationLink = Url.Action(nameof(model.Email), "Account", new { token, email = user.Email }, Request.Scheme);
-    //        //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-    //        //await _emailSender.SendEmailAsync(message);
-    //        //_logger.Log(LogLevel.Warning, "the token is" + token);
-    //        //---------------------------------------------------------------------------
+                return Created("", new object[] { confirmationLink, user });
+            }
 
-    //        return BadRequest(result.Errors);
-    //    }
+            //send Confirmation Email to the user---------------------------------------
+            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var confirmationLink = Url.Action(nameof(model.Email), "Account", new { token, email = user.Email }, Request.Scheme);
+            //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
+            //await _emailSender.SendEmailAsync(message);
+            //_logger.Log(LogLevel.Warning, "the token is" + token);
+            //---------------------------------------------------------------------------
 
-    //    [HttpPost]
-    //    [Route("logout")]
-    //    public async Task<IActionResult> Logout(CancellationToken ct)
-    //    {
-    //        //await _signInManager.SignOutAsync();
+            return BadRequest(result.Errors);
+        }
 
-    //        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    //        await _signInManager.SignOutAsync();
-    //        HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout(CancellationToken ct)
+        {
+            //await _signInManager.SignOutAsync();
 
-    //        //return RedirectToAction("AccessDenied", "Error");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _signInManager.SignOutAsync();
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
 
-    //        return Ok();
-    //    }
+            //return RedirectToAction("AccessDenied", "Error");
 
-    //    [HttpPost]
-    //    [Route("login")]
-    //    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto, CancellationToken ct)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            var user = await _userManager.FindByEmailAsync(loginRequestDto.Email);
-    //            if (user == null)
-    //            {
-    //                return NotFound();
-    //            }
-    //            var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequestDto.Password, false);
+            return Ok();
+        }
 
-    //            //check if the user's email is confirmed-----
-    //            var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
-    //            //-------------------------------------------
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto, CancellationToken ct)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(loginRequestDto.Email);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequestDto.Password, false);
 
-    //            //if (result.Succeeded)
-    //            if (result.Succeeded && resultConfirm == true)
-    //            {
-    //                var userClaims = await _userManager.GetClaimsAsync(user);
-    //                var userRoles = await _userManager.GetRolesAsync(user);
-    //                return Token(user, userClaims, userRoles);
-    //            }
-    //            else
-    //            {
-    //                return BadRequest(result);
-    //            }
-    //        }
+                //check if the user's email is confirmed-----
+                var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
+                //-------------------------------------------
 
-    //        return BadRequest();
-    //    }
+                //if (result.Succeeded)
+                if (result.Succeeded && resultConfirm == true)
+                {
+                    var userClaims = await _userManager.GetClaimsAsync(user);
+                    var userRoles = await _userManager.GetRolesAsync(user);
+                    return Token(user, userClaims, userRoles);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
+            }
 
-    //    private IActionResult Token(ApplicationUser user, IList<Claim> userClaims, IList<string> userRoles)
-    //    {
-    //        var configKey = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Key").Value;
-    //        var configIssuer = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Issuer").Value;
-    //        var configAudience = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Audience").Value;
+            return BadRequest();
+        }
 
-    //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configKey));
-    //        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-    //        var claims = new List<Claim>()
-    //        {
-    //            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-    //            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-    //            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-    //        };
+        private IActionResult Token(ApplicationUser user, IList<Claim> userClaims, IList<string> userRoles)
+        {
+            var configKey = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Key").Value;
+            var configIssuer = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Issuer").Value;
+            var configAudience = _configuration.GetSection("Si2JwtBearerConstants").GetSection("Audience").Value;
 
-    //        claims.AddRange(userClaims);
-            
-    //        foreach (string role in userRoles)
-    //        {
-    //            claims.Add(new Claim(ClaimTypes.Role, role));
-    //        }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+            };
 
-    //        var token = new JwtSecurityToken(
-    //            configIssuer,
-    //            configAudience,
-    //            claims,
-    //            expires: DateTime.UtcNow.AddMinutes(30),
-    //            signingCredentials: creds
-    //        );
+            claims.AddRange(userClaims);
 
-    //        var results = new
-    //        {
-    //            roles = userRoles, 
-    //            email = user.Email,
-    //            token = new JwtSecurityTokenHandler().WriteToken(token),
-    //            expiration = token.ValidTo
-    //        };
+            foreach (string role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
-    //        return new CreatedResult("", results);
-    //    }
+            var token = new JwtSecurityToken(
+                configIssuer,
+                configAudience,
+                claims,
+                expires: DateTime.UtcNow.AddMinutes(30),
+                signingCredentials: creds
+            );
 
-    //    /*[HttpPost]
-    //    [AllowAnonymous]
-    //    [ValidateAntiForgeryToken]
-    //    public async Task<ActionResult> ResetPassword([FromBody] ResetRequestDto model)
-    //    {
-    //        /*if (!ModelState.IsValid)
-    //        {
-    //            return View(model);
-    //        }*/
-    //    /*var user = await _userManager.FindByNameAsync(model.Email);
-    //    if (user == null)
-    //    {
-    //        // Don't reveal that the user does not exist
-    //    }
-    //    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-    //    if (result.Succeeded)
-    //    {
-    //        return Ok();
-    //    }
-    //    //AddErrors(result);
-    //    //return View();
-    //    return BadRequest(result.Errors);
-    //}*/
+            var results = new
+            {
+                roles = userRoles,
+                email = user.Email,
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            };
 
-    //    [HttpPost]
-    //    [Route("ForgotPassword")]
-    //    public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequestDto)
-    //    {
-    //        if (!ModelState.IsValid)
-    //        {
-    //            return BadRequest(ModelState);
-    //        }
+            return new CreatedResult("", results);
+        }
 
-    //        var user = await _userManager.FindByNameAsync(forgotPasswordRequestDto.Email);
+        /*[HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetRequestDto model)
+        {
+            /*if (!ModelState.IsValid)
+            {
+                return View(model);
+            }*/
+        /*var user = await _userManager.FindByNameAsync(model.Email);
+        if (user == null)
+        {
+            // Don't reveal that the user does not exist
+        }
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+        //AddErrors(result);
+        //return View();
+        return BadRequest(result.Errors);
+    }*/
 
-    //        if (user == null)
-    //        {
-    //            return Ok("Ok");
-    //        }
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequestDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByNameAsync(forgotPasswordRequestDto.Email);
+
+            if (user == null)
+            {
+                return Ok("Ok");
+            }
 
 
-    //        if (user.Email == null)
-    //        {
-    //            throw new InvalidOperationException("Cannot send email. Email address not configured.");
-    //        }
+            if (user.Email == null)
+            {
+                throw new InvalidOperationException("Cannot send email. Email address not configured.");
+            }
 
-    //        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-    //        //redirect to the reset password action
-    //        /*System.Diagnostics.Process.Start(
-    //            string.Format(
-    //                "http://localhost:44301/api/account/forgotPasswordReset/{0}/{1}",
-    //                HttpUtility.UrlEncode(user.UserName),
-    //                HttpUtility.UrlEncode(token)
-    //            )
-    //        );*/
+            //redirect to the reset password action
+            /*System.Diagnostics.Process.Start(
+                string.Format(
+                    "http://localhost:44301/api/account/forgotPasswordReset/{0}/{1}",
+                    HttpUtility.UrlEncode(user.UserName),
+                    HttpUtility.UrlEncode(token)
+                )
+            );*/
 
-    //        var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
+            var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
 
-    //        return Ok(passwordResetLink);
-    //    }
+            return Ok(passwordResetLink);
+        }
 
-    //    [HttpPost]
-    //    [Route("ForgotPasswordReset")]
-    //    public async Task<ActionResult> ForgotPasswordReset([FromQuery] string code1, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
-    //    {
-    //        if (!ModelState.IsValid)
-    //        {
-    //            return BadRequest(ModelState);
-    //        }
+        [HttpPost]
+        [Route("ForgotPasswordReset")]
+        public async Task<ActionResult> ForgotPasswordReset([FromQuery] string code1, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-    //        var user = await _userManager.FindByNameAsync(resetRequestDto.Email);
-    //        if (user == null)
-    //        {
-    //            return Ok("Ok");
-    //        }
+            var user = await _userManager.FindByNameAsync(resetRequestDto.Email);
+            if (user == null)
+            {
+                return Ok("Ok");
+            }
 
-    //        var result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
+            var result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
 
-    //        //update EmailConfirmed column------------------------
-    //        //Can't be done here
-    //        //await _userManager.ConfirmEmailAsync(user,model.Token);
-    //        //user.EmailConfirmed = true;
-    //        //await _userManager.UpdateAsync(user);
-    //        //-----------------------------------------------------
+            //update EmailConfirmed column------------------------
+            //Can't be done here
+            //await _userManager.ConfirmEmailAsync(user,model.Token);
+            //user.EmailConfirmed = true;
+            //await _userManager.UpdateAsync(user);
+            //-----------------------------------------------------
 
-    //        if (result.Succeeded)
-    //        {
-    //            return Ok("Email Reset Successfully");
-    //        }
+            if (result.Succeeded)
+            {
+                return Ok("Email Reset Successfully");
+            }
 
-    //        //throw new InvalidOperationException(string.Join("\r\n", result.Errors));
-    //        return BadRequest(result.Errors);
-    //    }
+            //throw new InvalidOperationException(string.Join("\r\n", result.Errors));
+            return BadRequest(result.Errors);
+        }
 
-    //    [Route("ConfirmEmail")]
-    //    [HttpPost]
-    //    public async Task<IActionResult> ConfirmEmail([FromQuery] string code1,
-    //      [FromQuery] string code2, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
-    //    {
-    //        var user = await _userManager.FindByEmailAsync(email);
-    //        if (user == null)
-    //            return BadRequest();
+        [Route("ConfirmEmail")]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string code1,
+          [FromQuery] string code2, [FromQuery] string email, [FromBody] ResetPasswordRequestDto resetRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return BadRequest();
 
-    //        var result = await _userManager.ConfirmEmailAsync(user, code2);
+            var result = await _userManager.ConfirmEmailAsync(user, code2);
 
-    //        //return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
-    //        if (result.Succeeded)
-    //        {
-    //            result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
-    //            if (result.Succeeded)
-    //                return Ok("Email Confirmed and updated Successfully");
-    //        }
+            //return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+            if (result.Succeeded)
+            {
+                result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
+                if (result.Succeeded)
+                    return Ok("Email Confirmed and updated Successfully");
+            }
 
-    //        return BadRequest(result.Errors);
-    //    }
+            return BadRequest(result.Errors);
+        }
     }
 }
