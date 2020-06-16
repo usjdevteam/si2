@@ -12,7 +12,7 @@ namespace si2.dal.UnitOfWork
         IDataflowRepository Dataflows { get; }
         IContactInfoRepository ContactInfos { get; }
         IAddressRepository Addresses { get; }
-
+        IInstitutionRepository Institutions { get; }
         IProgramRepository Programs { get; }
         IInstitutionRepository Institutions { get; }
         ICohortRepository Cohorts { get; }

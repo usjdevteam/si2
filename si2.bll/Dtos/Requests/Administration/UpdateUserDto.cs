@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace si2.dal.Entities
+namespace si2.bll.Dtos.Requests.Administration
 {
-    public class ApplicationUser : IdentityUser
+    public class UpdateUserDto
     {
         [Required]
         [MaxLength(50)]
@@ -25,9 +19,5 @@ namespace si2.dal.Entities
         [Required]
         [MaxLength(50)]
         public string LastNameAr { get; set; }
-
-        public ICollection<UserCohort> UserCohorts { get; set; }
     }
 }
-
-

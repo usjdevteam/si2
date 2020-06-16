@@ -38,8 +38,6 @@ namespace si2.api.Controllers
             _userCohortService = userCohortService;
         }
 
-
-
         [HttpGet("users")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetUsers(CancellationToken ct)
@@ -90,7 +88,6 @@ namespace si2.api.Controllers
 
             return Ok(Roles);
         }
-
 
         [HttpPost("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -204,16 +201,15 @@ namespace si2.api.Controllers
 
         [HttpPut("users/{userId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] RegisterRequestDto model,CancellationToken ct)
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] UpdateUserDto model,CancellationToken ct)
         {
             //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var user = await _userManager.FindByIdAsync(userId);
-
-            user.Email = model.Email;
+            if (user == null)
+                return NotFound();
 
             user.FirstNameFr = model.FirstNameFr;
             user.LastNameFr = model.LastNameFr;
-
             user.FirstNameAr = model.FirstNameAr;
             user.LastNameAr = model.LastNameAr;
 
@@ -227,9 +223,7 @@ namespace si2.api.Controllers
             {
                 return BadRequest(result.Errors);
             }
-
         }
-
 
         [HttpDelete("users/{userId}/roles")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -247,7 +241,6 @@ namespace si2.api.Controllers
 
             return Ok(finalRoles);
         }
-
 
         [HttpDelete("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]

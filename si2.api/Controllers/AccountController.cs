@@ -42,36 +42,35 @@ namespace si2.api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto, CancellationToken ct)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto model, CancellationToken ct)
         {
-            var user = new ApplicationUser { UserName = registerRequestDto.Email, Email = registerRequestDto.Email };
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+                return BadRequest("user email already in use");
 
-            user.FirstNameFr = registerRequestDto.FirstNameFr;
-            user.LastNameFr = registerRequestDto.LastNameFr;
-
-            user.FirstNameAr = registerRequestDto.FirstNameAr;
-            user.LastNameAr = registerRequestDto.LastNameAr;
-
-
+            user = new ApplicationUser 
+            { 
+                UserName = model.Email, 
+                Email = model.Email,
+                FirstNameAr = model.FirstNameAr,
+                LastNameAr = model.LastNameAr,
+                FirstNameFr = model.FirstNameFr,
+                LastNameFr = model.LastNameFr
+            };
+            
             var password = StaticHelpers.GenerateRandomPassword();
 
-            //var result = await _userManager.CreateAsync(user, model.Password);
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
-                //set default user for newly created user
-                await _userManager.AddToRoleAsync(user, "DefaultUser");
-
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 var token1 = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                    new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
-                return Ok(confirmationLink);
+                var confirmationLink = Url.Action("ConfirmEmail", "Account", new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
 
-                //return Ok();
+                return Created("", new object[] { confirmationLink, user });
             }
 
             //send Confirmation Email to the user---------------------------------------

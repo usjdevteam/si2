@@ -286,16 +286,24 @@ namespace si2.dal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstNameAr")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("FirstNameFr")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("LastNameAr")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("LastNameFr")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -341,49 +349,6 @@ namespace si2.dal.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Book", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Book");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.BookCategory", b =>
-                {
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BookId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BookCategory");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.ContactInfo", b =>
@@ -480,8 +445,30 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("ContactInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -489,6 +476,16 @@ namespace si2.dal.Migrations
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasName("IX_Institution_Code");
+
+                    b.HasIndex("ContactInfoId");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Institution");
                 });
@@ -673,19 +670,23 @@ namespace si2.dal.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.BookCategory", b =>
+            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
                 {
-                    b.HasOne("si2.dal.Entities.Book", "Book")
-                        .WithMany("BookCategories")
-                        .HasForeignKey("BookId")
+                    b.HasOne("si2.dal.Entities.Address", "Address")
+                        .WithMany("Institutions")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("si2.dal.Entities.Category", "Category")
-                        .WithMany("BookCategories")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("si2.dal.Entities.ContactInfo", "ContactInfo")
+                        .WithMany("Institutions")
+                        .HasForeignKey("ContactInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("si2.dal.Entities.Institution", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
