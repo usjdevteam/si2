@@ -116,11 +116,11 @@ namespace si2.bll.Services
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
                 dataflowEntities = dataflowEntities
-                    .Where(a => a.Title.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.Tag.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(a => a.Title.ToLower().Contains(searchQueryForWhereClause)
+                            || a.Name.ToLower().Contains(searchQueryForWhereClause)
+                            || a.Tag.ToLower().Contains(searchQueryForWhereClause));
             }
 
             var pagedListEntities = await PagedList<Dataflow>.CreateAsync(dataflowEntities,

@@ -23,19 +23,21 @@ namespace si2.dal.Context
         public DbSet<Dataflow> Dataflows { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
 
-		public DbSet<Book> Books { get; set; }
-		public DbSet<Category> Categories { get; set; }
+		
+        public DbSet<Institution> Institutions { get; set; }
+        public DbSet<Cohort> Cohorts { get; set; }
+        public DbSet<UserCohort> UserCohorts { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<CourseCohort> CourseCohorts { get; set; }
 
+        public DbSet<ProgramLevel> ProgramLevels { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<ContactInfo> ContactInfos { get; set; }
+        public DbSet<Program> Programs { get; set; }
 
-		public DbSet<Program> Programs { get; set; }
-		public DbSet<Course> Courses { get; set; }
-		public DbSet<Cohort> Cohorts { get; set; }
-		public DbSet<CourseCohort> CourseCohorts { get; set; }
-		public DbSet<UserCohort> UserCohorts { get; set; }
+        public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
 
-
-
-		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
 
@@ -47,22 +49,23 @@ namespace si2.dal.Context
         }
 
 		protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
 
-			builder.Entity<BookCategory>().HasKey(bc => new { bc.BookId, bc.CategoryId });
-				builder.Entity<UserCohort>().HasKey(uc => new { uc.UserId, uc.CohortId});
-				builder.Entity<CourseCohort>().HasKey(cc => new { cc.CourseId, cc.CohortId });
+    {
+        base.OnModelCreating(builder);
 
-			builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
-			builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique().HasName("IX_UserCohort_UserId_CohortId"); ;
-			builder.Entity<CourseCohort>().HasIndex(cc => new { cc.CourseId, cc.CohortId }).IsUnique().HasName("IX_CourseCohort_CourseId_CohortId"); ;
+        builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
+        builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
+        builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
+        builder.Entity<Institution>().HasIndex(i => i.Code).IsUnique().HasName("IX_Institution_Code");
+        builder.Entity<Course>().HasIndex(c => c.Code).IsUnique().HasName("IX_Course_Code");
+        builder.Entity<UserCourse>().HasIndex(uc => new { uc.UserId, uc.CourseId }).IsUnique();
+        builder.Entity<CourseCohort>().HasIndex(uc => new { uc.CourseId, uc.CohortId }).IsUnique();
 
-			// Customize the ASP.NET Identity model and override the defaults if needed.
-			// For example, you can rename the ASP.NET Identity table names and more.
-			// Add your customizations after calling base.OnModelCreating(builder);
-			// seed the database with dummy data
-		}
+            // Customize the ASP.NET Identity model and override the defaults if needed.
+            // For example, you can rename the ASP.NET Identity table names and more.
+            // Add your customizations after calling base.OnModelCreating(builder);
+            // seed the database with dummy data
+        }
 
 		public override int SaveChanges()
 		{

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace si2.dal.Repositories
 {
     public class CourseRepository : Repository<Course>, ICourseRepository
@@ -12,4 +13,4 @@ namespace si2.dal.Repositories
         {
         }
     }
-}
+

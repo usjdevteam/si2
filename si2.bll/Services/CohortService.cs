@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,25 @@ using si2.bll.Dtos.Results.Course;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
 using si2.bll.ResourceParameters;
+
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.Extensions.Logging;
+using si2.bll.Dtos.Requests.Cohort;
+using si2.bll.Dtos.Results.Cohort;
+using si2.bll.Helpers.PagedList;
+using si2.bll.Helpers.ResourceParameters;
+
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using Si2.common.Exceptions;
 using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
+using System.Linq;
+
 using System.Threading;
 using System.Threading.Tasks;
 using static si2.common.Enums;
@@ -25,11 +38,13 @@ namespace si2.bll.Services
 {
     public class CohortService : ServiceBase, ICohortService
     {
+
         private readonly UserManager<ApplicationUser> _userManager;
 
         public CohortService(IUnitOfWork uow, IMapper mapper, ILogger<ICohortService> logger, UserManager<ApplicationUser> userManager) : base(uow, mapper, logger)
         {
             _userManager = userManager;
+
         }
 
         public async Task<CohortDto> CreateCohortAsync(CreateCohortDto createCohortDto, CancellationToken ct)
@@ -66,6 +81,7 @@ namespace si2.bll.Services
         public async Task<PagedList<CohortDto>> GetCohortsAsync(CancellationToken ct)
         {
             var cohortEntities = _uow.Cohorts.GetAll();
+
 
             if(cohortEntities.Count() > 1 )
             {
@@ -122,12 +138,14 @@ namespace si2.bll.Services
             var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(usersEntity, resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
             var result = _mapper.Map<PagedList<UserDto>>(pagedListEntities);
+
             result.TotalCount = pagedListEntities.TotalCount;
             result.TotalPages = pagedListEntities.TotalPages;
             result.CurrentPage = pagedListEntities.CurrentPage;
             result.PageSize = pagedListEntities.PageSize;
 
             return result;
+
 
 
 
@@ -205,5 +223,6 @@ namespace si2.bll.Services
             return result; */
 
         }
+
     }
 }

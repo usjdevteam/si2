@@ -16,24 +16,31 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+
 using si2.bll.ResourceParameters;
+
 
 namespace si2.api.Controllers
 {
     [ApiController]
     [Route("api/cohorts")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
     public class CohortController : ControllerBase
+
     {
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<CohortController> _logger;
         private readonly ICohortService _cohortService;
 
+
         public CohortController(LinkGenerator linkGenerator, ILogger<CohortController> logger, ICohortService cohortService)
+
         {
             _linkGenerator = linkGenerator;
             _logger = logger;
             _cohortService = cohortService;
+
         }
 
         /* APIs
@@ -46,10 +53,12 @@ namespace si2.api.Controllers
          * POST /api/cohorts/{id}/courses
          */
 
+
          /*-------------------------------- COHORT -------------------------------- */
 
         [HttpPost]
         //[Authorize(AuthenticationSchemes = "Bearer")]
+
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CohortDto))]
         public async Task<ActionResult> CreateStudent([FromBody] CreateCohortDto createCohortDto, CancellationToken ct)
@@ -62,7 +71,9 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCohort")]
+
         //[Authorize(AuthenticationSchemes = "Bearer")]
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CohortDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCohort(Guid id, CancellationToken ct)
@@ -76,7 +87,9 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name = "GetCohorts")]
+
         //[Authorize(AuthenticationSchemes = "Bearer")]
+
         public async Task<ActionResult> GetCohorts(CancellationToken ct)
         {
             var cohortDtos = await _cohortService.GetCohortsAsync(ct);
@@ -93,9 +106,11 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
+
         {
             if (!await _cohortService.ExistsAsync(id, ct))
                 return NotFound();
+
 
             await _cohortService.AssignUsersToCohortAsync(id, addUsersToCohortDto, ct);
 
@@ -198,5 +213,6 @@ namespace si2.api.Controllers
                        });
             }
         }
+
     }
 }
