@@ -24,21 +24,12 @@ namespace si2.dal.Entities
         [Required]
         [ForeignKey("Program")]
         public Guid ProgramId { get; set; }
+        public Program Program { get; set; }
 
-        //public Program Program { get; set; }
-
-        //public ICollection<CourseCohort> CourseCohorts { get; set; }
+        public ICollection<CourseCohort> CourseCohorts { get; set; }
         
         public ICollection<UserCohort> UserCohorts { get; set; }
 
-        public static object Where(Func<object, bool> p)
-        {
-            throw new NotImplementedException();
-        }
 
-        public int Count()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

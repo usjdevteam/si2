@@ -10,6 +10,7 @@ namespace si2.dal.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+
         [Required]
         [MaxLength(50)]
         public string FirstNameFr { get; set; }
@@ -25,6 +26,7 @@ namespace si2.dal.Entities
         [Required]
         [MaxLength(50)]
         public string LastNameAr { get; set; }
+
 
         public ICollection<UserCohort> UserCohorts { get; set; }
     }

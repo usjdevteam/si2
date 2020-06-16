@@ -12,6 +12,7 @@ namespace si2.dal.Entities
     public class Program : Si2BaseDataEntity<Guid>, IAuditable
     {
         [Required]
+
         [MaxLength(6)]
         public string Code { get; set; } 
         
@@ -38,5 +39,6 @@ namespace si2.dal.Entities
         public Guid InstitutionId { get; set; }
 
         public Institution Institution { get; set; }
+
     }
 }

@@ -22,6 +22,7 @@ namespace si2.dal.Context
 
         public DbSet<Dataflow> Dataflows { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+
 		
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Cohort> Cohorts { get; set; }
@@ -36,6 +37,7 @@ namespace si2.dal.Context
         public DbSet<Program> Programs { get; set; }
 
         public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
+
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
 
@@ -47,6 +49,7 @@ namespace si2.dal.Context
         }
 
 		protected override void OnModelCreating(ModelBuilder builder)
+
     {
         base.OnModelCreating(builder);
 

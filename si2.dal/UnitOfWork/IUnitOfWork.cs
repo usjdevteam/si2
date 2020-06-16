@@ -10,6 +10,7 @@ namespace si2.dal.UnitOfWork
     public interface IUnitOfWork
     {
         IDataflowRepository Dataflows { get; }
+
         IContactInfoRepository ContactInfos { get; }
         IAddressRepository Addresses { get; }
         IInstitutionRepository Institutions { get; }
@@ -19,6 +20,7 @@ namespace si2.dal.UnitOfWork
         ICourseRepository Courses { get; }
         IUserCourseRepository UserCourses { get; }
         ICourseCohortRepository CourseCohorts { get; }
+
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 

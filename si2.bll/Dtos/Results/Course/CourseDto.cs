@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using static si2.common.Enums;
+
 
 namespace si2.bll.Dtos.Results.Course
 {
@@ -37,3 +35,4 @@ namespace si2.bll.Dtos.Results.Course
         }
     }
 }
+

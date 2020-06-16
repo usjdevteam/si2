@@ -23,6 +23,7 @@ namespace si2.dal.UnitOfWork
         }
 
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
+
         public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
         public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();
         public IInstitutionRepository Institutions => _serviceProvider.GetService<IInstitutionRepository>();
@@ -32,6 +33,7 @@ namespace si2.dal.UnitOfWork
         public ICourseRepository Courses => _serviceProvider.GetService<ICourseRepository>();
         public IUserCourseRepository UserCourses => _serviceProvider.GetService<IUserCourseRepository>();
         public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
+
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {

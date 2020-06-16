@@ -5,12 +5,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static si2.common.Enums;
+
 namespace si2.dal.Entities
 {
     [Table("Course")]
     public class Course : Si2BaseDataEntity<Guid>, IAuditable
     {
         [Required]
+
         [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
         public string Code { get; set; }
 
@@ -39,14 +41,6 @@ namespace si2.dal.Entities
 
         public ICollection<UserCourse> UserCourses { get; set; }
 
-        public static object Where(Func<object, bool> p)
-        {
-            throw new NotImplementedException();
-        }
 
-        public int Count()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
