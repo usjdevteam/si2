@@ -17,8 +17,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using si2.bll.ResourceParameters;
-using si2.bll.Dtos.Results.Course;
-using si2.bll.Dtos.Results.Administration;
 
 namespace si2.api.Controllers
 {
@@ -109,7 +107,6 @@ namespace si2.api.Controllers
         [HttpGet("{id}")]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
         //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetUsersSubscribedToCohort([FromRoute]Guid id, [FromQuery]ApplicationUserResourceParameters pagedResourceParameters, CancellationToken ct)
         {
@@ -149,7 +146,7 @@ namespace si2.api.Controllers
             if (!await _cohortService.ExistsAsync(id, ct))
                 return NotFound();
 
-            await _cohortService.UpdateUsersCohortAsync(id, addUsersToCohortDto, ct);
+            await _cohortService.UpdateUsersCohort(id, addUsersToCohortDto, ct);
 
             return Ok();
         }
@@ -171,51 +168,6 @@ namespace si2.api.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        [Route("{id}/courses", Name = "GetCoursesInCohort")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> GetCoursesInCohort([FromRoute]Guid id, [FromQuery] CourseResourceParameters pagedResourceParameters, CancellationToken ct)
-        {
-
-            var userDtos = await _cohortService.GetCoursesCohortAsync(id, pagedResourceParameters, ct);
-
-            var previousPageLink = userDtos.HasPrevious ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
-            var nextPageLink = userDtos.HasNext ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
-
-            var paginationMetadata = new
-            {
-                totalCount = userDtos.TotalCount,
-                pageSize = userDtos.PageSize,
-                currentPage = userDtos.CurrentPage,
-                totalPages = userDtos.TotalPages,
-                previousPageLink,
-                nextPageLink
-            };
-
-            if (userDtos.Count < 1)
-                return NotFound();
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
-
-            return Ok(userDtos);
-        }
-
-        [HttpPut]
-        [Route("{id}/courses", Name = "UpdateCourseCohort")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateCourseCohort([FromRoute]Guid id, [FromBody] AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct)
-        {
-            if (!await _cohortService.ExistsAsync(id, ct))
-                return NotFound();
-
-            await _cohortService.UpdateCourseCohortAsync(id, addCoursesToCohortDto, ct);
-
-            return Ok();
-        }
 
 
 
@@ -239,34 +191,6 @@ namespace si2.api.Controllers
                         });
                 default:
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetUsersSubscribedToCohort",
-                       new
-                       {
-                           pageNumber = pagedResourceParameters.PageNumber,
-                           pageSize = pagedResourceParameters.PageSize
-                       });
-            }
-        }
-
-        private string CreateCourseResourceUri(CourseResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
-        {
-            switch (type)
-            {
-                case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber - 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
-                case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber + 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
-                default:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
                        new
                        {
                            pageNumber = pagedResourceParameters.PageNumber,

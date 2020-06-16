@@ -8,6 +8,6 @@ namespace si2.bll.Dtos.Requests.Cohort
     public class AddCoursesToCohortDto
     {
         [Required]
-        public List<string> CoursesIds { get; set; }
+        public List<string> CourseIds { get; set; }
     }
 }
