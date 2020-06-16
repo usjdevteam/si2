@@ -55,12 +55,19 @@ namespace si2.api
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
+            services.AddTransient<IProgramRepository, ProgramRepository>();
             services.AddTransient<IInstitutionRepository, InstitutionRepository>();
             services.AddTransient<ICohortRepository, CohortRepository>();
             services.AddTransient<IUserCohortRepository, UserCohortRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
+            services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IContactInfoService, ContactInfoService>();
+            services.AddTransient<IProgramService, ProgramService>();
+            
             services.AddTransient<IInstitutionService, InstitutionService>();
             services.AddTransient<ICohortService, CohortService>();
             services.AddTransient<IUserCohortService, UserCohortService>();
@@ -104,20 +111,20 @@ namespace si2.api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "V1",
-                    Title = "Université Saint-Joseph de Beyrouth - SI2 Server",
-                    Description = "The university Web API for handling students registrations",
-                    TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "John Smith",
-                        Email = "John.Smit@email.com",
-                        Url = new Uri("https://twitter.com/usjliban?lang=en"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under USJ-LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
+                    Title = "UniversitÃ© Saint-Joseph de Beyrouth - SI2 Server",
+                    //Description = "The university Web API for handling students registrations",
+                    //TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
+                    //Contact = new OpenApiContact
+                    //{
+                    //    Name = "John Smith",
+                    //    Email = "John.Smit@email.com",
+                    //    Url = new Uri("https://twitter.com/usjliban?lang=en"),
+                    //},
+                    //License = new OpenApiLicense
+                    //{
+                    //    Name = "Use under USJ-LICX",
+                    //    Url = new Uri("https://example.com/license"),
+                    //}
                 });
             });
         }

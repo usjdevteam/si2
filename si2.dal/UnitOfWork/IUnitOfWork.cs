@@ -10,7 +10,10 @@ namespace si2.dal.UnitOfWork
     public interface IUnitOfWork
     {
         IDataflowRepository Dataflows { get; }
+        IContactInfoRepository ContactInfos { get; }
+        IAddressRepository Addresses { get; }
 
+        IProgramRepository Programs { get; }
         IInstitutionRepository Institutions { get; }
         ICohortRepository Cohorts { get; }
         IUserCohortRepository UserCohorts { get; }

@@ -3,29 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace si2.dal.Migrations
 {
-    public partial class Add_Institution_Entity : Migration
+    public partial class Added_ContactInfo_Enity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Institution",
+                name: "ContactInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Code = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Phone = table.Column<string>(maxLength: 30, nullable: false),
+                    Fax = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Institution", x => x.Id);
+                    table.PrimaryKey("PK_ContactInfo", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Institution");
+                name: "ContactInfo");
         }
     }
 }

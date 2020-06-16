@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200610173558_Remove_Constraint_UserName")]
-    partial class Remove_Constraint_UserName
+    [Migration("20200613065124_Added_ApplicationUser_Entity")]
+    partial class Added_ApplicationUser_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -238,10 +238,16 @@ namespace si2.dal.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FirstNameAr")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("FirstNameFr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastNameFr")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")

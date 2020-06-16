@@ -2,18 +2,10 @@
 
 namespace si2.dal.Migrations
 {
-    public partial class Add_Ar_Attributes_ApplicationUser : Migration
+    public partial class Added_ApplicationUser_Entity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "FirstName",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "LastName",
-                table: "AspNetUsers");
-
             migrationBuilder.AddColumn<string>(
                 name: "FirstNameAr",
                 table: "AspNetUsers",
@@ -52,18 +44,6 @@ namespace si2.dal.Migrations
             migrationBuilder.DropColumn(
                 name: "LastNameFr",
                 table: "AspNetUsers");
-
-            migrationBuilder.AddColumn<string>(
-                name: "FirstName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "LastName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
         }
     }
 }

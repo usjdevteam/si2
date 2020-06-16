@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200611163725_Add_Institution_Entity")]
-    partial class Add_Institution_Entity
+    [Migration("20200612181739_Added_Program_Entity")]
+    partial class Added_Program_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -238,18 +238,6 @@ namespace si2.dal.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstNameAr")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstNameFr")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastNameAr")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastNameFr")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -376,12 +364,7 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -392,6 +375,74 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Institution");
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.Program", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
+
+                    b.Property<Guid>("InstitutionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("NameFr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<Guid>("ProgramLevelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("ProgramLevelId");
+
+                    b.ToTable("Program");
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProgramLevel");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
@@ -489,6 +540,21 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Category", "Category")
                         .WithMany("BookCategories")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.Program", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Institution", "Institution")
+                        .WithMany("Programs")
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
+                        .WithMany("Programs")
+                        .HasForeignKey("ProgramLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
