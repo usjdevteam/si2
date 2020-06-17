@@ -8,6 +8,7 @@ using si2.bll.Dtos.Requests.Account;
 using si2.bll.Dtos.Requests.Administration;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Results.Administration;
+using si2.bll.Dtos.Requests.UserCourse;
 using si2.bll.Models;
 using si2.bll.Services;
 using si2.dal.Entities;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using si2.bll.Dtos.Requests.Course;
 
 namespace si2.api.Controllers
 {
@@ -28,17 +30,17 @@ namespace si2.api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserCohortService _userCohortService;
+        private readonly IUserCourseService _userCourseService;
 
         public AdministrationController(ILogger<AdministrationController> logger,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserCohortService userCohortService)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserCohortService userCohortService, IUserCourseService userCourseService)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
             _userCohortService = userCohortService;
+            _userCourseService = userCourseService;
         }
-
-
 
         [HttpGet("users")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -90,7 +92,6 @@ namespace si2.api.Controllers
 
             return Ok(Roles);
         }
-
 
         [HttpPost("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -204,16 +205,15 @@ namespace si2.api.Controllers
 
         [HttpPut("users/{userId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] RegisterRequestDto model,CancellationToken ct)
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] UpdateUserDto model, CancellationToken ct)
         {
             //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var user = await _userManager.FindByIdAsync(userId);
-
-            user.Email = model.Email;
+            if (user == null)
+                return NotFound();
 
             user.FirstNameFr = model.FirstNameFr;
             user.LastNameFr = model.LastNameFr;
-
             user.FirstNameAr = model.FirstNameAr;
             user.LastNameAr = model.LastNameAr;
 
@@ -227,13 +227,11 @@ namespace si2.api.Controllers
             {
                 return BadRequest(result.Errors);
             }
-
         }
-
 
         [HttpDelete("users/{userId}/roles")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> RevokeRolesFromUser([FromRoute]string userId, [FromBody]RolesDto removeRoles, CancellationToken ct)
+        public async Task<IActionResult> RevokeRolesFromUser([FromRoute] string userId, [FromBody] RolesDto removeRoles, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -248,10 +246,9 @@ namespace si2.api.Controllers
             return Ok(finalRoles);
         }
 
-
         [HttpDelete("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> RevokeClaimsFromUser([FromRoute]string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
+        public async Task<IActionResult> RevokeClaimsFromUser([FromRoute] string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -280,31 +277,20 @@ namespace si2.api.Controllers
 
         }
 
-        /*[Route("api/users/{userId}/cohorts")]
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(BookDto))]
-        public async Task<ActionResult> AddCohortsToStudent(Guid userId, [FromBody] JArray cohorts, CancellationToken ct)
-        {
-            foreach (JObject cohortToAdd in cohorts)
-            {
-                var userToReturn = await _userCohortService.AssignUsersToCohortAsync(userId, new Guid(cohortToAdd.GetValue("cohortId").ToString()), ct);
-                if (userToReturn == null)
-                    return BadRequest();
-            }
-
-            return Ok();
-        }*/
-
         [HttpPost]
         [Route("users/{userId}/cohorts")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateCohortsUser([FromRoute]String userId, [FromBody] ManageCohortsUserDto manageCohortsToUserDto, CancellationToken ct)
+        public async Task<ActionResult> UpdateCohortsUser([FromRoute] String userId, [FromBody] ManageCohortsUserDto manageCohortsToUserDto, CancellationToken ct)
         {
-            if (!await _userCohortService.ExistsAsync(userId, ct))
+            //if (!await _userCohortService.ExistsAsync(userId, ct))
+                //return NotFound();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
                 return NotFound();
+            }
 
             var userCohortToReturn = await _userCohortService.AssignCohortsToUserAsync(userId, manageCohortsToUserDto, ct);
 
@@ -314,11 +300,11 @@ namespace si2.api.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route("users/{userId}/cohorts", Name = "GetCohortsOfUser")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> GetCohortsOfUser([FromRoute]String userId, CancellationToken ct)
+        public async Task<ActionResult> GetCohortsOfUser([FromRoute] String userId, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -332,23 +318,36 @@ namespace si2.api.Controllers
 
         }
 
-        /*[HttpPut]
-        [Route("users/{userId}/cohorts", Name = "UpdateCohortsUser")]
+        [HttpPost]
+        [Route("users/{userId}/courses")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateCohortsUser([FromRoute]String userId, [FromBody] AddCohortsToUserDto addCohortsToUserDto, CancellationToken ct)
+        public async Task<ActionResult> UpdateCoursesUser([FromRoute] String userId, [FromBody] ManageCoursesUserDto manageCoursesToUserDto, CancellationToken ct)
         {
-            if (!await _userCohortService.ExistsAsync(userId, ct))
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
                 return NotFound();
-
-            //delete cohorts from the user
-            await _userCohortService.DeleteCohortsUser(userId, ct);
-            //-----------------------------
-
-            await _userCohortService.AssignCohortsToUserAsync(userId, addCohortsToUserDto, ct);
-
+            }
+            var userCohortToReturn = await _userCourseService.AssignCoursesToUserAsync(userId, manageCoursesToUserDto, ct);
             return Ok();
-
-        }*/
+            //return CreatedAtRoute("GetCohortsOfUser", userId, userCohortToReturn);	
+        }
+        [HttpGet]
+        [Route("users/{userId}/courses", Name = "GetCoursesOfUser")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> GetCoursesOfUser([FromRoute] String userId, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var cohortDtos = await _userCourseService.GetCoursesUserAsync(userId, ct);
+            if (cohortDtos == null)
+                return NotFound();
+            return Ok(cohortDtos);
+        }
     }
 }

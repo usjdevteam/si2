@@ -8,7 +8,7 @@ namespace si2.dal.Repositories
 {
     public class InstitutionRepository : Repository<Institution>, IInstitutionRepository
     {
-        public InstitutionRepository(Si2DbContext _db) : base(_db) 
+        public InstitutionRepository(Si2DbContext _db) : base(_db)
         {
         }
     }

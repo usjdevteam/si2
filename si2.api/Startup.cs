@@ -54,7 +54,10 @@ namespace si2.api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+    
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+            services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
+
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IProgramRepository, ProgramRepository>();
@@ -62,15 +65,26 @@ namespace si2.api
             services.AddTransient<ICohortRepository, CohortRepository>();
             services.AddTransient<IUserCohortRepository, UserCohortRepository>();
 
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<IUserCourseRepository, UserCourseRepository>();
+            services.AddTransient<ICourseCohortRepository, CourseCohortRepository>();
+
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
+
+            services.AddTransient<IProgramLevelService, ProgramLevelService>();
+
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IContactInfoService, ContactInfoService>();
-            services.AddTransient<IProgramService, ProgramService>();
-            
             services.AddTransient<IInstitutionService, InstitutionService>();
+            services.AddTransient<IProgramService, ProgramService>();
             services.AddTransient<ICohortService, CohortService>();
             services.AddTransient<IUserCohortService, UserCohortService>();
+
+            services.AddTransient<ICourseService, CourseService>();
+            services.AddTransient<IUserCourseService, UserCourseService>();
+            services.AddTransient<ICourseCohortService, CourseCohortService>();
+
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
@@ -111,7 +125,7 @@ namespace si2.api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "V1",
-                    Title = "Université Saint-Joseph de Beyrouth - SI2 Server",
+                    Title = "Université Saint-Joseph de Beyrouth - SI2 Server"
                     //Description = "The university Web API for handling students registrations",
                     //TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
                     //Contact = new OpenApiContact
