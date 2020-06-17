@@ -38,5 +38,7 @@ namespace si2.dal.Entities
         public Guid InstitutionId { get; set; }
 
         public Institution Institution { get; set; }
+
+        public ICollection<Document> Documents { get; set; }
     }
 }

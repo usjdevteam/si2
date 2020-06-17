@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Entities;
 using si2.dal.Interfaces;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
@@ -30,6 +31,8 @@ namespace si2.dal.Context
 		public DbSet<Address> Addresses { get; set; }
 		public DbSet<ContactInfo> ContactInfos { get; set; }
 		public DbSet<Program> Programs { get; set; }
+
+		public DbSet<Document> Documents { get; set; }
 
 
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)

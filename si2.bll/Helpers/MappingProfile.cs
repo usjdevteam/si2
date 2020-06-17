@@ -10,6 +10,8 @@ using si2.bll.Dtos.Results.Program;
 using si2.bll.Helpers.PagedList;
 
 using si2.dal.Entities;
+using si2.bll.Dtos.Requests.Document;
+using si2.bll.Dtos.Results.Document;
 
 namespace si2.bll.Helpers
 {
@@ -34,6 +36,9 @@ namespace si2.bll.Helpers
             CreateMap<UpdateAddressDto, Address>(); 
             CreateMap<Address, AddressDto>();
 
+            CreateMap<CreateDocumentDto, Document>();
+            CreateMap<UpdateDocumentDto, Document>();
+            CreateMap<Document, DocumentDto>();
         }
     }
 }

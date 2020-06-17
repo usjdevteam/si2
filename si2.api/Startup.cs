@@ -58,13 +58,15 @@ namespace si2.api
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IProgramRepository, ProgramRepository>();
+            services.AddTransient<IDocumentRepository, DocumentRepository>();
 
             services.AddTransient<IServiceBase, ServiceBase>();
             services.AddTransient<IDataflowService, DataflowService>();
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IProgramService, ProgramService>();
-            
+            services.AddTransient<IDocumentService, DocumentService>();
+
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
             IMapper mapper = mappingConfig.CreateMapper();

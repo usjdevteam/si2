@@ -15,6 +15,8 @@ namespace si2.dal.UnitOfWork
 
         IProgramRepository Programs { get; }
 
+        IDocumentRepository Documents { get; }
+
         Task<int> SaveChangesAsync(CancellationToken ct);
 
         int SaveChanges();

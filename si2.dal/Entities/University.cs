@@ -6,13 +6,12 @@ using System.Text;
 
 namespace si2.dal.Entities
 {
-    [Table("Institution")]
-    public class Institution : Si2BaseDataEntity<Guid>, IAuditable
-    {       
+    [Table("University")]
+    public class University : Si2BaseDataEntity<Guid>, IAuditable
+    {
         public string Name { get; set; }
 
-
-        public ICollection<Program> Programs { get; set; }
+        public ICollection<University> Universities { get; set; }
 
         public ICollection<Document> Documents { get; set; }
     }
