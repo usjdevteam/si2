@@ -45,17 +45,6 @@ namespace si2.api.Controllers
             return CreatedAtRoute("GetCourse", new { id = CourseToReturn.Id }, CourseToReturn);
         }
 
-
-        /* [HttpDelete("{id}")]
-         [Authorize(AuthenticationSchemes = "Bearer")]
-         [ProducesResponseType(StatusCodes.Status204NoContent)]
-         public async Task<ActionResult> DeleteCourse(Guid id, CancellationToken ct)
-         {
-             await _CourseService.DeleteCourseByIdAsync(id, ct);
-
-             return NoContent();
-         }*/
-
         [HttpGet("{id}", Name = "GetCourse")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]

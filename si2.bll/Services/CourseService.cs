@@ -75,11 +75,11 @@ namespace si2.bll.Services
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
                 CourseEntities = CourseEntities
-                    .Where(a => a.NameFr.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.NameAr.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.NameEn.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(a => a.NameFr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameAr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameEn.ToLower().Contains(searchQueryForWhereClause));
             }
 
             var pagedListEntities = await PagedList<Course>.CreateAsync(CourseEntities,
