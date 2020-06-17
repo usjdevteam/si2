@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using si2.bll.Dtos.Results.Course;
 
 namespace si2.bll.Services
 {
@@ -45,7 +46,10 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCoursesDto.DeleteCoursesIds)
                 {
-                    var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
+                   var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
+                    //var userCourse = _uow.UserCourses.GetAllIncluding(c => c.Course)
+                                //.Where(c => c.UserId == id)
+                                //.Select(c => c.Course);
 
                     if (userCourse != null)
                     {
@@ -59,25 +63,23 @@ namespace si2.bll.Services
             return userCourseDto;
         }
 
-        public async Task<PagedList<UserCourseDto>> GetCoursesUserAsync(String userId, CancellationToken ct)
+        public async Task<PagedList<CourseDto>> GetCoursesUserAsync(String userId, CancellationToken ct)
         {
 
-            var coursesEntity = _userManager.Users
-                .Include(u => u.UserCourses)
-                .ThenInclude(uc => uc.Course)
-                .Where(c => c.Id == userId).ToList();
+            var coursesEntity = _uow.UserCourses.GetAllIncluding(c => c.Course)
+                                .Where(c => c.UserId == userId)
+                                .Select(c => c.Course);
 
-            /*var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
+            var pagedListEntities = await PagedList<Course>.CreateAsync(coursesEntity, 1, coursesEntity.Count(), ct);
 
-            var result = _mapper.Map<PagedList<UserCohortDto>>(pagedListEntities);
+            var result = _mapper.Map<PagedList<CourseDto>>(pagedListEntities);
             result.TotalCount = pagedListEntities.TotalCount;
             result.TotalPages = pagedListEntities.TotalPages;
             result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;*/
+            result.PageSize = pagedListEntities.PageSize;
 
-            //return result;
+            return result;
 
-            return null;
 
         }
 

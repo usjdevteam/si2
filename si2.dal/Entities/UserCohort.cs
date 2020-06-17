@@ -15,10 +15,10 @@ namespace si2.dal.Entities
         [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
 
-
+        public Guid CohortId { get; set; }
         [ForeignKey("CohortId")]
         public Cohort Cohort { get; set; }
-        public Guid CohortId { get; set; }
+       
         
     }
 }

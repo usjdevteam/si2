@@ -63,7 +63,9 @@ namespace si2.bll.Services
                 foreach (var ac in manageUsersCohortDto.AddCohortsIds)
                 {
                     if (!user.UserCohorts.Any(c => ac == c.CohortId))
+                    {
                         user.UserCohorts.Add(new UserCohort() { CohortId = ac, UserId = id });
+                    }
                 }
             }
 
@@ -101,10 +103,10 @@ namespace si2.bll.Services
             return userCohortDto;
         }
 
-        public async Task<PagedList<UserCohortDto>> GetCohortsUserAsync(String userId, CancellationToken ct)
+        public async Task<PagedList<CohortDto>> GetCohortsUserAsync(String userId, CancellationToken ct)
         {
 
-            var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct);
+            //var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct);
 
             //var cohortsIds = cohortUsersIds.Select(c => c.CohortId);
 
@@ -115,22 +117,26 @@ namespace si2.bll.Services
 
             //var cohorts = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct).Include(e => e.Cohorts).ToList();
             
-            var cohortsEntity = _userManager.Users
+            /*var cohortsEntity = _userManager.Users
                 .Include(u => u.UserCohorts) 
                 .ThenInclude(uc => uc.Cohort)
-                .Where(c => c.Id == userId).ToList();
+                .Where(c => c.Id == userId).ToList();*/
 
-            /*var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
+            var cohortsEntity = _uow.UserCohorts.GetAllIncluding(c => c.Cohort)
+                                .Where(c => c.UserId == userId)
+                                .Select(c => c.Cohort);
 
-            var result = _mapper.Map<PagedList<UserCohortDto>>(pagedListEntities);
+            var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
+
+            var result = _mapper.Map<PagedList<CohortDto>>(pagedListEntities);
             result.TotalCount = pagedListEntities.TotalCount;
             result.TotalPages = pagedListEntities.TotalPages;
             result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;*/
+            result.PageSize = pagedListEntities.PageSize;
 
-            //return result;
+            return result;
 
-            return null;
+            //return null;
 
         }
 
