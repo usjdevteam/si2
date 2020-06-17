@@ -29,7 +29,8 @@ namespace si2.dal.Entities
         public string NameEn { get; set; }
 
         [Required]
-        public float Credits { get; set; }
+        [Column(TypeName = "decimal(5,2)")]
+        public decimal Credits { get; set; }
 
         [ForeignKey("InstitutionId")]
         public Institution Institution { get; set; }
