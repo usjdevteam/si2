@@ -6,6 +6,25 @@
 
   <ItemGroup>
 
+    <Compile Remove="Migrations\20200611071153_cohortMygration.cs" />
+    <Compile Remove="Migrations\20200611071153_cohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200611091623_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611091623_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200611101437_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611101437_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200611164705_cohortMigration.cs" />
+    <Compile Remove="Migrations\20200611164705_cohortMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200612093541_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200612093541_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065131_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065131_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065256_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065256_MyCohortMygration.Designer.cs" />
+    <Compile Remove="Migrations\20200613065701_MyCohortMygration.cs" />
+    <Compile Remove="Migrations\20200613065701_MyCohortMygration.Designer.cs" />
+
+
+
     <Compile Remove="Migrations\20200603095235_delete1.cs" />
 
     <Compile Remove="Migrations\20200603095235_delete1.Designer.cs" />
@@ -45,6 +64,7 @@
     <Compile Remove="Migrations\20200612104824_Program_object_migration5.cs" />
     <Compile Remove="Migrations\20200612104824_Program_object_migration5.Designer.cs" />
 
+
     <Compile Remove="Migrations\20200611173307_Added_Address_Entity.cs" />
     <Compile Remove="Migrations\20200611173307_Added_Address_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200611182633_Added_ContactInfo_Entity.cs" />
@@ -59,6 +79,10 @@
     <Compile Remove="Migrations\20200612065454_Added_Institution_Enity.Designer.cs" />
     <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.cs" />
     <Compile Remove="Migrations\20200612065532_Added_Institution_Enity.Designer.cs" />
+
+    <Compile Remove="Migrations\20200612071755_Added_Institution_Enity.cs" />
+    <Compile Remove="Migrations\20200612071755_Added_Institution_Enity.Designer.cs" />
+
     <Compile Remove="Migrations\20200612181739_Added_Program_Entity.cs" />
     <Compile Remove="Migrations\20200612181739_Added_Program_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200613065124_Added_ApplicationUser_Entity.cs" />
@@ -73,6 +97,7 @@
     <Compile Remove="Migrations\20200614173506_Added_Address_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200614173557_Added_ContactInfo_Entity.cs" />
     <Compile Remove="Migrations\20200614173557_Added_ContactInfo_Entity.Designer.cs" />
+
     <Compile Remove="Migrations\20200616054312_Document_object_migration1.cs" />
     <Compile Remove="Migrations\20200616054312_Document_object_migration1.Designer.cs" />
     <Compile Remove="Migrations\20200616062224_Document_object_migration2.cs" />
@@ -82,6 +107,36 @@
     <Compile Remove="Migrations\20200616072225_Document_object_migration1.cs" />
     <Compile Remove="Migrations\20200616072225_Document_object_migration1.Designer.cs" />
 
+    <Compile Remove="Migrations\20200614174411_v4.cs" />
+    <Compile Remove="Migrations\20200614174411_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200615073334_v4.cs" />
+    <Compile Remove="Migrations\20200615073334_v4.Designer.cs" />
+
+
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200612180711_Add_Cohort_UserCohort.Designer.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200612184124_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.cs" />
+    <Compile Remove="Migrations\20200613152405_Add_Cohort_UserCohort2.Designer.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.cs" />
+    <Compile Remove="Migrations\20200613153147_Add_Cohort_UserCohort.Designer.cs" />
+    <Compile Remove="Migrations\20200615073604_v4.cs" />
+    <Compile Remove="Migrations\20200615073604_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200616072520_added_document_entity.cs" />
+    <Compile Remove="Migrations\20200616072520_added_document_entity.Designer.cs" />
+    <Compile Remove="Migrations\20200616074908_added_usercohort_entity.cs" />
+    <Compile Remove="Migrations\20200616074908_added_usercohort_entity.Designer.cs" />
+    <Compile Remove="Migrations\20200616075021_v4.cs" />
+    <Compile Remove="Migrations\20200616075021_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200616162712_v4.cs" />
+    <Compile Remove="Migrations\20200616162712_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200616164002_v4.cs" />
+    <Compile Remove="Migrations\20200616164002_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200616170641_v4.cs" />
+    <Compile Remove="Migrations\20200616170641_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200617184519_ddd.cs" />
+    <Compile Remove="Migrations\20200617184519_ddd.Designer.cs" />
 
   </ItemGroup>
 

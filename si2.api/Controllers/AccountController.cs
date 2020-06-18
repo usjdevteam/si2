@@ -48,16 +48,16 @@ namespace si2.api.Controllers
             if (user != null)
                 return BadRequest("user email already in use");
 
-            user = new ApplicationUser 
-            { 
-                UserName = model.Email, 
+            user = new ApplicationUser
+            {
+                UserName = model.Email,
                 Email = model.Email,
                 FirstNameAr = model.FirstNameAr,
                 LastNameAr = model.LastNameAr,
                 FirstNameFr = model.FirstNameFr,
                 LastNameFr = model.LastNameFr
             };
-            
+
             var password = StaticHelpers.GenerateRandomPassword();
 
             var result = await _userManager.CreateAsync(user, password);
@@ -148,7 +148,7 @@ namespace si2.api.Controllers
             };
 
             claims.AddRange(userClaims);
-            
+
             foreach (string role in userRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -164,7 +164,7 @@ namespace si2.api.Controllers
 
             var results = new
             {
-                roles = userRoles, 
+                roles = userRoles,
                 email = user.Email,
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 expiration = token.ValidTo

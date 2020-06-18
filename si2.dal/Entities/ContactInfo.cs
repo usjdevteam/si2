@@ -21,5 +21,6 @@ namespace si2.dal.Entities
         [MaxLength(30)]
         public string Fax { get; set; }
 
+        public ICollection<Institution> Institutions { get; set; }
     }
 }

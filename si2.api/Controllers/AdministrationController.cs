@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using si2.bll.Dtos.Requests.Account;
 using si2.bll.Dtos.Requests.Administration;
+using si2.bll.Dtos.Requests.Cohort;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Models;
+using si2.bll.Services;
 using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
@@ -23,13 +28,15 @@ namespace si2.api.Controllers
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserCohortService _userCohortService;
 
         public AdministrationController(ILogger<AdministrationController> logger,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserCohortService userCohortService)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
+            _userCohortService = userCohortService;
         }
 
         [HttpGet("users")]
@@ -195,7 +202,7 @@ namespace si2.api.Controllers
 
         [HttpPut("users/{userId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string userId,[FromBody] UpdateUserDto model,CancellationToken ct)
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] UpdateUserDto model, CancellationToken ct)
         {
             //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var user = await _userManager.FindByIdAsync(userId);
@@ -221,7 +228,7 @@ namespace si2.api.Controllers
 
         [HttpDelete("users/{userId}/roles")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> RevokeRolesFromUser([FromRoute]string userId, [FromBody]RolesDto removeRoles, CancellationToken ct)
+        public async Task<IActionResult> RevokeRolesFromUser([FromRoute] string userId, [FromBody] RolesDto removeRoles, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -238,7 +245,7 @@ namespace si2.api.Controllers
 
         [HttpDelete("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> RevokeClaimsFromUser([FromRoute]string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
+        public async Task<IActionResult> RevokeClaimsFromUser([FromRoute] string userId, [FromBody] UserClaimsDto removeClaims, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -264,6 +271,41 @@ namespace si2.api.Controllers
             var finalClaims = await _userManager.GetClaimsAsync(user);
 
             return Ok(finalClaims);
+
+        }
+
+        [HttpPost]
+        [Route("users/{userId}/cohorts")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> UpdateCohortsUser([FromRoute] String userId, [FromBody] ManageCohortsUserDto manageCohortsToUserDto, CancellationToken ct)
+        {
+            if (!await _userCohortService.ExistsAsync(userId, ct))
+                return NotFound();
+
+            var userCohortToReturn = await _userCohortService.AssignCohortsToUserAsync(userId, manageCohortsToUserDto, ct);
+
+            return Ok();
+
+            //return CreatedAtRoute("GetCohortsOfUser", userId, userCohortToReturn);
+
+        }
+
+        [HttpGet]
+        [Route("users/{userId}/cohorts", Name = "GetCohortsOfUser")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> GetCohortsOfUser([FromRoute] String userId, CancellationToken ct)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var cohortDtos = await _userCohortService.GetCohortsUserAsync(userId, ct);
+            if (cohortDtos == null)
+                return NotFound();
+            return Ok(cohortDtos);
 
         }
     }
