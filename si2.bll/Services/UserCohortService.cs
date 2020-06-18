@@ -73,15 +73,13 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCohortDto.DeleteCohortsIds)
                 {
-                    var userCohort = user.UserCohorts.FirstOrDefault(c => c.CohortId == dc && c.UserId == id);
-                    //var userCohort = user.UserCohorts
-                       //.Where(c => c.CohortId == dc && c.UserId == id)
-                       //.SingleOrDefault();
+                    var userCohort = await _uow.UserCohorts.FirstAsync(c => c.CohortId == dc && c.UserId == id, ct);
 
                     //if (user.UserCohorts.Any(c => ac == c.CohortId))
                     if (userCohort != null)
                     {
-                        user.UserCohorts.Remove(userCohort);
+                        //user.UserCohorts.Remove(userCohort);
+                        _uow.UserCohorts.Delete(userCohort);
                     }
                 }
             }

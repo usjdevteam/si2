@@ -46,14 +46,15 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCoursesDto.DeleteCoursesIds)
                 {
-                   var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
-                    //var userCourse = _uow.UserCourses.GetAllIncluding(c => c.Course)
-                                //.Where(c => c.UserId == id)
-                                //.Select(c => c.Course);
+                    //var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
+                    //var userCourse = user.UserCourses.Where(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
+
+                    var userCourse = await _uow.UserCourses.FirstAsync(c => c.CourseId == dc && c.UserId == id, ct);
 
                     if (userCourse != null)
                     {
-                        user.UserCourses.Remove(userCourse);
+                        //user.UserCourses.Remove(userCourse);
+                        _uow.UserCourses.Delete(userCourse);
                     }
                 }
             }
