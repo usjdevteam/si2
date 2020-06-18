@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using si2.bll.Dtos.Requests.Account;
 using si2.bll.Dtos.Requests.Administration;
 using si2.bll.Dtos.Requests.Cohort;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Models;
 using si2.bll.Services;

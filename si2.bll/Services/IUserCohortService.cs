@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.UserCohort;
 //using si2.bll.Dtos.Results.UserCohort;

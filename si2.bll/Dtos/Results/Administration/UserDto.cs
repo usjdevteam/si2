@@ -8,5 +8,10 @@ namespace si2.bll.Dtos.Results.Administration
     {
         public string Id { get; set; }
         public string Email { get; set; }
+
+
+
+        public string FirstNameFr { get; set; }
+        public string LastNameFr { get; set; }
     }
 }

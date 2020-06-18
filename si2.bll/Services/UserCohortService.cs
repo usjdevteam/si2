@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.UserCohort;
@@ -63,7 +64,9 @@ namespace si2.bll.Services
                 foreach (var ac in manageUsersCohortDto.AddCohortsIds)
                 {
                     if (!user.UserCohorts.Any(c => ac == c.CohortId))
+                    {
                         user.UserCohorts.Add(new UserCohort() { CohortId = ac, UserId = id });
+                    }
                 }
             }
 
@@ -71,10 +74,11 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCohortDto.DeleteCohortsIds)
                 {
-                    var userCohort = user.UserCohorts.FirstOrDefault(c => c.CohortId == dc && c.UserId == id);
+                    //var userCohort = user.UserCohorts.FirstOrDefault(c => c.CohortId == dc && c.UserId == id);
                     //var userCohort = user.UserCohorts
-                       //.Where(c => c.CohortId == dc && c.UserId == id)
-                       //.SingleOrDefault();
+                    //.Where(c => c.CohortId == dc && c.UserId == id)
+                    //.SingleOrDefault();
+                    var userCohort = user.UserCohorts.Where(c => c.CohortId == dc && c.UserId == id).FirstOrDefault();
 
                     //if (user.UserCohorts.Any(c => ac == c.CohortId))
                     if (userCohort != null)
@@ -92,7 +96,7 @@ namespace si2.bll.Services
                 _uow.UserCohorts.Add(new UserCohort() { UserId = id, CohortId = new Guid(cohortid) });
             }*/
 
-                    await _uow.SaveChangesAsync(ct);
+            await _uow.SaveChangesAsync(ct);
 
             /*var userCohortEntity = await _uow.UserCohorts.FindByAsync(c => c.UserId == id, ct); 
 
