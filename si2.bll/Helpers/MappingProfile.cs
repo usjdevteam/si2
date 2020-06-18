@@ -18,6 +18,7 @@ using si2.bll.Dtos.Requests.Course;
 using si2.bll.Dtos.Results.Course;
 using si2.bll.Dtos.Results.CourseCohortDto;
 using si2.bll.Dtos.Results.UserCourse;
+using si2.bll.Dtos.Results.Administration;
 
 namespace si2.bll.Helpers
 {
@@ -55,6 +56,8 @@ namespace si2.bll.Helpers
 
             CreateMap<CourseCohort, CourseCohortDto>();
             CreateMap<UserCourse, UserCourseDto>();
+
+            CreateMap<ApplicationUser, UserDto>();
         }
     }
 }

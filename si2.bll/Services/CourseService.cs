@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Course;
+using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Course;
+using si2.bll.Dtos.Results.UserCourse;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using Si2.common.Exceptions;
@@ -18,8 +22,11 @@ namespace si2.bll.Services
 {
     public class CourseService : ServiceBase, ICourseService
     {
-        public CourseService(IUnitOfWork uow, IMapper mapper, ILogger<ICourseService> logger) : base(uow, mapper, logger)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public CourseService(IUnitOfWork uow, IMapper mapper, ILogger<ICourseService> logger, UserManager<ApplicationUser> userManager) : base(uow, mapper, logger)
         {
+            _userManager = userManager;
         }
 
         public async Task<CourseDto> CreateCourseAsync(CreateCourseDto createCourseDto, CancellationToken ct)
@@ -68,7 +75,17 @@ namespace si2.bll.Services
             return CourseDto;
         }
 
-        
+        public async Task<Course> GetCourseEntityByIdAsync(Guid id, CancellationToken ct)
+        {
+            var CourseEntity = await _uow.Courses.GetAsync(id, ct);
+
+            if (CourseEntity != null)
+                return CourseEntity;
+            else
+                return null;
+        }
+
+
         public async Task<PagedList<CourseDto>> GetCoursesAsync(DataflowResourceParameters resourceParameters, CancellationToken ct)
         {
             var CourseEntities = _uow.Courses.GetAll();
@@ -110,6 +127,25 @@ namespace si2.bll.Services
         public Task<CourseDto> GetChildrenCourseByIdAsync(Guid id, CancellationToken ct)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<PagedList<UserDto>> GetUsersCourseAsync(Guid courseId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
+        {
+            var courseUsersIds = await _uow.UserCourses.FindByAsync(c => c.CourseId == courseId, ct);
+
+            var usersIds = courseUsersIds.Select(c => c.UserId);
+
+            var usersEntity = _userManager.Users.Where(user => usersIds.Contains(user.Id));
+
+            var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(usersEntity, resourceParameters.PageNumber, resourceParameters.PageSize, ct);
+
+            var result = _mapper.Map<PagedList<UserDto>>(pagedListEntities);
+            result.TotalCount = pagedListEntities.TotalCount;
+            result.TotalPages = pagedListEntities.TotalPages;
+            result.CurrentPage = pagedListEntities.CurrentPage;
+            result.PageSize = pagedListEntities.PageSize;
+
+            return result;
         }
     }
 }

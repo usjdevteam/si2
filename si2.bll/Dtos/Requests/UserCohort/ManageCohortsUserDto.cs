@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-
-
-namespace si2.bll.Dtos.Requests.Cohort
+namespace si2.bll.Dtos.Requests.UserCohort
 {
     public class ManageCohortsUserDto
     {

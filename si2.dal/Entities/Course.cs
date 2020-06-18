@@ -1,6 +1,7 @@
 ﻿using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -10,6 +11,8 @@ namespace si2.dal.Entities
     [Table("Course")]
     public class Course : Si2BaseDataEntity<Guid>, IAuditable
     {
+        private ICollection<UserCourse> _userCourses;
+
         [Required]
         [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
         public string Code { get; set; }
@@ -37,7 +40,11 @@ namespace si2.dal.Entities
 
         public ICollection<CourseCohort> CourseCohorts { get; set; }
 
-        public ICollection<UserCourse> UserCourses { get; set; }
+        public ICollection<UserCourse> UserCourses
+        {
+            get { return _userCourses ?? (_userCourses = new Collection<UserCourse>()); }
+            set { _userCourses = value; }
+        }
 
         public static object Where(Func<object, bool> p)
         {
