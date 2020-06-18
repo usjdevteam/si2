@@ -1,7 +1,6 @@
 using AutoMapper;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Cohort;
@@ -9,30 +8,15 @@ using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Course;
 using si2.bll.Helpers.PagedList;
-using si2.bll.Helpers.ResourceParameters;
 using si2.bll.ResourceParameters;
-
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.Extensions.Logging;
-using si2.bll.Dtos.Requests.Cohort;
-using si2.bll.Dtos.Results.Cohort;
-using si2.bll.Helpers.PagedList;
-using si2.bll.Helpers.ResourceParameters;
 
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
-using Si2.common.Exceptions;
 using System;
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
 using System.Linq;
 
 using System.Threading;
 using System.Threading.Tasks;
-using static si2.common.Enums;
 
 namespace si2.bll.Services
 {

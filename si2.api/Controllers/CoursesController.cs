@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using si2.bll.Dtos.Requests.Course;
 using si2.bll.Dtos.Requests.UserCourse;
 using si2.bll.Dtos.Results.Course;
@@ -16,7 +14,6 @@ using si2.bll.Services;
 using si2.common;
 using si2.dal.Entities;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -188,9 +185,9 @@ namespace si2.api.Controllers
         }
 
 
-        [HttpPost("{id}")]
-        [Route("{id}/users", Name = "UpdateUsersCourse")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost]
+        [Route("{id}/users", Name = "UpdateUseersCourse")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> UpdateUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersToCourseDto, CancellationToken ct)
         {
@@ -202,7 +199,7 @@ namespace si2.api.Controllers
             }
 
             var userCohortToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
-            return Ok();	
+            return Ok();
         }
 
         [HttpDelete("{id}/users", Name = "DeleteUsersCourse")]

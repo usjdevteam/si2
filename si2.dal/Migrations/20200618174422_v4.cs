@@ -121,7 +121,7 @@ namespace si2.dal.Migrations
                     NameFr = table.Column<string>(maxLength: 200, nullable: false),
                     NameAr = table.Column<string>(maxLength: 200, nullable: false),
                     NameEn = table.Column<string>(maxLength: 200, nullable: false),
-                    Credits = table.Column<float>(nullable: false),
+                    Credits = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     InstitutionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -235,6 +235,51 @@ namespace si2.dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Document",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    UniversityId = table.Column<Guid>(nullable: true),
+                    InstitutionId = table.Column<Guid>(nullable: true),
+                    ProgramId = table.Column<Guid>(nullable: true),
+                    FileName = table.Column<string>(nullable: true),
+                    NameFr = table.Column<string>(maxLength: 100, nullable: false),
+                    NameAr = table.Column<string>(maxLength: 100, nullable: false),
+                    NameEn = table.Column<string>(maxLength: 100, nullable: false),
+                    DescriptionFr = table.Column<string>(maxLength: 100, nullable: false),
+                    DescriptionAr = table.Column<string>(maxLength: 100, nullable: false),
+                    DescriptionEn = table.Column<string>(maxLength: 100, nullable: false),
+                    ContentType = table.Column<string>(nullable: false),
+                    FileData = table.Column<byte[]>(nullable: false),
+                    UploadedOn = table.Column<DateTime>(nullable: false),
+                    UploadedBy = table.Column<string>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Document", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Document_Program_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Program",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Document_Institution_UniversityId",
+                        column: x => x.UniversityId,
+                        principalTable: "Institution",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Document_AspNetUsers_UploadedBy",
+                        column: x => x.UploadedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CourseCohort",
                 columns: table => new
                 {
@@ -318,6 +363,21 @@ namespace si2.dal.Migrations
                 table: "CourseCohort",
                 columns: new[] { "CourseId", "CohortId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document_ProgramId",
+                table: "Document",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document_UniversityId",
+                table: "Document",
+                column: "UniversityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document_UploadedBy",
+                table: "Document",
+                column: "UploadedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Institution_AddressId",
@@ -420,6 +480,9 @@ namespace si2.dal.Migrations
 
             migrationBuilder.DropTable(
                 name: "CourseCohort");
+
+            migrationBuilder.DropTable(
+                name: "Document");
 
             migrationBuilder.DropTable(
                 name: "UserCohort");

@@ -5,13 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 //using Newtonsoft.Json;
-using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Requests.ProgramLevel;
-using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.ProgramLevel;
-using si2.bll.Helpers.ResourceParameters;
 using si2.bll.Services;
-using si2.common;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +19,13 @@ namespace si2.api.Controllers
     [Route("api/programLevels")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
-    public class ProgramLevelController : ControllerBase
+    public class ProgramLevelsController : ControllerBase
     {
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<DataflowsController> _logger;
         private readonly IProgramLevelService _programLevelService;
 
-        public ProgramLevelController(LinkGenerator linkGenerator, ILogger<DataflowsController> logger, IProgramLevelService programLevelService)
+        public ProgramLevelsController(LinkGenerator linkGenerator, ILogger<DataflowsController> logger, IProgramLevelService programLevelService)
         {
             _linkGenerator = linkGenerator;
             _logger = logger;

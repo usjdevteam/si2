@@ -12,8 +12,7 @@ namespace si2.dal.Entities
     [Table("Course")]
     public class Course : Si2BaseDataEntity<Guid>, IAuditable
     {
-        private ICollection<UserCourse> _userCourses;
-
+       
         [Required]
 
         [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
@@ -39,15 +38,8 @@ namespace si2.dal.Entities
         public Institution Institution { get; set; }
         public Guid InstitutionId { get; set; }
 
-     
         public ICollection<CourseCohort> CourseCohorts { get; set; }
 
-        public ICollection<UserCourse> UserCourses
-        {
-            get { return _userCourses ?? (_userCourses = new Collection<UserCourse>()); }
-            set { _userCourses = value; }
-        }
-
-
+        public ICollection<UserCourse> UserCourses { get; set; }
     }
 }
