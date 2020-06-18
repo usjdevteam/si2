@@ -1,7 +1,4 @@
 ﻿using si2.dal.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +19,8 @@ namespace si2.dal.UnitOfWork
         IUserCourseRepository UserCourses { get; }
         ICourseCohortRepository CourseCohorts { get; }
 
+
+        IDocumentRepository Documents { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);
 

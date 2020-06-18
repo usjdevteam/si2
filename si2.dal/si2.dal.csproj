@@ -97,6 +97,16 @@
     <Compile Remove="Migrations\20200614173506_Added_Address_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200614173557_Added_ContactInfo_Entity.cs" />
     <Compile Remove="Migrations\20200614173557_Added_ContactInfo_Entity.Designer.cs" />
+
+    <Compile Remove="Migrations\20200616054312_Document_object_migration1.cs" />
+    <Compile Remove="Migrations\20200616054312_Document_object_migration1.Designer.cs" />
+    <Compile Remove="Migrations\20200616062224_Document_object_migration2.cs" />
+    <Compile Remove="Migrations\20200616062224_Document_object_migration2.Designer.cs" />
+    <Compile Remove="Migrations\20200616072141_Document_object_migration1.cs" />
+    <Compile Remove="Migrations\20200616072141_Document_object_migration1.Designer.cs" />
+    <Compile Remove="Migrations\20200616072225_Document_object_migration1.cs" />
+    <Compile Remove="Migrations\20200616072225_Document_object_migration1.Designer.cs" />
+
     <Compile Remove="Migrations\20200614174411_v4.cs" />
     <Compile Remove="Migrations\20200614174411_v4.Designer.cs" />
     <Compile Remove="Migrations\20200615073334_v4.cs" />

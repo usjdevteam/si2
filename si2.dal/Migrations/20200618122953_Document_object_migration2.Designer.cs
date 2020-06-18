@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200618122953_Document_object_migration2")]
+    partial class Document_object_migration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,35 +353,6 @@ namespace si2.dal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.Cohort", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProgramId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Promotion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
-
-                    b.HasIndex("Promotion")
-                        .IsUnique();
-
-                    b.ToTable("Cohort");
-                });
-
             modelBuilder.Entity("si2.dal.Entities.ContactInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -408,81 +381,6 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ContactInfo");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Course", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<decimal>("Credits")
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<Guid>("InstitutionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasName("IX_Course_Code");
-
-                    b.HasIndex("InstitutionId");
-
-                    b.ToTable("Course");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.CourseCohort", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CohortId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CohortId");
-
-                    b.HasIndex("CourseId", "CohortId")
-                        .IsUnique();
-
-                    b.ToTable("CourseCohort");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Dataflow", b =>
@@ -610,30 +508,8 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("ContactInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -641,16 +517,6 @@ namespace si2.dal.Migrations
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasName("IX_Institution_Code");
-
-                    b.HasIndex("ContactInfoId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("Institution");
                 });
@@ -710,26 +576,8 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Credits")
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<Guid>("InstitutionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -738,46 +586,22 @@ namespace si2.dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InstitutionId");
-
-                    b.HasIndex("NameAr")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameAr");
-
-                    b.HasIndex("NameEn")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameEn");
-
-                    b.HasIndex("NameFr")
-                        .IsUnique()
-                        .HasName("IX_ProgramLevel_NameFr");
-
                     b.ToTable("ProgramLevel");
                 });
 
-
             modelBuilder.Entity("si2.dal.Entities.University", b =>
-
-            modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
-
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CohortId")
-                        .HasColumnType("uniqueidentifier");
-
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
-
 
                     b.Property<Guid?>("UniversityId")
                         .HasColumnType("uniqueidentifier");
@@ -787,48 +611,6 @@ namespace si2.dal.Migrations
                     b.HasIndex("UniversityId");
 
                     b.ToTable("University");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CohortId");
-
-                    b.HasIndex("UserId", "CohortId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("UserCohort");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.UserCourse", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId", "CourseId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("UserCourse");
-
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Vehicle", b =>
@@ -911,60 +693,8 @@ namespace si2.dal.Migrations
                     b.HasOne("Z.EntityFramework.Plus.AuditEntry", "Parent")
                         .WithMany("Properties")
                         .HasForeignKey("AuditEntryID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Cohort", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Program", "Program")
-                        .WithMany()
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Course", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.CourseCohort", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Cohort", "Cohort")
-                        .WithMany("CourseCohorts")
-                        .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.Course", "Course")
-                        .WithMany("CourseCohorts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Institution", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Address", "Address")
-                        .WithMany("Institutions")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.ContactInfo", "ContactInfo")
-                        .WithMany("Institutions")
-                        .HasForeignKey("ContactInfoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.Institution", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
@@ -993,49 +723,14 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Institution", "Institution")
                         .WithMany("Programs")
                         .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
-                        .WithMany()
+                        .WithMany("Programs")
                         .HasForeignKey("ProgramLevelId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.ProgramLevel", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Cohort", "Cohort")
-                        .WithMany("UserCohorts")
-                        .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany("UserCohorts")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.UserCourse", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Course", "Course")
-                        .WithMany("UserCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.University", b =>

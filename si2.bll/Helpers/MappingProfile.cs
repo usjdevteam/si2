@@ -24,13 +24,17 @@ using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Requests.Institution;
 using si2.bll.Dtos.Results.Institution;
 using si2.bll.Dtos.Results.Program;
+
 using si2.bll.Dtos.Results.Institution;
 
 using si2.bll.Dtos.Results.UserCohort;
 
 using si2.bll.Helpers.PagedList;
 
+
 using si2.dal.Entities;
+using si2.bll.Dtos.Requests.Document;
+using si2.bll.Dtos.Results.Document;
 
 using System.Linq;
 
@@ -81,6 +85,12 @@ namespace si2.bll.Helpers
             CreateMap<UpdateAddressDto, Address>(); 
             CreateMap<Address, AddressDto>();
 
+
+            CreateMap<CreateDocumentDto, Document>();
+            CreateMap<UpdateDocumentDto, Document>();
+            CreateMap<SoftDeleteDocumentDto, Document>();
+            CreateMap<Document, DocumentDto>();
+
             CreateMap<CreateInstitutionDto, Institution>();
             CreateMap<UpdateInstitutionDto, Institution>();
             CreateMap<Institution, InstitutionDto>();
@@ -97,6 +107,7 @@ namespace si2.bll.Helpers
             CreateMap<UserCourse, UserCourseDto>();
 
             CreateMap<ApplicationUser, UserDto>();
+
         }
     }
 }

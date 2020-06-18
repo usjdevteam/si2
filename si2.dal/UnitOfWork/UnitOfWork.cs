@@ -1,11 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Context;
 using si2.dal.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +31,8 @@ namespace si2.dal.UnitOfWork
         public IUserCourseRepository UserCourses => _serviceProvider.GetService<IUserCourseRepository>();
         public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
 
+
+        public IDocumentRepository Documents => _serviceProvider.GetService<IDocumentRepository>();
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {

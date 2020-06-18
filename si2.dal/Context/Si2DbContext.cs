@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -35,6 +34,8 @@ namespace si2.dal.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Program> Programs { get; set; }
+
+		public DbSet<Document> Documents { get; set; }
 
 
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)

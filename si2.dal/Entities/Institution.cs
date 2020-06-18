@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 
 namespace si2.dal.Entities
@@ -36,6 +35,8 @@ namespace si2.dal.Entities
         public ICollection<Institution> Children { get; set; }
 
         public ICollection<Program> Programs { get; set; }
+
+        public ICollection<Document> Documents { get; set; }
     }
 }
 
