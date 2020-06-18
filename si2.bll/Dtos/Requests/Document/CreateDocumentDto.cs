@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace si2.bll.Dtos.Requests.Document
 {
@@ -48,9 +46,5 @@ namespace si2.bll.Dtos.Requests.Document
         [Display(Name = "DescriptionEn")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string DescriptionEn { get; set; }
-
-        [Required]
-        [Display(Name = "IsDeleted")]
-        public bool IsDeleted { get; set; }
     }
 }

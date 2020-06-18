@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
@@ -38,20 +37,16 @@ namespace si2.api.Controllers
             _userManager = userManager;
         }
 
+       
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DocumentDto))]
         public async Task<IActionResult> UploadDocument(IFormFile file, [FromForm] string fileInfoText, CancellationToken ct)
         {
+            var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
             byte[] fileBytesArray = null;
-            //var userId = _userManager.GetUserId(HttpContext.User);
-            //var user = await _userManager.GetUserAsync(HttpContext.User);
-            //var userId = user?.Id;
-            var userId = User.FindFirstValue(ClaimTypes.Email); // will give the user's userId
-            var userName = User.FindFirstValue(ClaimTypes.Name); // will give the user's userName
-            Console.WriteLine("Controller:" + userId);
-
+            
             using (var fileMemoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(fileMemoryStream, ct);
@@ -64,9 +59,7 @@ namespace si2.api.Controllers
                 fileBytesArray,
                 file.FileName,
                 file.ContentType,
-                /*User?.Identity?.Name,*/
-                userId,
-                /*userId,*/
+                userEmail,
                 ct);
 
             return Ok();
@@ -79,20 +72,23 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult GetDocument(Guid id)
         {
-           
             for (int i = 0; i < _documentService.GetDocuments().Count; i++)
             {
                 if (id == _documentService.GetDocuments()[i].Id)
                 {
-                    string fileName = _documentService.GetDocuments()[i].FileName;
+                    
+                    if(_documentService.GetDocuments()[i].IsDeleted.Equals(false))
+                    {
+                        string fileName = _documentService.GetDocuments()[i].FileName;
 
-                    byte[] fileBytes = _documentService.GetDocuments()[i].FileData;
+                        byte[] fileBytes = _documentService.GetDocuments()[i].FileData;
 
-                    return File(fileBytes, "APPLICATION/octet-stream", fileName);
+                        return File(fileBytes, "APPLICATION/octet-stream", fileName);
+                    }
                 }
 
             }
-            //return null;
+
             return NotFound();
         }
 
@@ -103,14 +99,33 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult GetDocuments()
         {
+            List<Document> docsReturned = new List<Document>();
             var docs = _documentService.GetDocuments();
 
-            return Ok(docs);
+            if(docs.Count() < 1)
+            {
+                return NoContent();
+            }
+
+            for (int i = 0; i < docs.Count; i++)
+            {
+                 if (docs[i].IsDeleted.Equals(false))
+                 {
+                   docsReturned.Add(docs[i]);  
+                 }
+            }
+
+            if(docsReturned.Count() < 1)
+            {
+                return NoContent();
+            }
+
+            return Ok(docsReturned);
         }
 
 
         [HttpPut("{id}")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateDocument([FromRoute]Guid id, [FromBody] UpdateDocumentDto updateDocumentDto, CancellationToken ct)
@@ -118,39 +133,58 @@ namespace si2.api.Controllers
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
-            var documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
+            DocumentDto documentToReturn = null;
+            var docs = _documentService.GetDocuments();
 
-            if (documentToReturn == null)
+            for (int i = 0; i < docs.Count; i++)
+            {
+                if (id == docs[i].Id)
+                {
+                    if (docs[i].IsDeleted.Equals(false))
+                    {
+                        documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
+                    }
+                }
+            }
+
+            if (documentToReturn == null) 
+            { 
                 return BadRequest();
+            }
 
             return Ok(documentToReturn);
         }
 
 
-
         [HttpPatch("{id}")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, [FromBody] JsonPatchDocument<UpdateDocumentDto> patchDoc, CancellationToken ct)
+        public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, [FromBody] SoftDeleteDocumentDto softDeleteDocumentDto, CancellationToken ct)
         {
-            if (!await _documentService.ExistsAsync(id, ct)) 
+            if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
-            var documentToPatch = await _documentService.GetUpdateDocumentDto(id, ct);
-            patchDoc.ApplyTo(documentToPatch, ModelState);
+            DocumentDto documentToReturn = null;
+            var docs = _documentService.GetDocuments();
 
-            TryValidateModel(documentToPatch);
-
-            if (!ModelState.IsValid)
-                return new UnprocessableEntityObjectResult(ModelState);
-
-            var documentToReturn = await _documentService.PartialUpdateDocumentAsync(id, documentToPatch, ct);
+            for (int i = 0; i < docs.Count; i++)
+            {
+                if (id == docs[i].Id)
+                {
+                    if (docs[i].IsDeleted.Equals(false))
+                    {
+                        documentToReturn = await _documentService.SoftDeleteDocumentAsync(id, softDeleteDocumentDto, ct);
+                    }
+                }
+            }
 
             if (documentToReturn == null)
+            {
                 return BadRequest();
+            }
 
-            return Ok(documentToReturn);
+            return Ok();
         }
     }
 }

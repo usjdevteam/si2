@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Entities;
 using si2.dal.Interfaces;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;

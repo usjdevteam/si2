@@ -7,8 +7,6 @@ using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Requests.Program;
 using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.Program;
-using si2.bll.Helpers.PagedList;
-
 using si2.dal.Entities;
 using si2.bll.Dtos.Requests.Document;
 using si2.bll.Dtos.Results.Document;
@@ -38,6 +36,7 @@ namespace si2.bll.Helpers
 
             CreateMap<CreateDocumentDto, Document>();
             CreateMap<UpdateDocumentDto, Document>();
+            CreateMap<SoftDeleteDocumentDto, Document>();
             CreateMap<Document, DocumentDto>();
         }
     }
