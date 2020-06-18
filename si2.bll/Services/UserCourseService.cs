@@ -37,7 +37,9 @@ namespace si2.bll.Services
             {
                 foreach (var ac in manageUsersCoursesDto.AddCoursesIds)
                 {
-                    if (!user.UserCourses.Any(c => ac == c.CourseId))
+                    //if(user.UserCourses == null)
+						//user.UserCourses = new List<UserCourse>();
+					if (!user.UserCourses.Any(c => ac == c.CourseId))
                         user.UserCourses.Add(new UserCourse() { CourseId = ac, UserId = id });
                 }
             }

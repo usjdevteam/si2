@@ -19,16 +19,10 @@ namespace si2.bll.Dtos.Requests.Institution
         [Required]
         public string NameEn { get; set; }
 
-        /*[Required]
+        [Required]
         public Guid AddressId { get; set; }
 
         [Required]
-        public Guid ContactInfoId { get; set; }*/
-
-        [Required]
-        public si2.bll.Dtos.Requests.Address.CreateAddressDto Address { get; set; }
-
-        [Required]
-        public si2.bll.Dtos.Requests.ContactInfo.CreateContactInfoDto ContactInfo { get; set; }
+        public Guid ContactInfoId { get; set; }
     }
 }

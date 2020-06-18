@@ -29,6 +29,7 @@ namespace si2.dal.Entities
         public string LastNameAr { get; set; }
 
         private ICollection<UserCohort> _userCohorts;
+		//public ICollection<UserCohort> UserCohorts = new Collection<UserCohort>();
         public ICollection<UserCohort> UserCohorts 
         {
           get { return _userCohorts ?? (_userCohorts = new Collection<UserCohort>()); }
