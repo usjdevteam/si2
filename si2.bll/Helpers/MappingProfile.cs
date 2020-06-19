@@ -42,8 +42,6 @@ namespace si2.bll.Helpers
             CreateMap<ProgramLevel, ProgramLevelDto>();
             CreateMap<ProgramLevel, UpdateProgramLevelDto>();
 
-
-
             CreateMap<CreateCohortDto, Cohort>();
             CreateMap<UpdateCohortDto, Cohort>();
             CreateMap<Cohort, CohortDto>();
@@ -51,8 +49,6 @@ namespace si2.bll.Helpers
 
             CreateMap<ApplicationUser, UserDto>();
             CreateMap<Course, CourseDto>();
-
-
 
             CreateMap<CreateProgramDto, Program>();
             CreateMap<Program, ProgramDto>();

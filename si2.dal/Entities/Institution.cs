@@ -23,10 +23,10 @@ namespace si2.dal.Entities
 
         public Guid AddressId { get; set; }
         [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
         public Guid ContactInfoId { get; set; }
         [ForeignKey("ContactInfoId")]
-        public virtual ContactInfo ContactInfo { get; set; }
+        public ContactInfo ContactInfo { get; set; }
 
         public Institution Parent { get; set; }
         public ICollection<Institution> Children { get; set; }

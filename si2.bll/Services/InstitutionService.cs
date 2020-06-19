@@ -106,7 +106,7 @@ namespace si2.bll.Services
         {
             InstitutionDto institutionDto = null;
 
-            var institutionEntity = await _uow.Institutions.GetAsync(id, ct);
+            var institutionEntity = await _uow.Institutions.GetCompleteAsync(id, ct);
             if (institutionEntity != null)
             {
                 institutionDto = _mapper.Map<InstitutionDto>(institutionEntity);
@@ -145,7 +145,7 @@ namespace si2.bll.Services
         */
         public async Task<PagedList<InstitutionDto>> GetInstitutionsAsync(InstitutionResourceParameters resourceParameters, CancellationToken ct)
         {
-            var institutionEntities = _uow.Institutions.GetAll();
+            var institutionEntities = _uow.Institutions.GetAllComplete();
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
