@@ -44,17 +44,6 @@ namespace si2.api.Controllers
             return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
-
-        /* [HttpDelete("{id}")]
-         [Authorize(AuthenticationSchemes = "Bearer")]
-         [ProducesResponseType(StatusCodes.Status204NoContent)]
-         public async Task<ActionResult> DeleteInstitution(Guid id, CancellationToken ct)
-         {
-             await _institutionService.DeleteInstitutionByIdAsync(id, ct);
-
-             return NoContent();
-         }*/
-
         [HttpGet("{id}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
@@ -97,7 +86,7 @@ namespace si2.api.Controllers
         [HttpPost("{id}/institutions")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstitutionDto))]
-        public async Task<ActionResult> CreateChildInstitution([FromRoute]Guid id, [FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
+        public async Task<ActionResult> CreateInstitution([FromRoute]Guid id, [FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
         {
             if (!await _institutionService.ExistsAsync(id, ct))
                 return NotFound();
@@ -108,20 +97,6 @@ namespace si2.api.Controllers
 
             return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
-
-        /*[HttpGet("{id}/institutions", Name = "GetChildrenInstitution")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetChildrenInstitution(Guid id, CancellationToken ct)
-        {
-            var institutionDto = await _institutionService.GetChildrenInstitutionByIdAsync(id, ct);
-
-            if (institutionDto == null)
-                return NotFound();
-
-            return Ok(institutionDto);
-        }*/
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
@@ -138,29 +113,7 @@ namespace si2.api.Controllers
             return Ok(institutionToReturn);
         }
 
-        /*
-                [HttpPatch("{id}")]
-                public async Task<ActionResult> UpdateInstitution([FromRoute]Guid id, [FromBody] JsonPatchDocument<UpdateInstitutionDto> patchDoc, CancellationToken ct)
-                {
-                    if (! await _institutionService.ExistsAsync(id, ct))
-                        return NotFound();
-
-                    var institutionToPatch = await _institutionService.GetUpdateInstitutionDto(id, ct);
-                    patchDoc.ApplyTo(institutionToPatch, ModelState);
-
-                    TryValidateModel(institutionToPatch);
-
-                    if (!ModelState.IsValid)
-                        return new UnprocessableEntityObjectResult(ModelState);
-
-                    var institutionToReturn = await _institutionService.PartialUpdateInstitutionAsync(id, institutionToPatch, ct);
-                    if (institutionToReturn == null)
-                        return BadRequest();
-
-                    return Ok(institutionToReturn);
-                }
-
-        */
+       
         private string CreateInstitutionsResourceUri(InstitutionResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
             switch (type)

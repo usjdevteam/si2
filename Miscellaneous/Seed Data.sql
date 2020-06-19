@@ -1,6 +1,26 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
 
+		DECLARE @Id_Role_SuperAdmin UNIQUEIDENTIFIER = NEWID()
+		DECLARE @Id_Role_Administrator UNIQUEIDENTIFIER = NEWID()
+		DECLARE @Id_Role_User UNIQUEIDENTIFIER = NEWID()
+		INSERT INTO AspNetRoles
+		(Id,						Name,				NormalizedName,		ConcurrencyStamp)
+		Values
+		(@Id_Role_SuperAdmin,		'SuperAdmin',		'SUPSERADMIN',		NEWID()),
+		(@Id_Role_Administrator,	'Administrator',	'ADMINISTRATOR',	NEWID()),
+		(@Id_Role_User,				'User',				'USER',				NEWID())
+
+		DECLARE @Id_User_SuperAdmin UNIQUEIDENTIFIER = NEWID() -- password Super_123
+		INSERT INTO AspNetUsers
+		(ID,		UserName,				NormalizeduserName,		Email,					NormalizedEmail,		PasswordHash,	
+		SecurityStamp, ConcurrencyStamp,	 EmailConfirmed, PhoneNumberConfirmed,	TwoFactorEnabled,	LockoutEnabled, AccessFailedCount, FirstNameAr, FirstNameFr, LastNameAr, LastNameFr)
+		VALUES
+		(@Id_User_SuperAdmin,	'superadmin@si2.com',	'SUPERADMIN@SI2.COM',   'superadmin@si2.com',	'SUPERADMIN@SI2.COM',	'AQAAAAEAACcQAAAAEO0WixeZWeD5CFlJuskzYLYd+52mZgaHvJZM19TPL3vzYv501aT2QwzUS4XxrCFJQw==', 
+		NEWID(),		NEWID(),		1,				0,						0,					0,				0,				N'سوبر',			'Super',		N'أدمن',		'Admin')
+
+		INSERT INTO AspNetUserRoles (RoleId, UserId)
+		VALUES(@Id_Role_SuperAdmin, @Id_User_SuperAdmin)
 
 		-- 
 		DECLARE @RowsTotal  INT = 0

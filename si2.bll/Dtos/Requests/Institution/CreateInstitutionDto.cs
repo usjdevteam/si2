@@ -1,5 +1,6 @@
 ﻿using si2.bll.Dtos.Requests.Address;
 using si2.bll.Dtos.Requests.ContactInfo;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace si2.bll.Dtos.Requests.Institution
@@ -23,5 +24,7 @@ namespace si2.bll.Dtos.Requests.Institution
 
         [Required]
         public CreateContactInfoDto ContactInfo { get; set; }
+
+        public Guid? ParentInsitutionId { get; set; }
     }
 }
