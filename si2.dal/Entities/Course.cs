@@ -35,7 +35,7 @@ namespace si2.dal.Entities
         public decimal Credits { get; set; }
 
         [ForeignKey("InstitutionId")]
-        public Institution Institution { get; set; }
+        public Institution Institution { get; set; } 
         public Guid InstitutionId { get; set; }
 
         public ICollection<CourseCohort> CourseCohorts { get; set; }

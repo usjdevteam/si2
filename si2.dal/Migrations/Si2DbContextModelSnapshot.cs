@@ -489,7 +489,6 @@ namespace si2.dal.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
@@ -575,7 +574,7 @@ namespace si2.dal.Migrations
                         .HasMaxLength(100);
 
                     b.Property<Guid?>("ProgramId")
- .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -596,14 +595,12 @@ namespace si2.dal.Migrations
 
                     b.HasIndex("ProgramId");
 
-
                     b.HasIndex("UniversityId");
 
                     b.HasIndex("UploadedBy");
 
                     b.ToTable("Document");
                 });
-
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
                 {
@@ -922,7 +919,6 @@ namespace si2.dal.Migrations
                         .WithMany("CourseCohorts")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
-
                         .IsRequired();
                 });
 
@@ -955,7 +951,7 @@ namespace si2.dal.Migrations
                         .WithMany()
                         .HasForeignKey("UploadedBy")
                         .OnDelete(DeleteBehavior.Restrict)
-                 .IsRequired();
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
