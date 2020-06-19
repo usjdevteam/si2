@@ -114,11 +114,11 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCoursesDto.DeleteUsersIds)
                 {
-                    var userCourse = course.UserCourses.Where(c => c.UserId == dc && c.CourseId == id).FirstOrDefault();
+                    var userCourse = await _uow.UserCourses.FirstAsync(c => c.UserId == dc && c.CourseId == id, ct);
 
                     if (userCourse != null)
                     {
-                        course.UserCourses.Remove(userCourse);
+                        _uow.UserCourses.Delete(userCourse);
                     }
                 }
             }
@@ -127,30 +127,5 @@ namespace si2.bll.Services
 
             return userCourseDto;
         }
-
-        public async Task DeleteUsersCourse(Guid id, ManageCoursesUserDto manageUsersCoursesDto, CancellationToken ct)
-        {
-            try
-            {
-                if (manageUsersCoursesDto.DeleteUsersIds != null)
-                {
-                    foreach (var dc in manageUsersCoursesDto.DeleteUsersIds)
-                    {
-                        var userCourse = await _uow.UserCourses.FirstAsync(c => c.UserId == dc && c.CourseId == id, ct);
-
-                        if (userCourse != null)
-                        {
-                            _uow.UserCourses.Delete(userCourse);
-                        }
-                    }
-                    await _uow.SaveChangesAsync(ct);
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                _logger.LogError(e, string.Empty);
-            }
-        }
-        
     }
 }
