@@ -6,14 +6,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static si2.common.Enums;
+
 namespace si2.dal.Entities
 {
     [Table("Course")]
     public class Course : Si2BaseDataEntity<Guid>, IAuditable
     {
-        private ICollection<UserCourse> _userCourses;
-
+       
         [Required]
+
         [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
         public string Code { get; set; }
 
@@ -30,30 +31,15 @@ namespace si2.dal.Entities
         public string NameEn { get; set; }
 
         [Required]
-        public float Credits { get; set; }
+        [Column(TypeName = "decimal(5,2)")]
+        public decimal Credits { get; set; }
 
-        [Required]
-        [ForeignKey("Institution")]
+        [ForeignKey("InstitutionId")]
+        public Institution Institution { get; set; } 
         public Guid InstitutionId { get; set; }
-
-        public virtual Institution Institution { get; set; }
 
         public ICollection<CourseCohort> CourseCohorts { get; set; }
 
-        public ICollection<UserCourse> UserCourses
-        {
-            get { return _userCourses ?? (_userCourses = new Collection<UserCourse>()); }
-            set { _userCourses = value; }
-        }
-
-        public static object Where(Func<object, bool> p)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Count()
-        {
-            throw new NotImplementedException();
-        }
+        public ICollection<UserCourse> UserCourses { get; set; }
     }
 }

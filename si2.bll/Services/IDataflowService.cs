@@ -20,5 +20,7 @@ namespace si2.bll.Services
         Task DeleteDataflowByIdAsync(Guid id, CancellationToken ct);
         Task<PagedList<DataflowDto>> GetDataflowsAsync (DataflowResourceParameters pagedResourceParameters, CancellationToken ct);
         Task<bool> ExistsAsync(Guid id, CancellationToken ct);
+
+        Task ManageDataflowVehicles(Guid dataflowId, List<Guid> AddedVehicleIds, List<Guid> DeletedVehicleIds, CancellationToken ct);
     }
 }

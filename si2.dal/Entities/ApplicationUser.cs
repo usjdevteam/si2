@@ -27,19 +27,9 @@ namespace si2.dal.Entities
         [MaxLength(50)]
         public string LastNameAr { get; set; }
 
-        private ICollection<UserCohort> _userCohorts;
-        public ICollection<UserCohort> UserCohorts
-        {
-            get { return _userCohorts ?? (_userCohorts = new Collection<UserCohort>()); }
-            set { _userCohorts = value; }
-        }
+        public ICollection<UserCohort> UserCohorts { get; set; }
 
-        private ICollection<UserCourse> _userCourses;
-        public ICollection<UserCourse> UserCourses
-        {
-            get { return _userCourses ?? (_userCourses = new Collection<UserCourse>()); }
-            set { _userCourses = value; }
-        }
+        public ICollection<UserCourse> UserCourses { get; set; }
     }
 }
 

@@ -34,9 +34,9 @@ namespace si2.tests.Services
         private Dataflow mockDataFlow = new Dataflow()
         {
             Id = new Guid("31B389D0-4A20-4978-DDCB-08D7C432FC14"),
-            Name = "timberland",
-            Status = DataflowStatus.Started,
-            Tag = "I like tags",
+            //Name = "timberland",
+            //Status = DataflowStatus.Started,
+            //Tag = "I like tags",
             Title = "To be or not to be, that is the answer",
             RowVersion = Convert.FromBase64String("AAAAAAAAB94=")
         };

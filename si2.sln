@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "si2.common", "si2.common\si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "si2.tests", "si2.tests\si2.tests.csproj", "{9F08B8D3-3A46-49CD-8FDA-5AA199732F81}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellaneous", "Miscellaneous", "{60397EEA-6AE5-42BA-93EB-B3F4D20C70B3}"
+	ProjectSection(SolutionItems) = preProject
+		Miscellaneous\Clear Data.sql = Miscellaneous\Clear Data.sql
+		Miscellaneous\Seed Data.sql = Miscellaneous\Seed Data.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

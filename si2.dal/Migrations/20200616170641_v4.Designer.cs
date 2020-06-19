@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200616130704_Added_Course_CourseCohort_UserCourse_Entities")]
-    partial class Added_Course_CourseCohort_UserCourse_Entities
+    [Migration("20200616170641_v4")]
+    partial class v4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -373,6 +373,8 @@ namespace si2.dal.Migrations
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
 
                     b.HasIndex("Promotion")
                         .IsUnique();
@@ -771,7 +773,16 @@ namespace si2.dal.Migrations
                     b.HasOne("Z.EntityFramework.Plus.AuditEntry", "Parent")
                         .WithMany("Properties")
                         .HasForeignKey("AuditEntryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.Cohort", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Program", "Program")
+                        .WithMany()
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -780,22 +791,22 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Institution", "Institution")
                         .WithMany()
                         .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("si2.dal.Entities.CourseCohort", b =>
                 {
                     b.HasOne("si2.dal.Entities.Cohort", "Cohort")
-                        .WithMany()
+                        .WithMany("CourseCohorts")
                         .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.Course", "Course")
                         .WithMany("CourseCohorts")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -804,13 +815,13 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Address", "Address")
                         .WithMany("Institutions")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ContactInfo", "ContactInfo")
                         .WithMany("Institutions")
                         .HasForeignKey("ContactInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.Institution", "Parent")
@@ -823,13 +834,13 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Institution", "Institution")
                         .WithMany("Programs")
                         .HasForeignKey("InstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ProgramLevel", "ProgramLevel")
                         .WithMany("Programs")
                         .HasForeignKey("ProgramLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -838,7 +849,7 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Cohort", "Cohort")
                         .WithMany("UserCohorts")
                         .HasForeignKey("CohortId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
@@ -851,7 +862,7 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Course", "Course")
                         .WithMany("UserCourses")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")

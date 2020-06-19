@@ -18,7 +18,7 @@ namespace si2.bll.Dtos.Requests.Cohort
         [Required]
         public Guid ProgramId { get; set; }
 
-        public ICollection<ManageCoursesCohortDto> CourseCohorts { get; set; }
+        public List<ManageCoursesCohortDto> CourseCohorts { get; set; }
 
         public List<ManageCohortsUserDto> UserCohorts { get; set; }
 

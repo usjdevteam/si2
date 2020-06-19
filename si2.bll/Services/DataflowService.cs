@@ -9,6 +9,7 @@ using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using Si2.common.Exceptions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,17 +111,16 @@ namespace si2.bll.Services
             {
                 if (Enum.TryParse(resourceParameters.Status, true, out DataflowStatus status))
                 {
-                    dataflowEntities = dataflowEntities.Where(a => a.Status == status);
+                    dataflowEntities = dataflowEntities.Where(c => 1==1);
                 }
             }
 
             if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
             {
-                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLowerInvariant();
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
                 dataflowEntities = dataflowEntities
-                    .Where(a => a.Title.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.Name.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                            || a.Tag.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                    .Where(a => a.Title.ToLower().Contains(searchQueryForWhereClause))
+                       ;
             }
 
             var pagedListEntities = await PagedList<Dataflow>.CreateAsync(dataflowEntities,
@@ -141,6 +141,31 @@ namespace si2.bll.Services
                 return true;
             
             return false;
+        }
+
+
+        public async Task ManageDataflowVehicles(Guid dataflowId, List<Guid> AddedVehicleIds, List<Guid> DeletedVehicleIds, CancellationToken ct)
+        {
+            if (DeletedVehicleIds != null)
+            {
+                foreach (var vId in DeletedVehicleIds)
+                {
+                    DataflowVehicle dataflowVehicle = await _uow.DataflowsVehicles.FirstOrDefaultAsync(c => c.DataflowId == dataflowId && c.VehicleId == vId, ct);
+                    if (dataflowVehicle  != null)
+                        _uow.DataflowsVehicles.Delete(dataflowVehicle);
+                }
+            }
+
+            if (AddedVehicleIds != null)
+            {
+                foreach (var vId in AddedVehicleIds)
+                {
+                    if (await _uow.DataflowsVehicles.FirstOrDefaultAsync(c => c.DataflowId == dataflowId && c.VehicleId == vId, ct) == null)
+                        await _uow.DataflowsVehicles.AddAsync(new DataflowVehicle() { DataflowId = dataflowId, VehicleId = vId }, ct);
+                }
+            }
+
+            await _uow.SaveChangesAsync(ct);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using si2.bll.Dtos.Requests.Address;
+using si2.bll.Dtos.Requests.ContactInfo;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace si2.bll.Dtos.Requests.Institution
 {
@@ -20,9 +19,9 @@ namespace si2.bll.Dtos.Requests.Institution
         public string NameEn { get; set; }
 
         [Required]
-        public Guid AddressId { get; set; }
+        public CreateAddressDto Address { get; set; }
 
         [Required]
-        public Guid ContactInfoId { get; set; }
+        public CreateContactInfoDto ContactInfo { get; set; }
     }
 }

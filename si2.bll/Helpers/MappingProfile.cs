@@ -1,24 +1,29 @@
-using AutoMapper;
-using si2.bll.Dtos.Requests.ContactInfo;
-using si2.bll.Dtos.Results.ContactInfo;
-using si2.bll.Dtos.Requests.Address;
-using si2.bll.Dtos.Results.Address;
-using si2.bll.Dtos.Requests.Dataflow;
-using si2.bll.Dtos.Requests.Program;
-using si2.bll.Dtos.Results.Dataflow;
-using si2.bll.Dtos.Requests.Institution;
-using si2.bll.Dtos.Results.Institution;
-using si2.bll.Dtos.Results.Program;
-using si2.bll.Dtos.Results.Institution;
-using si2.bll.Dtos.Results.UserCohort;
-using si2.bll.Helpers.PagedList;
 
-using si2.dal.Entities;
+using AutoMapper;
+using si2.bll.Dtos.Requests.Address;
+using si2.bll.Dtos.Requests.Cohort;
+using si2.bll.Dtos.Requests.ContactInfo;
 using si2.bll.Dtos.Requests.Course;
+using si2.bll.Dtos.Requests.Dataflow;
+using si2.bll.Dtos.Requests.Document;
+using si2.bll.Dtos.Requests.Institution;
+using si2.bll.Dtos.Requests.Program;
+using si2.bll.Dtos.Requests.ProgramLevel;
+using si2.bll.Dtos.Results.Address;
+using si2.bll.Dtos.Results.Administration;
+using si2.bll.Dtos.Results.Cohort;
+using si2.bll.Dtos.Results.ContactInfo;
 using si2.bll.Dtos.Results.Course;
 using si2.bll.Dtos.Results.CourseCohortDto;
+using si2.bll.Dtos.Results.Dataflow;
+using si2.bll.Dtos.Results.Document;
+using si2.bll.Dtos.Results.Institution;
+using si2.bll.Dtos.Results.Program;
+using si2.bll.Dtos.Results.ProgramLevel;
+using si2.bll.Dtos.Results.UserCohort;
 using si2.bll.Dtos.Results.UserCourse;
-using si2.bll.Dtos.Results.Administration;
+using si2.dal.Entities;
+
 
 namespace si2.bll.Helpers
 {
@@ -31,6 +36,24 @@ namespace si2.bll.Helpers
             CreateMap<Dataflow, DataflowDto>();
             CreateMap<Dataflow, UpdateDataflowDto>();
 
+
+            CreateMap<CreateProgramLevelDto, ProgramLevel>();
+            CreateMap<UpdateProgramLevelDto, ProgramLevel>();
+            CreateMap<ProgramLevel, ProgramLevelDto>();
+            CreateMap<ProgramLevel, UpdateProgramLevelDto>();
+
+
+
+            CreateMap<CreateCohortDto, Cohort>();
+            CreateMap<UpdateCohortDto, Cohort>();
+            CreateMap<Cohort, CohortDto>();
+            CreateMap<Cohort, UpdateCohortDto>();
+
+            CreateMap<ApplicationUser, UserDto>();
+            CreateMap<Course, CourseDto>();
+
+
+
             CreateMap<CreateProgramDto, Program>();
             CreateMap<Program, ProgramDto>();
 
@@ -41,6 +64,12 @@ namespace si2.bll.Helpers
             CreateMap<CreateAddressDto, Address>();
             CreateMap<UpdateAddressDto, Address>(); 
             CreateMap<Address, AddressDto>();
+
+
+            CreateMap<CreateDocumentDto, Document>();
+            CreateMap<UpdateDocumentDto, Document>();
+            CreateMap<SoftDeleteDocumentDto, Document>();
+            CreateMap<Document, DocumentDto>();
 
             CreateMap<CreateInstitutionDto, Institution>();
             CreateMap<UpdateInstitutionDto, Institution>();
@@ -58,6 +87,7 @@ namespace si2.bll.Helpers
             CreateMap<UserCourse, UserCourseDto>();
 
             CreateMap<ApplicationUser, UserDto>();
+
         }
     }
 }
