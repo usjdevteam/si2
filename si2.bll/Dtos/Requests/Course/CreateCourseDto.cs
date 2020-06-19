@@ -21,7 +21,7 @@ namespace si2.bll.Dtos.Requests.Course
         public string NameEn { get; set; }
 
         [Required]
-        public float Credits { get; set; }
+        public decimal Credits { get; set; }
 
         [Required]
         public Guid InstitutionId { get; set; }

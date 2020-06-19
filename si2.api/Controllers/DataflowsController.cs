@@ -11,6 +11,7 @@ using si2.bll.Helpers.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -163,6 +164,14 @@ namespace si2.api.Controllers
                            pageSize = pagedResourceParameters.PageSize
                        });
             }
+        }
+
+        [HttpPost()]
+        [Route("{id}/vehicles", Name = "ManageDataflowVehicles")]
+        public async Task<IActionResult> ManageDataflowVehicles(Guid id, ManageDataflowVehicleDto model, CancellationToken ct)
+        {
+            await _dataflowService.ManageDataflowVehicles(id, model.AddedVehiclesIds, model.DeletedVehiclesIds, ct);
+            return Ok();
         }
     }
 }

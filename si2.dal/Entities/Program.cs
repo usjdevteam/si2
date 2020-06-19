@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using static si2.common.Enums;
 
 namespace si2.dal.Entities
 {
@@ -33,10 +31,9 @@ namespace si2.dal.Entities
         public ProgramLevel ProgramLevel { get; set; }
         public Guid ProgramLevelId { get; set; }
 
-        
-
         [ForeignKey("InstitutionId")]
         public Institution Institution { get; set; }
         public Guid InstitutionId { get; set; }
+
     }
 }

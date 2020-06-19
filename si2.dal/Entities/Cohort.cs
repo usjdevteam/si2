@@ -26,8 +26,9 @@ namespace si2.dal.Entities
         [ForeignKey("ProgramId")]
         public Program Program { get; set; }
         public Guid ProgramId { get; set; }
-      
-        //public ICollection<CourseCohort> CourseCohorts { get; set; }
+
+        public ICollection<CourseCohort> CourseCohorts { get; set; }
+
         
         //public ICollection<UserCohort> UserCohorts { get; set; }
 

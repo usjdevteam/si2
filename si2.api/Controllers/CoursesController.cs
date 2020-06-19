@@ -1,15 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.JsonPatch;
+
+using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Course;
+
 using si2.bll.Dtos.Results.Course;
 using si2.bll.Helpers.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
+
+using si2.bll.Dtos.Requests.UserCourse;
+using si2.bll.Dtos.Results.Course;
+using si2.bll.Helpers.ResourceParameters;
+using si2.bll.ResourceParameters;
+using si2.bll.Services;
+using si2.common;
+using si2.dal.Entities;
+
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,12 +39,20 @@ namespace si2.api.Controllers
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<CoursesController> _logger;
         private readonly ICourseService _CourseService;
+    private readonly UserManager<ApplicationUser> _userManager;
+      
 
         public CoursesController(LinkGenerator linkGenerator, ILogger<CoursesController> logger, ICourseService CourseService)
+
+         
         {
             _linkGenerator = linkGenerator;
             _logger = logger;
             _CourseService = CourseService;
+
+            _userManager = userManager;
+            _userCourseService = userCourseService;
+
         }
 
         [HttpPost]
@@ -44,6 +66,7 @@ namespace si2.api.Controllers
 
             return CreatedAtRoute("GetCourse", new { id = CourseToReturn.Id }, CourseToReturn);
         }
+
 
 
         /* [HttpDelete("{id}")]
@@ -95,7 +118,9 @@ namespace si2.api.Controllers
             return Ok(CourseDtos);
         }
 
+
         [HttpPost("{id}/Courses")]
+
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseDto))]
         public async Task<ActionResult> CreateChildCourse([FromRoute]Guid id, [FromBody] CreateCourseDto createCourseDto, CancellationToken ct)
@@ -110,7 +135,9 @@ namespace si2.api.Controllers
             return CreatedAtRoute("GetCourse", new { id = CourseToReturn.Id }, CourseToReturn);
         }
 
-        [HttpGet("{id}/Courses", Name = "GetChildrenCourse")]
+
+        [HttpGet("{id}/courses", Name = "GetChildrenCourse")]
+
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -172,5 +199,37 @@ namespace si2.api.Controllers
                        });
             }
         }
+
+        [HttpGet("{id}/users", Name = "GetSubscribedUsers")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetSubscribedUsers([FromRoute]Guid id, [FromQuery]ApplicationUserResourceParameters pagedResourceParameters, CancellationToken ct)
+        {
+            var UserCourseDto = await _CourseService.GetUsersCourseAsync(id, pagedResourceParameters, ct);
+
+            if (UserCourseDto == null)
+                return NotFound();
+
+            return Ok(UserCourseDto);
+        }
+
+
+        [HttpPost()]
+        [Route("{id}/users", Name = "UpdateUsersCourse")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> UpdateUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersToCourseDto, CancellationToken ct)
+        {
+            var course = await _CourseService.GetCourseEntityByIdAsync(id, ct);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var userCohortToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
+        }
+
     }
 }

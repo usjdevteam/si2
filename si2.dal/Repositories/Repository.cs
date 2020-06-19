@@ -13,6 +13,12 @@ namespace si2.dal.Repositories
     {
         protected readonly DbContext _db;
 
+        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct)
+        {
+            return await _db.Set<TEntity>().FirstOrDefaultAsync(match, ct);
+        }
+
+
         public virtual async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct)
         {
             return await _db.Set<TEntity>().Where(match).FirstAsync();

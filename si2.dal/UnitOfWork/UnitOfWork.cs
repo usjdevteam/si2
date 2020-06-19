@@ -1,11 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using si2.dal.Context;
 using si2.dal.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +21,12 @@ namespace si2.dal.UnitOfWork
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
         public IProgramLevelRepository ProgramLevels => _serviceProvider.GetService<IProgramLevelRepository>();
 
+        public IVehicleRepository Vehicles => _serviceProvider.GetService<IVehicleRepository>();
+        public IDataflowVehicleRepository DataflowsVehicles => _serviceProvider.GetService<IDataflowVehicleRepository>();
+
+
+        public IProgramLevelRepository ProgramLevels => _serviceProvider.GetService<IProgramLevelRepository>();
+
         public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
         public IAddressRepository Addresses => _serviceProvider.GetService<IAddressRepository>();
         public IInstitutionRepository Institutions => _serviceProvider.GetService<IInstitutionRepository>();
@@ -35,6 +37,7 @@ namespace si2.dal.UnitOfWork
         public IUserCourseRepository UserCourses => _serviceProvider.GetService<IUserCourseRepository>();
         public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
 
+        public IDocumentRepository Documents => _serviceProvider.GetService<IDocumentRepository>();
 
         public async Task<int> SaveChangesAsync(CancellationToken ct)
         {

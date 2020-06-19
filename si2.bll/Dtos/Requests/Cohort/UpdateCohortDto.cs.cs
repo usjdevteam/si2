@@ -1,4 +1,5 @@
-﻿using si2.dal.Entities;
+﻿using si2.bll.Dtos.Requests.UserCohort;
+using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,10 +18,7 @@ namespace si2.bll.Dtos.Requests.Cohort
         [Required]
         public Guid ProgramId { get; set; }
 
-public ICollection<CourseCohort> CourseCohorts { get; set; }
-
-        public List<UserCohort> UserCohorts { get; set; }
-
+        public List<ManageCohortsUserDto> UserCohorts { get; set; }
 
         [Required]
         public byte[] RowVersion { get; set; }

@@ -56,11 +56,19 @@ namespace si2.api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
+            services.AddTransient<IDataflowVehicleRepository, DataflowVehicleRepository>();
+
+
             services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
 
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IContactInfoRepository, ContactInfoRepository>();
             services.AddTransient<IProgramRepository, ProgramRepository>();
+
+            services.AddTransient<IDocumentRepository, DocumentRepository>();
+
             services.AddTransient<IInstitutionRepository, InstitutionRepository>();
             services.AddTransient<ICohortRepository, CohortRepository>();
             services.AddTransient<IUserCohortRepository, UserCohortRepository>();
@@ -78,9 +86,9 @@ namespace si2.api
             services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IInstitutionService, InstitutionService>();
             services.AddTransient<IProgramService, ProgramService>();
+            services.AddTransient<IDocumentService, DocumentService>();
             services.AddTransient<ICohortService, CohortService>();
             services.AddTransient<IUserCohortService, UserCohortService>();
-
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IUserCourseService, UserCourseService>();
             services.AddTransient<ICourseCohortService, CourseCohortService>();
