@@ -68,15 +68,15 @@ namespace si2.api.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetProgramLevels(CancellationToken ct)
         {
-            var dataflowDtos = await _programLevelService.GetProgramLevelsAsync(ct);
+            var programLevelDtos = await _programLevelService.GetProgramLevelsAsync(ct);
 
-            if (dataflowDtos == null)
+            if (programLevelDtos == null)
                 return NotFound();
 
 
 
 
-            return Ok(dataflowDtos);
+            return Ok(programLevelDtos);
         }
 
         [HttpPut("{id}")]
