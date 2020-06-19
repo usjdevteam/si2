@@ -11,6 +11,22 @@ namespace si2.dal.Migrations
                 name: "FK_AuditEntryProperties_AuditEntries_AuditEntryID",
                 table: "AuditEntryProperties");
 
+            migrationBuilder.DropColumn(
+                name: "Tag",
+                table: "Vehicle");
+
+            migrationBuilder.DropColumn(
+                name: "Name",
+                table: "Dataflow");
+
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "Dataflow");
+
+            migrationBuilder.DropColumn(
+                name: "Tag",
+                table: "Dataflow");
+
             migrationBuilder.AddColumn<string>(
                 name: "FirstNameAr",
                 table: "AspNetUsers",
@@ -72,6 +88,30 @@ namespace si2.dal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ContactInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DataflowVehicle",
+                columns: table => new
+                {
+                    VehicleId = table.Column<Guid>(nullable: false),
+                    DataflowId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DataflowVehicle", x => new { x.DataflowId, x.VehicleId });
+                    table.ForeignKey(
+                        name: "FK_DataflowVehicle_Dataflow_DataflowId",
+                        column: x => x.DataflowId,
+                        principalTable: "Dataflow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DataflowVehicle_Vehicle_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -365,6 +405,11 @@ namespace si2.dal.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DataflowVehicle_VehicleId",
+                table: "DataflowVehicle",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Document_ProgramId",
                 table: "Document",
                 column: "ProgramId");
@@ -482,6 +527,9 @@ namespace si2.dal.Migrations
                 name: "CourseCohort");
 
             migrationBuilder.DropTable(
+                name: "DataflowVehicle");
+
+            migrationBuilder.DropTable(
                 name: "Document");
 
             migrationBuilder.DropTable(
@@ -526,6 +574,34 @@ namespace si2.dal.Migrations
             migrationBuilder.DropColumn(
                 name: "LastNameFr",
                 table: "AspNetUsers");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Tag",
+                table: "Vehicle",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "Dataflow",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<int>(
+                name: "Status",
+                table: "Dataflow",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Tag",
+                table: "Dataflow",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AuditEntryProperties_AuditEntries_AuditEntryID",

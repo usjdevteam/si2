@@ -19,6 +19,11 @@ namespace si2.dal.UnitOfWork
         }
 
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
+
+        public IVehicleRepository Vehicles => _serviceProvider.GetService<IVehicleRepository>();
+        public IDataflowVehicleRepository DataflowsVehicles => _serviceProvider.GetService<IDataflowVehicleRepository>();
+
+
         public IProgramLevelRepository ProgramLevels => _serviceProvider.GetService<IProgramLevelRepository>();
 
         public IContactInfoRepository ContactInfos => _serviceProvider.GetService<IContactInfoRepository>();
@@ -30,7 +35,6 @@ namespace si2.dal.UnitOfWork
         public ICourseRepository Courses => _serviceProvider.GetService<ICourseRepository>();
         public IUserCourseRepository UserCourses => _serviceProvider.GetService<IUserCourseRepository>();
         public ICourseCohortRepository CourseCohorts => _serviceProvider.GetService<ICourseCohortRepository>();
-
 
         public IDocumentRepository Documents => _serviceProvider.GetService<IDocumentRepository>();
 

@@ -56,6 +56,9 @@ namespace si2.api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
             services.AddTransient<IDataflowRepository, DataflowRepository>();
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
+            services.AddTransient<IDataflowVehicleRepository, DataflowVehicleRepository>();
+
             services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
 
             services.AddTransient<IAddressRepository, AddressRepository>();

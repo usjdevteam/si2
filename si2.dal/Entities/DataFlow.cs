@@ -13,12 +13,7 @@ namespace si2.dal.Entities
     {
         [Required]
         public string Title { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Tag { get; set; }
 
-        [Required]
-        public DataflowStatus Status { get; set; }
+        public ICollection<DataflowVehicle> DataflowVehicles { get; set; }
     }
 }
