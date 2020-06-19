@@ -28,6 +28,8 @@ namespace si2.dal.Entities
         [ForeignKey("ContactInfoId")]
         public ContactInfo ContactInfo { get; set; }
 
+        [ForeignKey("Parent")]
+        public Guid? ParentId { get; set; }
         public Institution Parent { get; set; }
         public ICollection<Institution> Children { get; set; }
 

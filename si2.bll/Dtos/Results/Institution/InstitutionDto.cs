@@ -17,6 +17,7 @@ namespace si2.bll.Dtos.Results.Institution
         public string NameEn { get; set; }
         public AddressDto Address { get; set; }
         public ContactInfoDto ContactInfo { get; set; }
+        public InstitutionDto Parent { get; set; }
         public byte[] RowVersion { get; set; }
 
         public override bool Equals(Object obj) => Equals(obj as InstitutionDto);
