@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200616172506_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,8 +423,8 @@ namespace si2.dal.Migrations
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<decimal>("Credits")
-                        .HasColumnType("decimal(5,2)");
+                    b.Property<float>("Credits")
+                        .HasColumnType("real");
 
                     b.Property<Guid>("InstitutionId")
                         .HasColumnType("uniqueidentifier");
@@ -489,13 +491,23 @@ namespace si2.dal.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -505,105 +517,6 @@ namespace si2.dal.Migrations
 
                     b.ToTable("Dataflow");
                 });
-
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.Property<Guid>("DataflowId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DataflowId", "VehicleId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("DataflowVehicle");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Document", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescriptionAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("DescriptionEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("DescriptionFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<byte[]>("FileData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("InstitutionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("NameFr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<Guid?>("ProgramId")
- .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<Guid?>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UploadedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("UploadedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
-
-
-                    b.HasIndex("UniversityId");
-
-                    b.HasIndex("UploadedBy");
-
-                    b.ToTable("Document");
-                });
-
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
                 {
@@ -827,6 +740,10 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vehicle");
@@ -922,40 +839,7 @@ namespace si2.dal.Migrations
                         .WithMany("CourseCohorts")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
-
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Dataflow", "Dataflow")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("DataflowId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.Vehicle", "Vehicle")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.Document", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Program", "Program")
-                        .WithMany("Documents")
-                        .HasForeignKey("ProgramId");
-
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany("Documents")
-                        .HasForeignKey("UniversityId");
-
-                    b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UploadedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                 .IsRequired();
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
@@ -1023,7 +907,7 @@ namespace si2.dal.Migrations
                         .IsRequired();
 
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
-                        .WithMany("UserCourses")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

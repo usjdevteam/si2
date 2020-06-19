@@ -19,6 +19,7 @@ namespace si2.dal.UnitOfWork
         }
 
         public IDataflowRepository Dataflows => _serviceProvider.GetService<IDataflowRepository>();
+        public IProgramLevelRepository ProgramLevels => _serviceProvider.GetService<IProgramLevelRepository>();
 
         public IVehicleRepository Vehicles => _serviceProvider.GetService<IVehicleRepository>();
         public IDataflowVehicleRepository DataflowsVehicles => _serviceProvider.GetService<IDataflowVehicleRepository>();

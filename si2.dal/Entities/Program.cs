@@ -31,14 +31,8 @@ namespace si2.dal.Entities
         public ProgramLevel ProgramLevel { get; set; }
         public Guid ProgramLevelId { get; set; }
 
-        
-
         [ForeignKey("InstitutionId")]
         public Institution Institution { get; set; }
-
-
-        public ICollection<Document> Documents { get; set; }
-
         public Guid InstitutionId { get; set; }
 
     }
