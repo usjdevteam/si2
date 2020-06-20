@@ -25,6 +25,6 @@ namespace si2.bll.Dtos.Requests.Institution
         [Required]
         public CreateContactInfoDto ContactInfo { get; set; }
 
-        public Guid? ParentInsitutionId { get; set; }
+        public Guid? ParentId { get; set; }
     }
 }

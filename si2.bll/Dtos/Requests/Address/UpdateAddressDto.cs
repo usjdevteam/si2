@@ -33,5 +33,7 @@ namespace si2.bll.Dtos.Requests.Address
 
         [Required]
         public decimal Latitude { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

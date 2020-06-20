@@ -17,5 +17,7 @@ namespace si2.bll.Dtos.Requests.ContactInfo
 
         [MaxLength(30)]
         public string Fax { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

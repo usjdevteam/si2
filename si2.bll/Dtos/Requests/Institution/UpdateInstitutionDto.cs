@@ -1,4 +1,6 @@
-﻿using System;
+﻿using si2.bll.Dtos.Requests.Address;
+using si2.bll.Dtos.Requests.ContactInfo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -20,10 +22,12 @@ namespace si2.bll.Dtos.Requests.Institution
         public string NameEn { get; set; }
 
         [Required]
-        public Guid AddressId { get; set; }
+        public UpdateAddressDto Address { get; set; }
 
         [Required]
-        public Guid ContactInfoId { get; set; }
+        public UpdateContactInfoDto ContactInfo { get; set; }
+
+        public Guid? ParentId { get; set; }
 
         [Required]
         public byte[] RowVersion { get; set; }

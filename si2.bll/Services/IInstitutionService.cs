@@ -13,13 +13,13 @@ namespace si2.bll.Services
     public interface IInstitutionService : IServiceBase
     {
         Task<InstitutionDto> CreateInstitutionAsync(CreateInstitutionDto createInstitutionDto, CancellationToken ct);
-        Task<InstitutionDto> CreateChildInstitutionAsync(Guid id, CreateInstitutionDto createInstitutionDto, CancellationToken ct);
+        //Task<InstitutionDto> CreateChildInstitutionAsync(Guid id, CreateInstitutionDto createInstitutionDto, CancellationToken ct);
         Task<InstitutionDto> UpdateInstitutionAsync(Guid id, UpdateInstitutionDto updateInstitutionDto, CancellationToken ct);
         /*Task<InstitutionDto> PartialUpdateInstitutionAsync(Guid id, UpdateInstitutionDto patchDoc, CancellationToken ct);
         Task<UpdateInstitutionDto> GetUpdateInstitutionDto(Guid id, CancellationToken ct);
        */
         Task<InstitutionDto> GetInstitutionByIdAsync(Guid id, CancellationToken ct);
-        Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct);
+        //Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct);
         
         /*   Task DeleteInstitutionByIdAsync(Guid id, CancellationToken ct);
         */

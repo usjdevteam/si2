@@ -83,20 +83,20 @@ namespace si2.api.Controllers
             return Ok(institutionDtos);
         }
 
-        [HttpPost("{id}/institutions")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstitutionDto))]
-        public async Task<ActionResult> CreateInstitution([FromRoute]Guid id, [FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
-        {
-            if (!await _institutionService.ExistsAsync(id, ct))
-                return NotFound();
+        //[HttpPost("{id}/institutions")]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstitutionDto))]
+        //public async Task<ActionResult> CreateInstitution([FromRoute]Guid id, [FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
+        //{
+        //    if (!await _institutionService.ExistsAsync(id, ct))
+        //        return NotFound();
 
-            var institutionToReturn = await _institutionService.CreateChildInstitutionAsync(id, createInstitutionDto, ct);
-            if (institutionToReturn == null)
-                return BadRequest();
+        //    var institutionToReturn = await _institutionService.CreateInstitutionAsync(createInstitutionDto, ct);
+        //    if (institutionToReturn == null)
+        //        return BadRequest();
 
-            return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
-        }
+        //    return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
+        //}
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
