@@ -157,7 +157,7 @@ namespace si2.api
                 app.UseDeveloperExceptionPage();
             }
 
-            dataSeeder.SeedRoles().SeedUsers();
+            //dataSeeder.SeedRoles().SeedUsers();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
