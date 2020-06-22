@@ -18,6 +18,9 @@ using si2.dal.Entities;
 using si2.dal.Repositories;
 using si2.dal.UnitOfWork;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace si2.api
@@ -126,11 +129,17 @@ namespace si2.api
                 .AddNewtonsoftJson(setupAction => setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             // Register the Swagger generator, defining 1 or more Swagger documents
+            //var versionInfo = FileVersionInfo.GetVersionInfo(Directory.GetCurrentDirectory() + "\\" + "si2.api.dll");
+            var versionInfo = FileVersionInfo.GetVersionInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\" + "si2.api.dll");
+
+            var version = "VN : " + versionInfo.FileVersion + " - " + DateTime.UtcNow.ToString("M/d/yyyy HH:mm");
+                          
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Version = "V1",
+                    Version = version,
                     Title = "Université Saint-Joseph de Beyrouth - SI2 Server"
                     //Description = "The university Web API for handling students registrations",
                     //TermsOfService = new Uri("https://www.facebook.com/usj.edu.lb/videos/890474227787534/"),
