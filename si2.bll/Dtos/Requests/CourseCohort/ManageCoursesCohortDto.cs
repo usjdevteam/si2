@@ -9,5 +9,6 @@ namespace si2.bll.Dtos.Requests.CourseCohort
     {
         public List<Guid> AddCoursesIds { get; set; }
         public List<Guid> DeleteCoursesIds { get; set; }
+
     }
 }

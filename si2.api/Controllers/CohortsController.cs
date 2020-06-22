@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Cohort;
+using si2.bll.Dtos.Requests.CourseCohort;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Results.Cohort;
+using si2.bll.Dtos.Results.Course;
 using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.common;
@@ -47,11 +51,10 @@ namespace si2.api.Controllers
          */
 
 
-         /*-------------------------------- COHORT -------------------------------- */
+        /*-------------------------------- COHORT -------------------------------- */
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CohortDto))]
         public async Task<ActionResult> CreateStudent([FromBody] CreateCohortDto createCohortDto, CancellationToken ct)
@@ -64,9 +67,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCohort")]
-
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CohortDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCohort(Guid id, CancellationToken ct)
@@ -81,8 +82,7 @@ namespace si2.api.Controllers
 
         [HttpGet(Name = "GetCohorts")]
 
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-
+       [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetCohorts(CancellationToken ct)
         {
             var cohortDtos = await _cohortService.GetCohortsAsync(ct);
@@ -94,7 +94,7 @@ namespace si2.api.Controllers
         }
 
         /*-------------------------------- USERS COHORT -------------------------------- */
-        [HttpPost]
+        /*[HttpPost]
         [Route("{id}/users", Name = "AddUsersToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[Authorize(AuthenticationSchemes = "Bearer")]
@@ -110,12 +110,30 @@ namespace si2.api.Controllers
             return Ok();
 
 
+        }*/
+
+        [HttpPost]
+        [Route("{id}/users", Name = "AddUsersToCohort")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] ManageCohortsUserDto manageUsersCohortDto, CancellationToken ct)
+
+        {
+            if (!await _cohortService.ExistsAsync(id, ct))
+                return NotFound();
+
+
+            await _cohortService.AssignUsersToCohortAsync(id, manageUsersCohortDto, ct);
+
+            return Ok();
+
+
         }
 
         [HttpGet]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetUsersSubscribedToCohort([FromRoute]Guid id, [FromQuery]ApplicationUserResourceParameters pagedResourceParameters, CancellationToken ct)
         {
 
@@ -144,7 +162,7 @@ namespace si2.api.Controllers
 
         }
 
-        [HttpPut]
+        /*[HttpPut]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -157,23 +175,55 @@ namespace si2.api.Controllers
             await _cohortService.UpdateUsersCohort(id, addUsersToCohortDto, ct);
 
             return Ok();
-        }
+        }*/
 
         /*-------------------------------- COURSE COHORT -------------------------------- */
         [HttpPost]
         [Route("{id}/courses", Name = "AddCoursesToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> AddCoursesToCohort([FromRoute]Guid id, [FromBody] AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> AddCoursesToCohort([FromRoute]Guid id, [FromBody] ManageCoursesCohortDto manageCoursesCohortDto, CancellationToken ct)
         {
             if (!await _cohortService.ExistsAsync(id, ct))
                 return NotFound();
 
-            await _cohortService.AddCoursesToCohortAsync(id, addCoursesToCohortDto, ct);
+            await _cohortService.AddCoursesToCohortAsync(id, manageCoursesCohortDto, ct);
 
             return Ok();
 
 
+        }
+
+
+        [HttpGet]
+        [Route("{id}/courses", Name = "GetCoursesInCohort")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> GetCoursesInCohort([FromRoute]Guid id, [FromQuery] CourseResourceParameters pagedResourceParameters, CancellationToken ct)
+        {
+
+            var userDtos = await _cohortService.GetCoursesCohortAsync(id, pagedResourceParameters, ct);
+
+            var previousPageLink = userDtos.HasPrevious ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
+            var nextPageLink = userDtos.HasNext ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = userDtos.TotalCount,
+                pageSize = userDtos.PageSize,
+                currentPage = userDtos.CurrentPage,
+                totalPages = userDtos.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            if (userDtos.Count < 1)
+                return NotFound();
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
+
+            return Ok(userDtos);
         }
 
         private string CreateUserResourceUri(ApplicationUserResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
@@ -204,5 +254,32 @@ namespace si2.api.Controllers
             }
         }
 
+        private string CreateCourseResourceUri(CourseResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
+        {
+            switch (type)
+            {
+                case Enums.ResourceUriType.PreviousPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber - 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                case Enums.ResourceUriType.NextPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber + 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                default:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
+                       new
+                       {
+                           pageNumber = pagedResourceParameters.PageNumber,
+                           pageSize = pagedResourceParameters.PageSize
+                       });
+            }
+        }
     }
 }
