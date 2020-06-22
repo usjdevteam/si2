@@ -56,10 +56,8 @@ namespace si2.api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
             services.AddTransient<IDataflowRepository, DataflowRepository>();
-
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IDataflowVehicleRepository, DataflowVehicleRepository>();
-
 
             services.AddTransient<IProgramLevelRepository, ProgramLevelRepository>();
 
@@ -159,7 +157,7 @@ namespace si2.api
                 app.UseDeveloperExceptionPage();
             }
 
-            dataSeeder.SeedRoles().SeedUsers();
+            //dataSeeder.SeedRoles().SeedUsers();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

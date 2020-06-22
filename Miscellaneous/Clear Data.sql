@@ -1,5 +1,8 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
+		DELETE FROM AspNetUserRoles
+		DELETE FROM AspnetUsers
+		DELETE FROM AspnetRoles
 		DELETE FROM Institution
 		DELETE FROM [Address]
 		DELETE FROM ContactInfo

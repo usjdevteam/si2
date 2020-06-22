@@ -23,6 +23,7 @@ namespace si2.bll.Services
         Task<PagedList<CourseDto>> GetCoursesUserAsync(String userId, CancellationToken ct);
         Task<bool> ExistsAsync(String userId, CancellationToken ct);
         Task<UserCourseDto> AssignUsersToCourseAsync(Guid id, ManageCoursesUserDto addUsersToCourseDto, CancellationToken ct);
+        Task DeleteUsersCourse(Guid id, ManageCoursesUserDto manageUsersCoursesDto, CancellationToken ct);
 
     }
 }

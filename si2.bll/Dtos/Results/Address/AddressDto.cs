@@ -20,7 +20,7 @@ namespace si2.bll.Dtos.Results.Address
         public decimal Longitude { get; set; }
 
         public decimal Latitude { get; set; }
-
+        public byte[] RowVersion { get; set; }
         public override bool Equals(Object obj) => Equals(obj as AddressDto);
 
         public bool Equals(AddressDto obj)

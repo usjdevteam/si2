@@ -1,4 +1,6 @@
-﻿using System;
+﻿using si2.bll.Dtos.Results.Address;
+using si2.bll.Dtos.Results.ContactInfo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +15,9 @@ namespace si2.bll.Dtos.Results.Institution
         public string NameFr { get; set; }
         public string NameAr { get; set; }
         public string NameEn { get; set; }
-         /* public Guid AddressId { get; set; }
-         public Guid ContactInfoId { get; set; }*/
-        public si2.bll.Dtos.Results.Address.AddressDto Address { get; set; }
-        public si2.bll.Dtos.Results.ContactInfo.ContactInfoDto ContactInfo { get; set; }
+        public AddressDto Address { get; set; }
+        public ContactInfoDto ContactInfo { get; set; }
+        public InstitutionDto Parent { get; set; }
         public byte[] RowVersion { get; set; }
 
         public override bool Equals(Object obj) => Equals(obj as InstitutionDto);

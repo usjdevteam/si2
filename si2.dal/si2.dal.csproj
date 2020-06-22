@@ -135,7 +135,6 @@
     <Compile Remove="Migrations\20200616164002_v4.Designer.cs" />
     <Compile Remove="Migrations\20200616170641_v4.cs" />
     <Compile Remove="Migrations\20200616170641_v4.Designer.cs" />
-
     <Compile Remove="Migrations\20200617184519_ddd.cs" />
     <Compile Remove="Migrations\20200617184519_ddd.Designer.cs" />
     <Compile Remove="Migrations\20200618174422_v4.cs" />
@@ -146,7 +145,8 @@
     <Compile Remove="Migrations\20200619075254_v5.Designer.cs" />
     <Compile Remove="Migrations\20200619075505_v5.cs" />
     <Compile Remove="Migrations\20200619075505_v5.Designer.cs" />
-
+    <Compile Remove="Migrations\20200619181309_v5_1.cs" />
+    <Compile Remove="Migrations\20200619181309_v5_1.Designer.cs" />
 
   </ItemGroup>
 

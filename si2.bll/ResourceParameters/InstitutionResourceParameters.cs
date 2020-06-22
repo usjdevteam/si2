@@ -10,7 +10,7 @@ namespace si2.bll.Helpers.ResourceParameters
     {
         public int PageNumber { get; set; } = Constants.DEFAULT_PAGE_NUMBER;
         private int _pageSize = Constants.DEFAULT_PAGE_SIZE;
-
+        public Guid? ParentId { get; set; }
         public int PageSize
         {
             get
