@@ -137,6 +137,10 @@
     <Compile Remove="Migrations\20200616170641_v4.Designer.cs" />
     <Compile Remove="Migrations\20200617184519_ddd.cs" />
     <Compile Remove="Migrations\20200617184519_ddd.Designer.cs" />
+    <Compile Remove="Migrations\20200622093325_Document_object_migration3.cs" />
+    <Compile Remove="Migrations\20200622093325_Document_object_migration3.Designer.cs" />
+    <Compile Remove="Migrations\20200622112016_Document_object_migration3.cs" />
+    <Compile Remove="Migrations\20200622112016_Document_object_migration3.Designer.cs" />
 
   </ItemGroup>
 

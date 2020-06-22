@@ -8,11 +8,11 @@ namespace si2.dal.Entities
     [Table("Document")]
     public class Document : Si2BaseDataEntity<Guid>, IAuditable
     {
-        [Required]
+        /*[Required]
         [ForeignKey("University")]
         public Guid? UniversityId { get; set; }
 
-        public University University { get; set; }
+        public University University { get; set; }*/
 
 
         [ForeignKey("Institution")]

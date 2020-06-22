@@ -4,7 +4,7 @@ namespace si2.bll.Dtos.Results.Document
 {
     public class DocumentDto
     {
-        public Guid UniversityId { get; set; }
+        //public Guid UniversityId { get; set; }
 
         public Guid InstitutionId { get; set; }
 

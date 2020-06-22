@@ -10,7 +10,7 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200622093325_Document_object_migration3")]
+    [Migration("20200622113701_Document_object_migration3")]
     partial class Document_object_migration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -579,10 +579,6 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid?>("UniversityId")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UploadedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -598,8 +594,6 @@ namespace si2.dal.Migrations
                     b.HasIndex("InstitutionId");
 
                     b.HasIndex("ProgramId");
-
-                    b.HasIndex("UniversityId");
 
                     b.HasIndex("UserId");
 
@@ -755,30 +749,6 @@ namespace si2.dal.Migrations
                         .HasName("IX_ProgramLevel_NameFr");
 
                     b.ToTable("ProgramLevel");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.University", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<Guid?>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UniversityId");
-
-                    b.ToTable("University");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>
@@ -964,12 +934,6 @@ namespace si2.dal.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("ProgramId");
 
-                    b.HasOne("si2.dal.Entities.University", "University")
-                        .WithMany("Documents")
-                        .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -1016,13 +980,6 @@ namespace si2.dal.Migrations
                         .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.University", b =>
-                {
-                    b.HasOne("si2.dal.Entities.University", null)
-                        .WithMany("Universities")
-                        .HasForeignKey("UniversityId");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.UserCohort", b =>

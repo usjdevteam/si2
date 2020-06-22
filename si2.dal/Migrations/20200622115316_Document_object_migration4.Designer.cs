@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200622115316_Document_object_migration4")]
+    partial class Document_object_migration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -584,8 +586,8 @@ namespace si2.dal.Migrations
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    /*b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");*/
 
                     b.HasKey("Id");
 
@@ -593,7 +595,7 @@ namespace si2.dal.Migrations
 
                     b.HasIndex("ProgramId");
 
-                    b.HasIndex("UserId");
+                    //b.HasIndex("UserId");
 
                     b.ToTable("Document");
                 });
