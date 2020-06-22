@@ -10,13 +10,21 @@ using si2.bll.Dtos.Results.Course;
 using si2.bll.Helpers.PagedList;
 using si2.bll.ResourceParameters;
 
+
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
+
 using System;
+
 using System.Linq;
+
 
 using System.Threading;
 using System.Threading.Tasks;
+
+using si2.bll.Dtos.Requests.UserCohort;
+using si2.bll.Dtos.Requests.CourseCohort;
+
 
 namespace si2.bll.Services
 {
@@ -67,9 +75,9 @@ namespace si2.bll.Services
             var cohortEntities = _uow.Cohorts.GetAll();
 
 
-            if(cohortEntities.Count() > 1 )
+            if (cohortEntities.Count() > 1)
             {
-                var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities,1, cohortEntities.Count(), ct);
+                var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities, 1, cohortEntities.Count(), ct);
 
                 var result = _mapper.Map<PagedList<CohortDto>>(pagedListEntities);
                 result.TotalCount = pagedListEntities.TotalCount;
@@ -90,30 +98,56 @@ namespace si2.bll.Services
             return false;
         }
 
-        public async Task AssignUsersToCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
-        {
-            var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == id).ToList();
 
-            
-            var usersCohortToAdd = addUsersToCohortDto.UsersIds.Where(u => !usersCohort.Any(uc => uc.UserId == u));
-            
-            foreach (var userId in usersCohortToAdd)
+        public async Task AssignUsersToCohortAsync(Guid cohortId, ManageCohortsUserDto manageCohortsUserDto, CancellationToken ct)
+        {
+            //var cohort = _uow.Cohorts.FindBy(c => c.Id == cohortId).First();
+            var cohort = await _uow.Cohorts.GetAsync(cohortId, ct);
+
+
+
+            if (manageCohortsUserDto.AddUsersIds != null)
             {
-                if(!usersCohort.Any(uc => uc.UserId == userId && uc.CohortId == id))
+                foreach (var userId in manageCohortsUserDto.AddUsersIds)
                 {
-                    _uow.UserCohorts.Add(new UserCohort() { CohortId = id, UserId = userId });
+                    /*TO REFACTOR - to be same as the other functions
+                     * TO SKIP ERRORS 
+                     */
+                    var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == cohortId && c.UserId == userId).Count();
+
+                    var isUser = _userManager.Users.Any(u => u.Id == userId);
+                    if (usersCohort == 0 && isUser)
+                    {
+                        cohort.UserCohorts.Add(new UserCohort() { CohortId = cohortId, UserId = userId });
+                    }
+
                 }
-                
             }
-            
+
+            if (manageCohortsUserDto.DeleteUsersIds != null)
+            {
+                foreach (var userId in manageCohortsUserDto.DeleteUsersIds)
+                {
+
+                    var userCohort = await _uow.UserCohorts.FirstAsync(c => c.CohortId == cohortId && c.UserId == userId, ct);
+
+                    if (userCohort != null)
+                    {
+                        _uow.UserCohorts.Delete(userCohort);
+                    }
+                }
+            }
+
             await _uow.SaveChangesAsync(ct);
+
+
         }
 
 
         public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
             var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.CohortId == cohortId, ct);
-            
+
             var usersIds = cohortUsersIds.Select(c => c.UserId);
 
             var usersEntity = _userManager.Users.Where(user => usersIds.Contains(user.Id));
@@ -139,7 +173,7 @@ namespace si2.bll.Services
             // var users = cohortUsersIds.Where(c=> c.CohortId == cohortId).Select(c=>c.User);
             // -> delete var users = await _userManager.Users.Where(c => addUsersToCohortDto.UsersIds.Any(u => u == c.Id)).ToListAsync(ct);
 
-            
+
         }
 
         public async Task UpdateUsersCohort(Guid cohortId, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)

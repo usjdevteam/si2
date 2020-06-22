@@ -21,15 +21,13 @@ namespace si2.dal.Entities
         [StringLength(20, ErrorMessage = "Promotion field must be equal or below 20 characters")]
         public string Promotion { get; set; }
 
-  
+
         [ForeignKey("ProgramId")]
         public Program Program { get; set; }
         public Guid ProgramId { get; set; }
-      
+
         public ICollection<CourseCohort> CourseCohorts { get; set; }
         
         public ICollection<UserCohort> UserCohorts { get; set; }
-
-
     }
 }
