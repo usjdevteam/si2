@@ -1,7 +1,6 @@
 ﻿using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -27,22 +26,8 @@ namespace si2.dal.Entities
         public Program Program { get; set; }
         public Guid ProgramId { get; set; }
 
-        //public ICollection<CourseCohort> CourseCohorts { get; set; }
-
-        //public ICollection<UserCohort> UserCohorts { get; set; }
-
-        private ICollection<UserCohort> _userCohorts;
-        public ICollection<UserCohort> UserCohorts
-        {
-            get { return _userCohorts ?? (_userCohorts = new Collection<UserCohort>()); }
-            set { _userCohorts = value; }
-        }
-
-        private ICollection<CourseCohort> _courseCohorts;
-        public ICollection<CourseCohort> CourseCohorts
-        {
-            get { return _courseCohorts ?? (_courseCohorts = new Collection<CourseCohort>()); }
-            set { _courseCohorts = value; }
-        }
+        public ICollection<CourseCohort> CourseCohorts { get; set; }
+        
+        public ICollection<UserCohort> UserCohorts { get; set; }
     }
 }
