@@ -33,5 +33,8 @@ namespace si2.bll.Dtos.Requests.Document
         [Display(Name = "DescriptionEn")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string DescriptionEn { get; set; }
+
+        [Required]
+        public byte[] RowVersion { get; set; }
     }
 }

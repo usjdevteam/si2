@@ -66,7 +66,7 @@ namespace si2.dal.Entities
         [ForeignKey("ApplicationUser")]
         public string UploadedBy { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; } 

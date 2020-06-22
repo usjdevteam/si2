@@ -45,6 +45,8 @@ namespace si2.api.Controllers
         public async Task<IActionResult> UploadDocument(IFormFile file, [FromForm] string fileInfoText, CancellationToken ct)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
             byte[] fileBytesArray = null;
             
             using (var fileMemoryStream = new MemoryStream())
@@ -59,7 +61,7 @@ namespace si2.api.Controllers
                 fileBytesArray,
                 file.FileName,
                 file.ContentType,
-                userEmail,
+                user.Id,
                 ct);
 
             return Ok();

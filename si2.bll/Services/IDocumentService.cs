@@ -10,7 +10,7 @@ namespace si2.bll.Services
 {
     public interface IDocumentService : IServiceBase
     {
-        Task<bool> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userEmail, CancellationToken ct);
+        Task<bool> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct);
 
         List<Document> GetDocuments();
        

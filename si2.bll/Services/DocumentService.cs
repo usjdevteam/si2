@@ -20,7 +20,7 @@ namespace si2.bll.Services
         }
 
 
-       public async Task<bool> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userEmail, CancellationToken ct)
+       public async Task<bool> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace si2.bll.Services
                 documentEntity.FileName = fileName;
                 documentEntity.ContentType = contentType;
                 documentEntity.FileData = fileData;
-                documentEntity.UploadedBy = userEmail;
+                documentEntity.UploadedBy = userID;
                 documentEntity.UploadedOn = DateTime.Now;
 
                 _uow.Documents.Add(documentEntity);
