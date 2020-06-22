@@ -10,7 +10,7 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200622140946_v4")]
+    [Migration("20200622172614_v4")]
     partial class v4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -547,13 +547,6 @@ namespace si2.dal.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<byte[]>("FileData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("InstitutionId")
                         .HasColumnType("uniqueidentifier");
 
@@ -574,6 +567,9 @@ namespace si2.dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<string>("OriginalFileName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("ProgramId")
                         .HasColumnType("uniqueidentifier");
@@ -602,6 +598,31 @@ namespace si2.dal.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Document");
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.DocumentData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DocumentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("FileBytes")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId")
+                        .IsUnique();
+
+                    b.ToTable("DocumentData");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
@@ -941,17 +962,26 @@ namespace si2.dal.Migrations
 
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
                 {
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
+                    b.HasOne("si2.dal.Entities.Institution", null)
                         .WithMany("Documents")
                         .HasForeignKey("InstitutionId");
 
-                    b.HasOne("si2.dal.Entities.Program", "Program")
+                    b.HasOne("si2.dal.Entities.Program", null)
                         .WithMany("Documents")
                         .HasForeignKey("ProgramId");
 
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("si2.dal.Entities.DocumentData", b =>
+                {
+                    b.HasOne("si2.dal.Entities.Document", "Document")
+                        .WithOne("DocumentData")
+                        .HasForeignKey("si2.dal.Entities.DocumentData", "DocumentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>

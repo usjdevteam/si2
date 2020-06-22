@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace si2.bll.Services
 {
@@ -20,19 +21,21 @@ namespace si2.bll.Services
         }
 
 
-       public async Task<bool> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
+       public async Task<DocumentDto> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
         {
+            Document documentEntity = null;
             try
             {
-                Document documentEntity = _mapper.Map<Document>(createDocumentDto);
+                documentEntity = _mapper.Map<Document>(createDocumentDto);
 
-                documentEntity.FileName = fileName;
+                documentEntity.OriginalFileName = fileName;
                 documentEntity.ContentType = contentType;
-                documentEntity.FileData = fileData;
+                documentEntity.DocumentData = new DocumentData() { FileBytes = fileData, Document = documentEntity };
                 documentEntity.UploadedBy = userID;
                 documentEntity.UploadedOn = DateTime.Now;
 
                 _uow.Documents.Add(documentEntity);
+                await _uow.SaveChangesAsync(ct);
             }
 
             catch (Exception ex)
@@ -40,27 +43,17 @@ namespace si2.bll.Services
                 _logger.LogError(ex, string.Empty);
             }
 
-            return await _uow.SaveChangesAsync(ct) > 0;
+            documentEntity = await _uow.Documents.GetAsync(documentEntity.Id, ct);
+            var documentDto = _mapper.Map<DocumentDto>(documentEntity);
+
+            return documentDto;
         }
 
 
-        public List<Document> GetDocuments()
+        public async Task<List<DocumentDto>> GetDocumentsAsync(CancellationToken ct)
         {
-            List<Document> result = new List<Document>();
-
-            try
-            {
-                result = _uow.Documents.GetAll().ToList();
-            }
-
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, string.Empty);
-            }
-
-            return result;
+            return null;
         }
- 
 
         public async Task<DocumentDto> UpdateDocumentAsync(Guid id, UpdateDocumentDto updateDocumentDto, CancellationToken ct)
         {
@@ -88,29 +81,19 @@ namespace si2.bll.Services
         }
 
 
-        public async Task<DocumentDto> SoftDeleteDocumentAsync(Guid id, SoftDeleteDocumentDto softDeleteDocumentDto, CancellationToken ct)
+        public async Task SoftDeleteDocumentAsync(Guid id, CancellationToken ct)
         {
-            DocumentDto documentDto = null;
-
             try
             {
                 var documentEntity = await _uow.Documents.GetAsync(id, ct);
-
-                _mapper.Map(softDeleteDocumentDto, documentEntity);
-
-                await _uow.Documents.UpdateAsync(documentEntity, id, ct, documentEntity.RowVersion);
+                documentEntity.IsDeleted = true;
+                //await _uow.Documents.UpdateAsync(documentEntity, id, ct, documentEntity.RowVersion);
                 await _uow.SaveChangesAsync(ct);
-
-                documentEntity = await _uow.Documents.GetAsync(id, ct);
-                documentDto = _mapper.Map<DocumentDto>(documentEntity);
             }
-
             catch (Exception ex)
             {
                 _logger.LogError(ex, string.Empty);
             }
-
-            return documentDto;
         }
 
       
@@ -120,6 +103,45 @@ namespace si2.bll.Services
                 return true;
 
             return false;
+        }
+
+        public async Task<bool> IsDeletedAsync(Guid id, CancellationToken ct)
+        {
+            var document = await _uow.Documents.GetAsync(id, ct);
+            if (document == null || document.IsDeleted == true)
+                return true;
+
+            return false;
+        }
+
+        public async Task<DownloadDocumentDto> DownloadDocumentAsync(Guid id, CancellationToken ct)
+        {
+            var documentData = await _uow.Documents.GetDocumentDataAsync(id, ct);
+            var document = await _uow.Documents.GetAsync(id, ct);
+
+            if (document == null)
+                return null;
+
+            var result = new DownloadDocumentDto()
+            {
+                ContentType = document.ContentType,
+                FileBytes = documentData.FileBytes,
+                OriginalFileName = document.OriginalFileName
+            };
+
+            return result;
+        }
+
+        public async Task<DocumentDto> GetDocumentByIdAsync(Guid id, CancellationToken ct)
+        {
+            var document = await _uow.Documents.GetAsync(id, ct);
+
+            if (document == null)
+                return null;
+
+            var result = _mapper.Map<DocumentDto>(document);
+
+            return result;
         }
     }
 }

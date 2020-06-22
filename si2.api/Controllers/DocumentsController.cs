@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace si2.api.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DocumentDto))]
-        public async Task<IActionResult> UploadDocument(IFormFile file, [FromForm] string fileInfoText, CancellationToken ct)
+        public async Task<IActionResult> UploadDocument(IFormFile file, [FromForm]string fileInfoText, CancellationToken ct)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -55,8 +56,7 @@ namespace si2.api.Controllers
                 fileBytesArray = fileMemoryStream.ToArray();
             }
 
-            await _documentService.UploadDocumentAsync(
-
+            var documentToReturn = await _documentService.UploadDocumentAsync(
                 JsonConvert.DeserializeObject<CreateDocumentDto>(fileInfoText),
                 fileBytesArray,
                 file.FileName,
@@ -64,95 +64,86 @@ namespace si2.api.Controllers
                 user.Id,
                 ct);
 
-            return Ok();
+            return CreatedAtRoute("GetDataflow", new { id = documentToReturn.Id }, documentToReturn);
         }
 
 
-        [HttpGet("{id}", Name = "GetDocument")]
+        [HttpGet]
+        [Route("download/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult GetDocument(Guid id)
+        public async Task<IActionResult> DownloadDocument([FromRoute] Guid id, CancellationToken ct)
         {
-            for (int i = 0; i < _documentService.GetDocuments().Count; i++)
-            {
-                if (id == _documentService.GetDocuments()[i].Id)
-                {
-                    
-                    if(_documentService.GetDocuments()[i].IsDeleted.Equals(false))
-                    {
-                        string fileName = _documentService.GetDocuments()[i].FileName;
+            if (await _documentService.ExistsAsync(id, ct) == false)
+                return NotFound();
 
-                        byte[] fileBytes = _documentService.GetDocuments()[i].FileData;
+            if (await _documentService.IsDeletedAsync(id, ct) == true)
+                return NotFound();
 
-                        return File(fileBytes, "APPLICATION/octet-stream", fileName);
-                    }
-                }
+            var document = await _documentService.DownloadDocumentAsync(id, ct);
 
-            }
+            if (document != null)
+                return File(document.FileBytes, document.ContentType, document.OriginalFileName);
 
             return NotFound();
         }
 
 
-        [HttpGet(Name = "GetDocuments")]
+        //[HttpGet(Name = "GetDocuments")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //public async Task<IActionResult> GetDocuments(CancellationToken ct)
+        //{
+        //    List<Document> docsReturned = new List<Document>();
+        //    var docs = _documentService.GetDocuments();
+
+        //    if(docs.Count() < 1)
+        //    {
+        //        return NoContent();
+        //    }
+
+        //    //for (int i = 0; i < docs.Count; i++)
+        //    //{
+        //    //     if (docs[i].IsDeleted.Equals(false))
+        //    //     {
+        //    //       docsReturned.Add(docs[i]);  
+        //    //     }
+        //    //}
+
+        //    if(docsReturned.Count() < 1)
+        //    {
+        //        return NoContent();
+        //    }
+
+        //    return Ok(docsReturned);
+        //}
+
+        [HttpGet("{id}", Name = "GetDocument")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult GetDocuments()
+        public async Task<IActionResult> GetDocument([FromRoute] Guid id, CancellationToken ct)
         {
-            List<Document> docsReturned = new List<Document>();
-            var docs = _documentService.GetDocuments();
+            if (!await _documentService.ExistsAsync(id, ct))
+                return NotFound();
 
-            if(docs.Count() < 1)
-            {
-                return NoContent();
-            }
+            var document = await _documentService.GetDocumentByIdAsync(id, ct);
 
-            for (int i = 0; i < docs.Count; i++)
-            {
-                 if (docs[i].IsDeleted.Equals(false))
-                 {
-                   docsReturned.Add(docs[i]);  
-                 }
-            }
-
-            if(docsReturned.Count() < 1)
-            {
-                return NoContent();
-            }
-
-            return Ok(docsReturned);
+            return Ok(document);
         }
-
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateDocument([FromRoute]Guid id, [FromBody] UpdateDocumentDto updateDocumentDto, CancellationToken ct)
+        public async Task<ActionResult> UpdateDocument([FromRoute] Guid id, [FromBody] UpdateDocumentDto updateDocumentDto, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
-            DocumentDto documentToReturn = null;
-            var docs = _documentService.GetDocuments();
-
-            for (int i = 0; i < docs.Count; i++)
-            {
-                if (id == docs[i].Id)
-                {
-                    if (docs[i].IsDeleted.Equals(false))
-                    {
-                        documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
-                    }
-                }
-            }
-
-            if (documentToReturn == null) 
-            { 
-                return BadRequest();
-            }
+            DocumentDto documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
 
             return Ok(documentToReturn);
         }
@@ -162,31 +153,14 @@ namespace si2.api.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, [FromBody] SoftDeleteDocumentDto softDeleteDocumentDto, CancellationToken ct)
+        public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
-            DocumentDto documentToReturn = null;
-            var docs = _documentService.GetDocuments();
+            await _documentService.SoftDeleteDocumentAsync(id, ct);
 
-            for (int i = 0; i < docs.Count; i++)
-            {
-                if (id == docs[i].Id)
-                {
-                    if (docs[i].IsDeleted.Equals(false))
-                    {
-                        documentToReturn = await _documentService.SoftDeleteDocumentAsync(id, softDeleteDocumentDto, ct);
-                    }
-                }
-            }
-
-            if (documentToReturn == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
+            return NoContent();
         }
     }
 }

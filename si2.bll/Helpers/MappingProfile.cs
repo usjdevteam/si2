@@ -64,7 +64,6 @@ namespace si2.bll.Helpers
 
             CreateMap<CreateDocumentDto, Document>();
             CreateMap<UpdateDocumentDto, Document>();
-            CreateMap<SoftDeleteDocumentDto, Document>();
             CreateMap<Document, DocumentDto>();
 
             CreateMap<CreateInstitutionDto, Institution>();
