@@ -7,5 +7,8 @@ namespace si2.bll.Dtos.Requests.Document
         [Required]
         [Display(Name = "isDeleted")]
         public bool IsDeleted { get; set; }
+
+        [Required]
+        public byte[] RowVersion { get; set; }
     }
 }

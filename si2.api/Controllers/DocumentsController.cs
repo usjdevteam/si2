@@ -44,8 +44,8 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DocumentDto))]
         public async Task<IActionResult> UploadDocument(IFormFile file, [FromForm] string fileInfoText, CancellationToken ct)
         {
-            var email = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByEmailAsync(email);
+            var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByEmailAsync(userEmail);
 
             byte[] fileBytesArray = null;
             

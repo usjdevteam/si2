@@ -147,6 +147,8 @@
     <Compile Remove="Migrations\20200619075505_v5.Designer.cs" />
     <Compile Remove="Migrations\20200619181309_v5_1.cs" />
     <Compile Remove="Migrations\20200619181309_v5_1.Designer.cs" />
+    <Compile Remove="Migrations\20200622100041_MyChohortMigration.cs" />
+    <Compile Remove="Migrations\20200622100041_MyChohortMigration.Designer.cs" />
 
   </ItemGroup>
 

@@ -5,9 +5,9 @@ namespace si2.bll.Dtos.Requests.Document
 {
     public class CreateDocumentDto
     {
-        [Required]
+        /*[Required]
         [Display(Name = "UniversityId")]
-        public Guid UniversityId { get; set; }
+        public Guid UniversityId { get; set; }*/
 
         [Display(Name = "InstitutionId")]
         public Guid InstitutionId { get; set; }

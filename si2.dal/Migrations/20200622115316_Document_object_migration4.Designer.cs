@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200622115316_Document_object_migration4")]
+    partial class Document_object_migration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,10 +493,21 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -503,21 +516,6 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Dataflow");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.Property<Guid>("DataflowId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DataflowId", "VehicleId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("DataflowVehicle");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
@@ -588,8 +586,8 @@ namespace si2.dal.Migrations
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    /*b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");*/
 
                     b.HasKey("Id");
 
@@ -597,7 +595,7 @@ namespace si2.dal.Migrations
 
                     b.HasIndex("ProgramId");
 
-                    b.HasIndex("UserId");
+                    //b.HasIndex("UserId");
 
                     b.ToTable("Document");
                 });
@@ -824,6 +822,10 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vehicle");
@@ -918,21 +920,6 @@ namespace si2.dal.Migrations
                     b.HasOne("si2.dal.Entities.Course", "Course")
                         .WithMany("CourseCohorts")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Dataflow", "Dataflow")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("DataflowId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.Vehicle", "Vehicle")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -8,17 +8,25 @@ namespace si2.dal.Entities
     [Table("Document")]
     public class Document : Si2BaseDataEntity<Guid>, IAuditable
     {
-        [ForeignKey("UniversityId")]
-        public Institution Institution { get; set; }
+        /*[Required]
+        [ForeignKey("University")]
+        public Guid? UniversityId { get; set; }
+
+        public University University { get; set; }*/
+
+
+        [ForeignKey("Institution")]
         public Guid? InstitutionId { get; set; }
-     
 
-        [ForeignKey("ProgramId")]
-        public Program Program { get; set; }
+        public Institution Institution { get; set; }
 
+
+        [ForeignKey("Program")]
         public Guid? ProgramId { get; set; }
 
-    
+        public Program Program { get; set; }
+
+
         public string FileName { get; set; }
 
         [Required]
@@ -55,10 +63,10 @@ namespace si2.dal.Entities
         public DateTime UploadedOn { get; set; }
 
         [Required]
-        [ForeignKey("UploadedBy")]
-        public virtual ApplicationUser User { get; set; }
-
+        [ForeignKey("ApplicationUser")]
         public string UploadedBy { get; set; }
+
+        public ApplicationUser User { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; } 

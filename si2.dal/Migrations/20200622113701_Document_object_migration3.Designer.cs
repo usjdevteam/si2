@@ -10,8 +10,8 @@ using si2.dal.Context;
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    [Migration("20200619104718_v4")]
-    partial class v4
+    [Migration("20200622113701_Document_object_migration3")]
+    partial class Document_object_migration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -493,10 +493,21 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -505,21 +516,6 @@ namespace si2.dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Dataflow");
-                });
-
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.Property<Guid>("DataflowId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DataflowId", "VehicleId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("DataflowVehicle");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
@@ -583,23 +579,23 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid?>("UniversityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UploadedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("ProgramId");
 
-                    b.HasIndex("UniversityId");
-
-                    b.HasIndex("UploadedBy");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Document");
                 });
@@ -826,6 +822,10 @@ namespace si2.dal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vehicle");
@@ -924,36 +924,19 @@ namespace si2.dal.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("si2.dal.Entities.DataflowVehicle", b =>
-                {
-                    b.HasOne("si2.dal.Entities.Dataflow", "Dataflow")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("DataflowId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("si2.dal.Entities.Vehicle", "Vehicle")
-                        .WithMany("DataflowVehicles")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
                 {
+                    b.HasOne("si2.dal.Entities.Institution", "Institution")
+                        .WithMany("Documents")
+                        .HasForeignKey("InstitutionId");
+
                     b.HasOne("si2.dal.Entities.Program", "Program")
                         .WithMany("Documents")
                         .HasForeignKey("ProgramId");
 
-                    b.HasOne("si2.dal.Entities.Institution", "Institution")
-                        .WithMany("Documents")
-                        .HasForeignKey("UniversityId");
-
                     b.HasOne("si2.dal.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UploadedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("si2.dal.Entities.Institution", b =>
