@@ -20,7 +20,7 @@ namespace si2.bll.Dtos.Results.Institution
         public InstitutionDto Parent { get; set; }
         public byte[] RowVersion { get; set; }
 
-        public override bool Equals(Object obj) => Equals(obj as InstitutionDto);
+        /*public override bool Equals(Object obj) => Equals(obj as InstitutionDto);
 
         public bool Equals(InstitutionDto obj)
         {
@@ -37,7 +37,7 @@ namespace si2.bll.Dtos.Results.Institution
                     && this.Address == obj.Address
                     && this.ContactInfo == obj.ContactInfo
                     && this.RowVersion.SequenceEqual(obj.RowVersion));
-        }
+        }*/
 
         public override int GetHashCode()
         {

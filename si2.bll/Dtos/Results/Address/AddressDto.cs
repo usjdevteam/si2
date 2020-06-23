@@ -21,7 +21,7 @@ namespace si2.bll.Dtos.Results.Address
 
         public decimal Latitude { get; set; }
         public byte[] RowVersion { get; set; }
-        public override bool Equals(Object obj) => Equals(obj as AddressDto);
+        /*public override bool Equals(Object obj) => Equals(obj as AddressDto);
 
         public bool Equals(AddressDto obj)
         {
@@ -34,7 +34,7 @@ namespace si2.bll.Dtos.Results.Address
                 && string.Equals(this.CountryAr, obj.CountryAr, StringComparison.OrdinalIgnoreCase)
                 && this.Longitude == obj.Longitude
                 && this.Latitude == obj.Latitude);
-        }
+        }*/
 
         public override int GetHashCode()
         {
