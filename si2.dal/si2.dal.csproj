@@ -155,6 +155,8 @@
     <Compile Remove="Migrations\20200622150126_v4.Designer.cs" />
     <Compile Remove="Migrations\20200622162929_v5.cs" />
     <Compile Remove="Migrations\20200622162929_v5.Designer.cs" />
+    <Compile Remove="Migrations\20200623101821_User_Mngt_Changes.cs" />
+    <Compile Remove="Migrations\20200623101821_User_Mngt_Changes.Designer.cs" />
 
   </ItemGroup>
 

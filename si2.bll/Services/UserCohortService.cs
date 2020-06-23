@@ -61,9 +61,15 @@ namespace si2.bll.Services
 
             if (manageUsersCohortDto.AddCohortsIds != null)
             {
+                if (user.UserCohorts == null)
+                    user.UserCohorts = new List<UserCohort>();
+
                 foreach (var ac in manageUsersCohortDto.AddCohortsIds)
                 {
-                    if (!user.UserCohorts.Any(c => ac == c.CohortId))
+                    //if (!user.UserCohorts.Any(c => ac == c.CohortId))
+                    var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == ac && c.UserId == id).Count();
+
+                    if (usersCohort == 0)
                     {
                         user.UserCohorts.Add(new UserCohort() { CohortId = ac, UserId = id });
                     }
@@ -74,16 +80,14 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCohortDto.DeleteCohortsIds)
                 {
-                    //var userCohort = user.UserCohorts.FirstOrDefault(c => c.CohortId == dc && c.UserId == id);
-                    //var userCohort = user.UserCohorts
-                    //.Where(c => c.CohortId == dc && c.UserId == id)
-                    //.SingleOrDefault();
-                    var userCohort = user.UserCohorts.Where(c => c.CohortId == dc && c.UserId == id).FirstOrDefault();
+                    //var userCohort = await _uow.UserCohorts.FirstAsync(c => c.CohortId == dc && c.UserId == id, ct);
+                    var userCohort = _uow.UserCohorts.FindBy(c => c.CohortId == dc && c.UserId == id).FirstOrDefault();
 
                     //if (user.UserCohorts.Any(c => ac == c.CohortId))
                     if (userCohort != null)
                     {
-                        user.UserCohorts.Remove(userCohort);
+                        //user.UserCohorts.Remove(userCohort);
+                        _uow.UserCohorts.Delete(userCohort);
                     }
                 }
             }
@@ -105,10 +109,10 @@ namespace si2.bll.Services
             return userCohortDto;
         }
 
-        public async Task<PagedList<UserCohortDto>> GetCohortsUserAsync(String userId, CancellationToken ct)
+        public async Task<PagedList<CohortDto>> GetCohortsUserAsync(String userId, CancellationToken ct)
         {
 
-            var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct);
+            //var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct);
 
             //var cohortsIds = cohortUsersIds.Select(c => c.CohortId);
 
@@ -118,27 +122,36 @@ namespace si2.bll.Services
             //var cohortsEntityList = cohortsEntity.ToList();
 
             //var cohorts = await _uow.UserCohorts.FindByAsync(c => c.UserId == userId, ct).Include(e => e.Cohorts).ToList();
-            
-            var cohortsEntity = _userManager.Users
+
+            /*var cohortsEntity = _userManager.Users
                 .Include(u => u.UserCohorts) 
                 .ThenInclude(uc => uc.Cohort)
-                .Where(c => c.Id == userId).ToList();
+                .Where(c => c.Id == userId).ToList();*/
 
-            /*var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
+            var cohortsEntity = _uow.UserCohorts.GetAllIncluding(c => c.Cohort)
+                                .Where(c => c.UserId == userId)
+                                .Select(c => c.Cohort);
 
-            var result = _mapper.Map<PagedList<UserCohortDto>>(pagedListEntities);
-            result.TotalCount = pagedListEntities.TotalCount;
-            result.TotalPages = pagedListEntities.TotalPages;
-            result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;*/
+            if (cohortsEntity.Count() > 0)
+            {
+                var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortsEntity, 1, cohortsEntity.Count(), ct);
 
-            //return result;
+                var result = _mapper.Map<PagedList<CohortDto>>(pagedListEntities);
+                result.TotalCount = pagedListEntities.TotalCount;
+                result.TotalPages = pagedListEntities.TotalPages;
+                result.CurrentPage = pagedListEntities.CurrentPage;
+                result.PageSize = pagedListEntities.PageSize;
 
-            return null;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
 
         }
 
-        public async Task DeleteCohortsUser(String userId, CancellationToken ct)
+        /*public async Task DeleteCohortsUser(String userId, CancellationToken ct)
         {
             try
             {
@@ -150,7 +163,7 @@ namespace si2.bll.Services
             {
                 _logger.LogError(e, string.Empty);
             }
-        }
+        }*/
 
         public async Task<bool> ExistsAsync(String userId, CancellationToken ct)
         {
