@@ -76,7 +76,7 @@ namespace si2.bll.Services
             var cohortEntities = _uow.Cohorts.GetAll();
 
 
-            if (cohortEntities.Count() > 1)
+            if (cohortEntities.Count() >= 1)
             {
                 var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities, 1, cohortEntities.Count(), ct);
 
