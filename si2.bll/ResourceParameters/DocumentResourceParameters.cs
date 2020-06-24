@@ -22,7 +22,5 @@ namespace si2.bll.ResourceParameters
                 _pageSize = (value > Constants.MAX_PAGE_SIZE) ? Constants.MAX_PAGE_SIZE : value;
             }
         }
-
-        public string SearchQuery { get; set; }
     }
 }

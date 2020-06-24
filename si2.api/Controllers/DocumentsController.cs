@@ -81,10 +81,6 @@ namespace si2.api.Controllers
 
             var document = await _documentService.GetDocumentByIdAsync(id, ct);
 
-            if (await _documentService.IsDeletedAsync(id, ct) == true)
-                return NotFound();
-
-
             return Ok(document);
         }
 
@@ -100,8 +96,6 @@ namespace si2.api.Controllers
             if (await _documentService.ExistsAsync(id, ct) == false)
                 return NotFound();
 
-            if (await _documentService.IsDeletedAsync(id, ct) == true)
-                return NotFound();
 
             var document = await _documentService.DownloadDocumentAsync(id, ct);
 
@@ -153,7 +147,6 @@ namespace si2.api.Controllers
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
                         new
                         {
-                            searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber - 1,
                             pageSize = pagedResourceParameters.PageSize
                         });
@@ -161,7 +154,6 @@ namespace si2.api.Controllers
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
                         new
                         {
-                            searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber + 1,
                             pageSize = pagedResourceParameters.PageSize
                         });
@@ -169,7 +161,6 @@ namespace si2.api.Controllers
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
                        new
                        {
-                           searchQuery = pagedResourceParameters.SearchQuery,
                            pageNumber = pagedResourceParameters.PageNumber,
                            pageSize = pagedResourceParameters.PageSize
                        });
@@ -187,9 +178,6 @@ namespace si2.api.Controllers
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
-            if (await _documentService.IsDeletedAsync(id, ct) == true)
-                return NotFound();
-            
 
             DocumentDto documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
 
@@ -204,9 +192,6 @@ namespace si2.api.Controllers
         public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
-                return NotFound();
-
-            if (await _documentService.IsDeletedAsync(id, ct) == true)
                 return NotFound();
 
             await _documentService.SoftDeleteDocumentAsync(id, ct);

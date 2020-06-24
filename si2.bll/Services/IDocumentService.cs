@@ -29,6 +29,6 @@ namespace si2.bll.Services
         Task<bool> ExistsAsync(Guid id, CancellationToken ct);
 
 
-        Task<bool> IsDeletedAsync(Guid id, CancellationToken ct);   
+        //Task<bool> IsDeletedAsync(Guid id, CancellationToken ct);   
     }
 }
