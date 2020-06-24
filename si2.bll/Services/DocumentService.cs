@@ -90,7 +90,7 @@ namespace si2.bll.Services
 
             try
             {
-                var documentEntities = _uow.Documents.GetAll();
+                var documentEntities = _uow.Documents.GetAll().Where(doc => doc.IsDeleted == false);
                 var instiutionIdFromLink = resourceParameters.InstitutionId;
                 var programIdFromLink = resourceParameters.ProgramId;
 

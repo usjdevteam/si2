@@ -105,18 +105,10 @@ namespace si2.api.Controllers
 
             var document = await _documentService.DownloadDocumentAsync(id, ct);
 
-            /*var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = document.OriginalFileName,
-                Inline = true,
-            };*/
-
 
             if (document != null) 
             {
-                //Response.Headers.Add("Content-Disposition", cd.ToString());
                 return File(document.FileBytes, document.ContentType, document.OriginalFileName);
-              //return File(document.FileBytes, "APPLICATION/octet-stream", document.OriginalFileName);
             }
             return NotFound();
         }
@@ -128,8 +120,6 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetDocuments([FromQuery]DocumentResourceParameters pagedResourceParameters, CancellationToken ct)
         {
-            List<DocumentDto> docsReturned = new List<DocumentDto>();
-
             var documentDtos = await _documentService.GetDocumentsAsync(pagedResourceParameters, ct);
 
             var previousPageLink = documentDtos.HasPrevious ? CreateDocumentResourceUri(pagedResourceParameters, ResourceUriType.PreviousPage) : null;
@@ -150,23 +140,8 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-
-            for (int i = 0; i < documentDtos.Count; i++)
-            {
-                if (documentDtos[i].IsDeleted.Equals(false))
-                {
-                    docsReturned.Add(documentDtos[i]);
-                }
-            }
-
-            if (docsReturned.Count() < 1)
-            {
-                return NotFound();
-            }
-
-
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
-            return Ok(docsReturned);
+            return Ok(documentDtos);
         }
 
 
