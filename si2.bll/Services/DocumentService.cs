@@ -7,11 +7,9 @@ using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace si2.bll.Services
 {
@@ -93,14 +91,22 @@ namespace si2.bll.Services
             try
             {
                 var documentEntities = _uow.Documents.GetAll();
+                var instiutionIdFromLink = resourceParameters.InstitutionId;
+                var programIdFromLink = resourceParameters.ProgramId;
 
-                if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+
+                if (instiutionIdFromLink != null && instiutionIdFromLink != Guid.Empty)
                 {
-                    var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
                     documentEntities = documentEntities
-                        .Where(doc => doc.InstitutionId.Equals(searchQueryForWhereClause)
-                                      || doc.ProgramId.Equals(searchQueryForWhereClause));
+                        .Where(doc => doc.InstitutionId.Equals(instiutionIdFromLink));
                 }
+
+                if (programIdFromLink != null && programIdFromLink != Guid.Empty)
+                {
+                    documentEntities = documentEntities
+                        .Where(doc => doc.ProgramId.Equals(programIdFromLink));
+                }
+
 
                 var pagedListEntities = await PagedList<Document>.CreateAsync(documentEntities,
                 resourceParameters.PageNumber, resourceParameters.PageSize, ct);

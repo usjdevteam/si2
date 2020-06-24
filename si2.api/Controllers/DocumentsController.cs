@@ -9,7 +9,6 @@ using si2.bll.Dtos.Requests.Document;
 using si2.bll.Dtos.Results.Document;
 using si2.bll.ResourceParameters;
 using si2.bll.Services;
-using si2.common;
 using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
