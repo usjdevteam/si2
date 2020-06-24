@@ -7,16 +7,17 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.Document;
 using si2.bll.Dtos.Results.Document;
+using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using static si2.common.Enums;
 
 namespace si2.api.Controllers
 {
@@ -64,8 +65,28 @@ namespace si2.api.Controllers
                 user.Id,
                 ct);
 
-            return CreatedAtRoute("GetDataflow", new { id = documentToReturn.Id }, documentToReturn);
+            return CreatedAtRoute("GetDocument", new { id = documentToReturn.Id }, documentToReturn);
         }
+
+
+
+        [HttpGet("{id}", Name = "GetDocument")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetDocument([FromRoute] Guid id, CancellationToken ct)
+        {
+            if (!await _documentService.ExistsAsync(id, ct))
+                return NotFound();
+
+            if (await _documentService.IsDeletedAsync(id, ct))
+                return NotFound();
+
+            var document = await _documentService.GetDocumentByIdAsync(id, ct);
+
+            return Ok(document);
+        }
+
 
 
         [HttpGet]
@@ -78,61 +99,80 @@ namespace si2.api.Controllers
             if (await _documentService.ExistsAsync(id, ct) == false)
                 return NotFound();
 
-            if (await _documentService.IsDeletedAsync(id, ct) == true)
+            if (await _documentService.IsDeletedAsync(id, ct))
                 return NotFound();
 
             var document = await _documentService.DownloadDocumentAsync(id, ct);
 
-            if (document != null)
-                return File(document.FileBytes, document.ContentType, document.OriginalFileName);
 
+            if (document != null) 
+            {
+                return File(document.FileBytes, document.ContentType, document.OriginalFileName);
+            }
             return NotFound();
         }
 
 
-        //[HttpGet(Name = "GetDocuments")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //public async Task<IActionResult> GetDocuments(CancellationToken ct)
-        //{
-        //    List<Document> docsReturned = new List<Document>();
-        //    var docs = _documentService.GetDocuments();
-
-        //    if(docs.Count() < 1)
-        //    {
-        //        return NoContent();
-        //    }
-
-        //    //for (int i = 0; i < docs.Count; i++)
-        //    //{
-        //    //     if (docs[i].IsDeleted.Equals(false))
-        //    //     {
-        //    //       docsReturned.Add(docs[i]);  
-        //    //     }
-        //    //}
-
-        //    if(docsReturned.Count() < 1)
-        //    {
-        //        return NoContent();
-        //    }
-
-        //    return Ok(docsReturned);
-        //}
-
-        [HttpGet("{id}", Name = "GetDocument")]
+        [HttpGet(Name = "GetDocuments")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetDocument([FromRoute] Guid id, CancellationToken ct)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetDocuments([FromQuery]DocumentResourceParameters pagedResourceParameters, CancellationToken ct)
         {
-            if (!await _documentService.ExistsAsync(id, ct))
+            var documentDtos = await _documentService.GetDocumentsAsync(pagedResourceParameters, ct);
+
+            var previousPageLink = documentDtos.HasPrevious ? CreateDocumentResourceUri(pagedResourceParameters, ResourceUriType.PreviousPage) : null;
+            var nextPageLink = documentDtos.HasNext ? CreateDocumentResourceUri(pagedResourceParameters, ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = documentDtos.TotalCount,
+                pageSize = documentDtos.PageSize,
+                currentPage = documentDtos.CurrentPage,
+                totalPages = documentDtos.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            if (documentDtos.Count < 1)
+            {
                 return NotFound();
+            }
 
-            var document = await _documentService.GetDocumentByIdAsync(id, ct);
-
-            return Ok(document);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
+            return Ok(documentDtos);
         }
+
+
+        private string CreateDocumentResourceUri(DocumentResourceParameters pagedResourceParameters, ResourceUriType type)
+        {
+            switch (type)
+            {
+                case ResourceUriType.PreviousPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber - 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                case ResourceUriType.NextPage:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
+                        new
+                        {
+                            pageNumber = pagedResourceParameters.PageNumber + 1,
+                            pageSize = pagedResourceParameters.PageSize
+                        });
+                default:
+                    return _linkGenerator.GetUriByName(this.HttpContext, "GetDocuments",
+                       new
+                       {
+                           pageNumber = pagedResourceParameters.PageNumber,
+                           pageSize = pagedResourceParameters.PageSize
+                       });
+            }
+        }
+
+
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -141,6 +181,9 @@ namespace si2.api.Controllers
         public async Task<ActionResult> UpdateDocument([FromRoute] Guid id, [FromBody] UpdateDocumentDto updateDocumentDto, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
+                return NotFound();
+
+            if (await _documentService.IsDeletedAsync(id, ct))
                 return NotFound();
 
             DocumentDto documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
@@ -156,6 +199,9 @@ namespace si2.api.Controllers
         public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
+                return NotFound();
+
+            if (await _documentService.IsDeletedAsync(id, ct))
                 return NotFound();
 
             await _documentService.SoftDeleteDocumentAsync(id, ct);
