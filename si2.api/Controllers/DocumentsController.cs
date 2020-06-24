@@ -79,6 +79,9 @@ namespace si2.api.Controllers
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
+            if (await _documentService.IsDeletedAsync(id, ct))
+                return NotFound();
+
             var document = await _documentService.GetDocumentByIdAsync(id, ct);
 
             return Ok(document);
@@ -96,6 +99,8 @@ namespace si2.api.Controllers
             if (await _documentService.ExistsAsync(id, ct) == false)
                 return NotFound();
 
+            if (await _documentService.IsDeletedAsync(id, ct))
+                return NotFound();
 
             var document = await _documentService.DownloadDocumentAsync(id, ct);
 
@@ -178,6 +183,8 @@ namespace si2.api.Controllers
             if (!await _documentService.ExistsAsync(id, ct))
                 return NotFound();
 
+            if (await _documentService.IsDeletedAsync(id, ct))
+                return NotFound();
 
             DocumentDto documentToReturn = await _documentService.UpdateDocumentAsync(id, updateDocumentDto, ct);
 
@@ -192,6 +199,9 @@ namespace si2.api.Controllers
         public async Task<ActionResult> SoftDeleteDocument([FromRoute]Guid id, CancellationToken ct)
         {
             if (!await _documentService.ExistsAsync(id, ct))
+                return NotFound();
+
+            if (await _documentService.IsDeletedAsync(id, ct))
                 return NotFound();
 
             await _documentService.SoftDeleteDocumentAsync(id, ct);

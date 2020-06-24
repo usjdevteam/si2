@@ -168,24 +168,23 @@ namespace si2.bll.Services
             }
         }
 
-      
+
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
         {
-            var document = await _uow.Documents.GetAsync(id, ct);
-            if (document != null && document.IsDeleted == false)
+            if (await _uow.Documents.GetAsync(id, ct) != null)
                 return true;
 
             return false;
         }
 
 
-        /*public async Task<bool> IsDeletedAsync(Guid id, CancellationToken ct)
+        public async Task<bool> IsDeletedAsync(Guid id, CancellationToken ct)
         {
             var document = await _uow.Documents.GetAsync(id, ct);
             if (document == null || document.IsDeleted == true)
                 return true;
 
             return false;
-        }*/
+        }
     }
 }
