@@ -16,7 +16,7 @@ namespace si2.dal.Entities
        
 
         [ForeignKey("CourseId")]
-        public virtual Course Course { get; set; }
+        public Course Course { get; set; }
         public Guid CourseId { get; set; }
     }
 }

@@ -41,10 +41,18 @@ namespace si2.bll.Services
 
             if (manageUsersCoursesDto.AddCoursesIds != null)
             {
+                if(user.UserCourses == null)
+                    user.UserCourses = new List<UserCourse>();
+
                 foreach (var ac in manageUsersCoursesDto.AddCoursesIds)
                 {
-                    if (!user.UserCourses.Any(c => ac == c.CourseId))
+                    //if (!user.UserCourses.Any(c => ac == c.CourseId))
+                    var usersCourse = _uow.UserCourses.FindBy(c => c.CourseId == ac && c.UserId == id).Count();
+
+                    if (usersCourse == 0)
+                    {
                         user.UserCourses.Add(new UserCourse() { CourseId = ac, UserId = id });
+                    }
                 }
             }
 
@@ -53,11 +61,16 @@ namespace si2.bll.Services
                 foreach (var dc in manageUsersCoursesDto.DeleteCoursesIds)
                 {
                     //var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
-                    var userCourse = user.UserCourses.Where(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
+                    //var userCourse = user.UserCourses.Where(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
+
+                    //var userCourse = await _uow.UserCourses.FirstAsync(c => c.CourseId == dc && c.UserId == id, ct);
+
+                    var userCourse = _uow.UserCourses.FindBy(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
 
                     if (userCourse != null)
                     {
-                        user.UserCourses.Remove(userCourse);
+                        //user.UserCourses.Remove(userCourse);
+                        _uow.UserCourses.Delete(userCourse);
                     }
                 }
             }
@@ -74,15 +87,22 @@ namespace si2.bll.Services
                                 .Where(c => c.UserId == userId)
                                 .Select(c => c.Course);
 
-            var pagedListEntities = await PagedList<Course>.CreateAsync(coursesEntity, 1, coursesEntity.Count(), ct);
+            if (coursesEntity.Count() > 0)
+            {
+                var pagedListEntities = await PagedList<Course>.CreateAsync(coursesEntity, 1, coursesEntity.Count(), ct);
 
-            var result = _mapper.Map<PagedList<CourseDto>>(pagedListEntities);
-            result.TotalCount = pagedListEntities.TotalCount;
-            result.TotalPages = pagedListEntities.TotalPages;
-            result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;
+                var result = _mapper.Map<PagedList<CourseDto>>(pagedListEntities);
+                result.TotalCount = pagedListEntities.TotalCount;
+                result.TotalPages = pagedListEntities.TotalPages;
+                result.CurrentPage = pagedListEntities.CurrentPage;
+                result.PageSize = pagedListEntities.PageSize;
 
-            return result;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
 
 
         }
@@ -103,10 +123,17 @@ namespace si2.bll.Services
 
             if (manageUsersCoursesDto.AddUsersIds != null)
             {
+                if (course.UserCourses == null)
+                    course.UserCourses = new List<UserCourse>();
+
                 foreach (var ac in manageUsersCoursesDto.AddUsersIds)
                 {
-                    if (!course.UserCourses.Any(c => ac == c.UserId))
+                    var usersCourse = _uow.UserCourses.FindBy(c => c.UserId == ac && c.CourseId == id).Count();
+
+                    if (usersCourse == 0)
+                    {
                         course.UserCourses.Add(new UserCourse() { UserId = ac, CourseId = id });
+                    }
                 }
             }
 
@@ -114,11 +141,11 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCoursesDto.DeleteUsersIds)
                 {
-                    var userCourse = course.UserCourses.Where(c => c.UserId == dc && c.CourseId == id).FirstOrDefault();
+                    var userCourse = _uow.UserCourses.FindBy(c => c.UserId == dc && c.CourseId == id).FirstOrDefault();
 
                     if (userCourse != null)
                     {
-                        course.UserCourses.Remove(userCourse);
+                        _uow.UserCourses.Delete(userCourse);
                     }
                 }
             }
@@ -127,30 +154,5 @@ namespace si2.bll.Services
 
             return userCourseDto;
         }
-
-        public async Task DeleteUsersCourse(Guid id, ManageCoursesUserDto manageUsersCoursesDto, CancellationToken ct)
-        {
-            try
-            {
-                if (manageUsersCoursesDto.DeleteUsersIds != null)
-                {
-                    foreach (var dc in manageUsersCoursesDto.DeleteUsersIds)
-                    {
-                        var userCourse = await _uow.UserCourses.FirstAsync(c => c.UserId == dc && c.CourseId == id, ct);
-
-                        if (userCourse != null)
-                        {
-                            _uow.UserCourses.Delete(userCourse);
-                        }
-                    }
-                    await _uow.SaveChangesAsync(ct);
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                _logger.LogError(e, string.Empty);
-            }
-        }
-        
     }
 }

@@ -6,7 +6,7 @@
 		DECLARE @Id_Role_Administrator UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_User UNIQUEIDENTIFIER = NEWID()
 		INSERT INTO AspNetRoles
-		(Id,						Name,				NormalizedName,		ConcurrencyStamp)
+		(Id,						[Name],				NormalizedName,		ConcurrencyStamp)
 		Values
 		(@Id_Role_SuperAdmin,		'SuperAdmin',		'SUPSERADMIN',		NEWID()),
 		(@Id_Role_Administrator,	'Administrator',	'ADMINISTRATOR',	NEWID()),
