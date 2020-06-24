@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using si2.common;
+﻿using si2.common;
 
 namespace si2.bll.ResourceParameters
 {
-    public class ProgramResourceParameters
+    public class DocumentResourceParameters
     {
         public int PageNumber { get; set; } = Constants.DEFAULT_PAGE_NUMBER;
         private int _pageSize = Constants.DEFAULT_PAGE_SIZE;

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Document;
 using si2.bll.Dtos.Results.Document;
+using si2.bll.Helpers.PagedList;
+using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
@@ -24,6 +26,7 @@ namespace si2.bll.Services
        public async Task<DocumentDto> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
         {
             Document documentEntity = null;
+
             try
             {
                 documentEntity = _mapper.Map<Document>(createDocumentDto);
@@ -50,10 +53,73 @@ namespace si2.bll.Services
         }
 
 
-        public async Task<List<DocumentDto>> GetDocumentsAsync(CancellationToken ct)
+        public async Task<DocumentDto> GetDocumentByIdAsync(Guid id, CancellationToken ct)
         {
-            return null;
+            var document = await _uow.Documents.GetAsync(id, ct);
+
+            if (document == null)
+                return null;
+
+            var result = _mapper.Map<DocumentDto>(document);
+
+            return result;
         }
+
+
+        public async Task<DownloadDocumentDto> DownloadDocumentAsync(Guid id, CancellationToken ct)
+        {
+            var documentData = await _uow.Documents.GetDocumentDataAsync(id, ct);
+            var document = await _uow.Documents.GetAsync(id, ct);
+
+            if (document == null)
+                return null;
+
+            var result = new DownloadDocumentDto()
+            {
+                ContentType = document.ContentType,
+                FileBytes = documentData.FileBytes,
+                OriginalFileName = document.OriginalFileName
+            };
+
+            return result;
+        }
+
+
+
+        public async Task<PagedList<DocumentDto>> GetDocumentsAsync(DocumentResourceParameters resourceParameters, CancellationToken ct)
+        {
+            PagedList<DocumentDto> result = new PagedList<DocumentDto>();
+
+            try
+            {
+                var documentEntities = _uow.Documents.GetAll();
+
+                if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+                {
+                    var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
+                    documentEntities = documentEntities
+                        .Where(doc => doc.InstitutionId.Equals(searchQueryForWhereClause)
+                                      || doc.ProgramId.Equals(searchQueryForWhereClause));
+                }
+
+                var pagedListEntities = await PagedList<Document>.CreateAsync(documentEntities,
+                resourceParameters.PageNumber, resourceParameters.PageSize, ct);
+
+                result = _mapper.Map<PagedList<DocumentDto>>(pagedListEntities);
+                result.TotalCount = pagedListEntities.TotalCount;
+                result.TotalPages = pagedListEntities.TotalPages;
+                result.CurrentPage = pagedListEntities.CurrentPage;
+                result.PageSize = pagedListEntities.PageSize;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Empty);
+            }
+
+            return result;
+        }
+
+
 
         public async Task<DocumentDto> UpdateDocumentAsync(Guid id, UpdateDocumentDto updateDocumentDto, CancellationToken ct)
         {
@@ -105,6 +171,7 @@ namespace si2.bll.Services
             return false;
         }
 
+
         public async Task<bool> IsDeletedAsync(Guid id, CancellationToken ct)
         {
             var document = await _uow.Documents.GetAsync(id, ct);
@@ -112,36 +179,6 @@ namespace si2.bll.Services
                 return true;
 
             return false;
-        }
-
-        public async Task<DownloadDocumentDto> DownloadDocumentAsync(Guid id, CancellationToken ct)
-        {
-            var documentData = await _uow.Documents.GetDocumentDataAsync(id, ct);
-            var document = await _uow.Documents.GetAsync(id, ct);
-
-            if (document == null)
-                return null;
-
-            var result = new DownloadDocumentDto()
-            {
-                ContentType = document.ContentType,
-                FileBytes = documentData.FileBytes,
-                OriginalFileName = document.OriginalFileName
-            };
-
-            return result;
-        }
-
-        public async Task<DocumentDto> GetDocumentByIdAsync(Guid id, CancellationToken ct)
-        {
-            var document = await _uow.Documents.GetAsync(id, ct);
-
-            if (document == null)
-                return null;
-
-            var result = _mapper.Map<DocumentDto>(document);
-
-            return result;
         }
     }
 }
