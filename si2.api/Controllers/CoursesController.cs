@@ -185,8 +185,7 @@ namespace si2.api.Controllers
         }
 
 
-        [HttpPost]
-        [Route("{id}/users", Name = "UpdateUseersCourse")]
+        [HttpPost("{id}/users", Name = "UpdateUseersCourse")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> UpdateUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersToCourseDto, CancellationToken ct)
@@ -200,17 +199,6 @@ namespace si2.api.Controllers
 
             var userCohortToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
             return Ok();
-        }
-
-        [HttpDelete("{id}/users", Name = "DeleteUsersCourse")]
-        //[Route("{id}/users", Name = "DeleteUsersCourse")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersCoursesDto, CancellationToken ct)
-        {
-            await _userCourseService.DeleteUsersCourse(id, manageUsersCoursesDto, ct);
-
-            return NoContent();
         }
     }
 }
