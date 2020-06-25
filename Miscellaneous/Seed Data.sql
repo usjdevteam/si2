@@ -1,61 +1,109 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
 		DECLARE @RowsTotal  INT = 0
-	
+
 		DECLARE @Id_Role_SuperAdmin UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_Administrator UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_User UNIQUEIDENTIFIER = NEWID()
-		
+		INSERT INTO AspNetRoles
+		(Id,						Name,				NormalizedName,		ConcurrencyStamp)
+		Values
+		(@Id_Role_SuperAdmin,		'SuperAdmin',		'SUPSERADMIN',		NEWID()),
+		(@Id_Role_Administrator,	'Administrator',	'ADMINISTRATOR',	NEWID()),
+		(@Id_Role_User,				'User',				'USER',				NEWID())
 		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 
 		DECLARE @Id_User_SuperAdmin UNIQUEIDENTIFIER = NEWID() -- password Super_123
 		DECLARE @Id_User_Administrator1 UNIQUEIDENTIFIER = NEWID() -- password Super_123
 		DECLARE @Id_User_User1 UNIQUEIDENTIFIER = NEWID() -- password Super_123
 		
-		DECLARE @id_ContactIfor_1 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_ContactIfor_2 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_ContactIfor_3 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Address_1 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Address_2 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Address_3 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Institution_1 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Institution_2 UNIQUEIDENTIFIER = NEWID()
-		DECLARE @id_Institution_3 UNIQUEIDENTIFIER = NEWID()
+		INSERT INTO AspNetUsers
+		(ID,		UserName,				NormalizeduserName,		Email,					NormalizedEmail,		PasswordHash,	
+		SecurityStamp, ConcurrencyStamp,	 EmailConfirmed, PhoneNumberConfirmed,	TwoFactorEnabled,	LockoutEnabled, AccessFailedCount, FirstNameAr, FirstNameFr, LastNameAr, LastNameFr)
+		VALUES
+		(@Id_User_SuperAdmin,	'superadmin@mailinator.com',	'SUPERADMIN@MAILINATOR.COM',   'superadmin@mailinator.com',	'SUPERADMIN@MAILINATOR.COM',	'AQAAAAEAACcQAAAAEO0WixeZWeD5CFlJuskzYLYd+52mZgaHvJZM19TPL3vzYv501aT2QwzUS4XxrCFJQw==', 
+		NEWID(),		NEWID(),		1,				0,						0,					0,				0,				N'سوبر',			'Super',		N'أدمن',		'Admin'),
+		(@Id_User_Administrator1,	'administrator1@mailinator.com',	'ADMINISTRATOR1@MAILINATOR.COM',   'administrator1@mailinator.com',	'ADMINISTRATOR1@MAILINATOR.COM',	'AQAAAAEAACcQAAAAEO0WixeZWeD5CFlJuskzYLYd+52mZgaHvJZM19TPL3vzYv501aT2QwzUS4XxrCFJQw==', 
+		NEWID(),		NEWID(),		1,				0,						0,					0,				0,				N'أدمنيسترتر',			'Admnistrator',		N'واحد',		'One'),
+		(@Id_User_User1,	'user1@mailinator.com',	'USER1@MAILINATOR.COM',   'user1@mailinator.com',	'USER1@MAILINATOR.COM',	'AQAAAAEAACcQAAAAEO0WixeZWeD5CFlJuskzYLYd+52mZgaHvJZM19TPL3vzYv501aT2QwzUS4XxrCFJQw==', 
+		NEWID(),		NEWID(),		1,				0,						0,					0,				0,				N'يوزر',			'User',		N'واحد',		'One')
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 		
-		--BULK
-		--INSERT Institution
-		--FROM 'C:/Users/Administrator/source/repos/si2/Miscellaneous/get institutions.csv'
-		--WITH
-		--(
-		--FIELDTERMINATOR = ',',
-		--ROWTERMINATOR = '\n'
-		--)
+		INSERT INTO AspNetUserRoles (RoleId, UserId)
+		VALUES	(@Id_Role_SuperAdmin, @Id_User_SuperAdmin),
+				(@Id_Role_Administrator, @Id_User_Administrator1),
+				(@Id_Role_User, @Id_User_User1)
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
+		
+		BULK
+		INSERT [Address]
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/address.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
 
-		$CSV = Import-Csv "get institutions.csv"
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 
-		$SQLServer   = "dbserver.corp.company.tld"
-		$SQLDatabase = "database"
+		BULK
+		INSERT ContactInfo
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/contactInfo.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
 
-		--# Set up a string format template
-		$InsertTemplateAddress = "INSERT INTO Address([id], [StreetFr], [StreetAr], [NameAr] , [NameEn]) VALUES (NEWID(),'{0}','{1}','{2}','{3}','{4}')"
-		$InsertTemplateContactInfo = "INSERT INTO Institution([id], [Code], [NameFr], [NameAr] , [NameEn]) VALUES (NEWID(),'{0}','{1}','{2}','{3}','{4}')"
-		$InsertTemplateInstitution = "INSERT INTO Institution([id], [Code], [NameFr], [NameAr] , [NameEn]) VALUES (NEWID(),'{0}','{1}','{2}','{3}','{4}')"
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 
-		--# Generate all insert statements and store in string array
-		$AllInserts = foreach($Row in $CSV){
-			$InsertTemplate -f $Row.id,$Row.'First Name',$Row.'Last Name'
-		}
+		BULK
+		INSERT Institution
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/institutions.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
 
-		--# Split array into an array of 1000 (or fewer) string arrays
-		$RowArrays = for($i=0; $i -lt $AllInserts.Length; $i+=1000){
-			,@($AllInserts[$i..($i+999)])
-		}
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 
-		--# Foreach array of 1000 (or less) insert statements, concatenate them with a new line and invoke it
-		foreach($RowArray in $RowArrays){
-			$Query = $RowArray -join [System.Environment]::NewLine
-			Invoke-QsSqlQuery -query $Query -SQLServer $SQLServer -database $SQLDatabase
-		}
+		BULK
+		INSERT ProgramLevel
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programLevel.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
+
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
+
+		BULK
+		INSERT Program
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programs.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
+
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
+		
+		BULK
+		INSERT Course
+		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/courses.csv'
+		WITH
+		(
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '\n',
+		CODEPAGE = '65001'
+		)
 
 		COMMIT TRANSACTION
 	
