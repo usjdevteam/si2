@@ -1,8 +1,13 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
 		DELETE FROM AspNetUserRoles
+		DELETE FROM AspNetUserClaims
 		DELETE FROM AspnetUsers
 		DELETE FROM AspnetRoles
+		DELETE FROM Course
+		DELETE FROM Cohort
+		DELETE FROM Program
+		DELETE FROM ProgramLevel
 		DELETE FROM Institution
 		DELETE FROM [Address]
 		DELETE FROM ContactInfo

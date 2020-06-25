@@ -1,11 +1,12 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
 		DECLARE @RowsTotal  INT = 0
-	
+
 		DECLARE @Id_Role_SuperAdmin UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_Administrator UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_User UNIQUEIDENTIFIER = NEWID()
 		INSERT INTO AspNetRoles
+
 		(Id,						[Name],				NormalizedName,		ConcurrencyStamp)
 		Values
 		(@Id_Role_SuperAdmin,		'SuperAdmin',		'SUPSERADMIN',		NEWID()),
@@ -34,7 +35,7 @@
 				(@Id_Role_Administrator, @Id_User_Administrator1),
 				(@Id_Role_User, @Id_User_User1)
 		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
-		
+	
 		DECLARE @id_ContactIfor_1 UNIQUEIDENTIFIER = NEWID()
 		DECLARE @id_ContactIfor_2 UNIQUEIDENTIFIER = NEWID()
 		DECLARE @id_ContactIfor_3 UNIQUEIDENTIFIER = NEWID()
@@ -62,6 +63,7 @@
 				(@id_Institution_2, N'اينسي جامعة القديس يوسف في بيروت', 'INCI Saint Joseph University of Beirut', 'INCI Université Saint Joseph de Beyrouth', 'INCI', @id_Address_2, @id_ContactIfor_2, @id_Institution_1),
 				(@id_Institution_3, N'اففم جامعة القديس يوسف في بيروت', 'FFM Saint Joseph University of Beirut', 'FFM Université Saint Joseph de Beyrouth', 'FFM', @id_Address_3, @id_ContactIfor_3, @id_Institution_1)
 		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
+
 
 		COMMIT TRANSACTION
 	
