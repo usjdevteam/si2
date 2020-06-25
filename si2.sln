@@ -16,6 +16,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellaneous", "Miscellaneous", "{60397EEA-6AE5-42BA-93EB-B3F4D20C70B3}"
 	ProjectSection(SolutionItems) = preProject
 		Miscellaneous\Clear Data.sql = Miscellaneous\Clear Data.sql
+		Miscellaneous\get institutions.csv = Miscellaneous\get institutions.csv
+		Miscellaneous\get institutions.xls = Miscellaneous\get institutions.xls
+		Miscellaneous\Seed Data External.sql = Miscellaneous\Seed Data External.sql
 		Miscellaneous\Seed Data.sql = Miscellaneous\Seed Data.sql
 	EndProjectSection
 EndProject
