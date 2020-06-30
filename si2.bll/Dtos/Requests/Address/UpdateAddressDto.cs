@@ -1,37 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace si2.bll.Dtos.Requests.Address
 {
     public class UpdateAddressDto 
     {
         [Required]
-        [MaxLength(100)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string StreetFr { get; set; }
 
-        [MaxLength(100)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string StreetAr { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string CityFr { get; set; }
 
-        [MaxLength(50)]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string CityAr { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string CountryFr { get; set; }
 
-        [MaxLength(50)]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         public string CountryAr { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d+\.\d{0,7}$")]
+        [Range(0, 99.9999999)]
+        [Column(TypeName = "decimal(9,7)")]
         public decimal Longitude { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d+\.\d{0,7}$")]
+        [Range(0, 99.9999999)]
+        [Column(TypeName = "decimal(9,7)")]
         public decimal Latitude { get; set; }
 
         public byte[] RowVersion { get; set; }
