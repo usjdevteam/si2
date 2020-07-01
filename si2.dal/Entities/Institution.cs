@@ -1,4 +1,3 @@
-
 using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,17 +12,20 @@ namespace si2.dal.Entities
     {
         [Required]
         public string Code { get; set; }
+
         [Required]
         public string NameFr { get; set; }
+
         [Required]
         public string NameAr { get; set; }
+
         [Required]
         public string NameEn { get; set; }
-
 
         public Guid AddressId { get; set; }
         [ForeignKey("AddressId")]
         public Address Address { get; set; }
+
         public Guid ContactInfoId { get; set; }
         [ForeignKey("ContactInfoId")]
         public ContactInfo ContactInfo { get; set; }
@@ -31,6 +33,7 @@ namespace si2.dal.Entities
         [ForeignKey("Parent")]
         public Guid? ParentId { get; set; }
         public Institution Parent { get; set; }
+
         public ICollection<Institution> Children { get; set; }
 
         public ICollection<Program> Programs { get; set; }

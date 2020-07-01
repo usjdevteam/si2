@@ -4,8 +4,6 @@ using si2.bll.Dtos.Requests.Address;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +11,7 @@ namespace si2.bll.Services
 {
     public class AddressService : ServiceBase, IAddressService
     {
+        //the methods here aren't currently used, we will need them most probably in the UI later
         public AddressService(IUnitOfWork uow, IMapper mapper, ILogger<IAddressService> logger) : base(uow, mapper, logger)
         {
         }

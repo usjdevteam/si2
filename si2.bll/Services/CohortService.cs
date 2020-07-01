@@ -1,5 +1,4 @@
 using AutoMapper;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -7,24 +6,16 @@ using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Course;
-using si2.bll.Helpers.PagedList;
-
-using si2.bll.ResourceParameters;
-
-
-
-using si2.dal.Entities;
-using si2.dal.UnitOfWork;
-
-using System;
-
-using System.Linq;
-
-using System.Threading;
-using System.Threading.Tasks;
-
 using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Dtos.Requests.CourseCohort;
+using si2.bll.Helpers.PagedList;
+using si2.bll.ResourceParameters;
+using si2.dal.Entities;
+using si2.dal.UnitOfWork;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace si2.bll.Services
@@ -75,7 +66,6 @@ namespace si2.bll.Services
         {
             var cohortEntities = _uow.Cohorts.GetAll();
 
-
             if (cohortEntities.Count() > 1)
             {
                 var pagedListEntities = await PagedList<Cohort>.CreateAsync(cohortEntities, 1, cohortEntities.Count(), ct);
@@ -99,30 +89,9 @@ namespace si2.bll.Services
             return false;
         }
 
-        /*public async Task AssignUsersToCohortAsync(Guid id, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
-        {
-            var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == id).ToList();
-
-            
-            var usersCohortToAdd = addUsersToCohortDto.UsersIds.Where(u => !usersCohort.Any(uc => uc.UserId == u));
-            
-            foreach (var userId in usersCohortToAdd)
-            {
-                if(!usersCohort.Any(uc => uc.UserId == userId && uc.CohortId == id))
-                {
-                    _uow.UserCohorts.Add(new UserCohort() { CohortId = id, UserId = userId });
-                }
-                
-            }
-            
-            await _uow.SaveChangesAsync(ct);
-        }*/
         public async Task AssignUsersToCohortAsync(Guid cohortId, ManageCohortsUserDto manageCohortsUserDto, CancellationToken ct)
         {
-            //var cohort = _uow.Cohorts.FindBy(c => c.Id == cohortId).First();
             var cohort = await _uow.Cohorts.GetAsync(cohortId, ct);
-
-
 
             if (manageCohortsUserDto.AddUsersIds != null)
             {
@@ -130,11 +99,8 @@ namespace si2.bll.Services
                 if (cohort.UserCohorts == null)
                     cohort.UserCohorts = new List<UserCohort>();
 
-                    foreach (var userId in manageCohortsUserDto.AddUsersIds)
+                foreach (var userId in manageCohortsUserDto.AddUsersIds)
                 {
-                    /*TO REFACTOR - to be same as the other functions
-                     * TO SKIP ERRORS 
-                     */
                     var usersCohort = _uow.UserCohorts.FindBy(c => c.CohortId == cohortId && c.UserId == userId).Count();
 
                     if (usersCohort == 0)
@@ -149,8 +115,6 @@ namespace si2.bll.Services
             {
                 foreach (var userId in manageCohortsUserDto.DeleteUsersIds)
                 {
-
-                    //var userCohort = await _uow.UserCohorts.FirstAsync(c => c.CohortId == cohortId && c.UserId == userId, ct);
                     var userCohort = _uow.UserCohorts.FindBy(c => c.CohortId == cohortId && c.UserId == userId).FirstOrDefault();
 
                     if (userCohort != null)
@@ -162,9 +126,7 @@ namespace si2.bll.Services
 
             await _uow.SaveChangesAsync(ct);
 
-
         }
-
 
         public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
@@ -186,44 +148,7 @@ namespace si2.bll.Services
 
             return result;
 
-
-
-
-            //var users = cohortUsersIds.Where(c => c.CohortId == cohortId).Select(c => c.User);
-
-            //var cohortUsersIds = await _uow.UserCohorts.GetAll().ToListAsync();
-            // var users = cohortUsersIds.Where(c=> c.CohortId == cohortId).Select(c=>c.User);
-            // -> delete var users = await _userManager.Users.Where(c => addUsersToCohortDto.UsersIds.Any(u => u == c.Id)).ToListAsync(ct);
-
-
         }
-
-        /*public async Task UpdateUsersCohort(Guid cohortId, AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
-        {
-
-            // Get Item from database
-            var usersCohort  = _uow.UserCohorts.FindBy(c => c.CohortId == cohortId).ToList();
-
-            var usersCohortToDelete = usersCohort.Where(uc => !addUsersToCohortDto.UsersIds.Contains(uc.UserId)).ToList();
-
-            var usersCohortToAdd = addUsersToCohortDto.UsersIds.Where(u=> !usersCohort.Any(uc => uc.UserId == u));
-            
-
-            foreach (var user in usersCohortToDelete)
-            {
-                var userCohortEntity = await _uow.UserCohorts.FirstAsync(uc => uc.CohortId == cohortId && uc.UserId == user.UserId, ct);
-                _uow.UserCohorts.Delete(userCohortEntity);
-            }
-
-            foreach (var userid in usersCohortToAdd)
-            {
-                _uow.UserCohorts.Add(new UserCohort() { CohortId = cohortId, UserId = userid });
-            }
-
-            await _uow.SaveChangesAsync(ct);
-            
-        }*/
-
 
         /* -------------------------------------- COURSE COHORT -------------------------------------- */
         public async Task AddCoursesToCohortAsync(Guid cohortId, ManageCoursesCohortDto manageCoursesCohortDto, CancellationToken ct)
@@ -238,10 +163,6 @@ namespace si2.bll.Services
 
                 foreach (var courseId in manageCoursesCohortDto.AddCoursesIds)
                 {
-
-                    /*TO REFACTOR - to be same as the other functions
-                    * TO SKIP ERRORS 
-                    */
                     var courseCohort = _uow.CourseCohorts.FindBy(c => c.CohortId == cohortId && c.CourseId == courseId).Count();
 
                     if (courseCohort == 0)
@@ -255,7 +176,6 @@ namespace si2.bll.Services
             {
                 foreach (var courseId in manageCoursesCohortDto.DeleteCoursesIds)
                 {
-                   // var courseCohort = await _uow.CourseCohorts.FirstAsync(c => c.CohortId == cohortId && c.CourseId == courseId, ct);
                     var courseCohort = _uow.CourseCohorts.FindBy(c => c.CohortId == cohortId && c.CourseId == courseId).FirstOrDefault();
                     if (courseCohort != null)
                     {
@@ -284,37 +204,6 @@ namespace si2.bll.Services
             return result;
 
         }
-
-
-
-        /*public async Task UpdateCourseCohortAsync(Guid cohortId, AddCoursesToCohortDto addCoursesToCohortDto, CancellationToken ct)
-        {
-
-            // Get Item from database
-            var coursesCohort = _uow.CourseCohorts.FindBy(c => c.CohortId == cohortId).ToList();
-
-
-            var coursesCohortToDelete = coursesCohort.Where(cc => !addCoursesToCohortDto.CoursesIds.Contains(cc.CourseId)).ToList();
-
-
-            var coursesCohortToAdd = addCoursesToCohortDto.CoursesIds.Where(c => !coursesCohort.Any(cc => cc.CourseId == c));
-
-
-            foreach (var course in coursesCohortToDelete)
-            {
-                var courseCohortEntity = await _uow.CourseCohorts.FirstAsync(uc => uc.CohortId == cohortId && uc.CourseId == course.CourseId, ct);
-                _uow.CourseCohorts.Delete(courseCohortEntity);
-            }
-
-            foreach (var courseid in coursesCohortToAdd)
-            {
-                _uow.CourseCohorts.Add(new CourseCohort() { CohortId = cohortId, CourseId = courseid });
-            }
-
-            await _uow.SaveChangesAsync(ct);
-
-        }*/
-
 
     }
 }

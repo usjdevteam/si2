@@ -1,11 +1,8 @@
 ﻿using si2.dal.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using static si2.common.Enums;
 
 namespace si2.dal.Entities
 {
@@ -14,7 +11,6 @@ namespace si2.dal.Entities
     {
        
         [Required]
-
         [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
         public string Code { get; set; }
 
@@ -39,7 +35,6 @@ namespace si2.dal.Entities
         public Guid InstitutionId { get; set; }
 
         public ICollection<CourseCohort> CourseCohorts { get; set; }
-
         public ICollection<UserCourse> UserCourses { get; set; }
     }
 }

@@ -19,12 +19,9 @@ namespace si2.dal.Context
 
         public DbSet<AuditEntry> AuditEntries { get; set; }
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
-
         public DbSet<Dataflow> Dataflows { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        
         public DbSet<DataflowVehicle> DataflowVehicles { get; set; }
-
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Cohort> Cohorts { get; set; }
         public DbSet<UserCohort> UserCohorts { get; set; }
@@ -35,12 +32,9 @@ namespace si2.dal.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Program> Programs { get; set; }
-
-		public DbSet<Document> Documents { get; set; }
-
+        public DbSet<Document> Documents { get; set; }
 
 		public Si2DbContext(DbContextOptions<Si2DbContext> options) : base(options)
-
         {
             _httpContextAccessor = this.GetService<IHttpContextAccessor>();
 
@@ -65,7 +59,6 @@ namespace si2.dal.Context
 			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameFr).IsUnique().HasName("IX_ProgramLevel_NameFr"); ;
 			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameEn).IsUnique().HasName("IX_ProgramLevel_NameEn"); ;
 			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameAr).IsUnique().HasName("IX_ProgramLevel_NameAr"); ;
-
             builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
             builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
             builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
@@ -82,7 +75,6 @@ namespace si2.dal.Context
             // seed the database with dummy data
         }
 
-
         public override int SaveChanges()
 		{
 			var audit = new Audit() { CreatedBy = _httpContextAccessor.HttpContext.User.Identity.Name };
@@ -98,7 +90,6 @@ namespace si2.dal.Context
 
 			return rowAffecteds;
 		}
-
 
 		public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
 		{

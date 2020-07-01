@@ -1,5 +1,7 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
+		DELETE FROM UserCourse
+		DELETE FROM UserCohort
 		DELETE FROM AspNetUserRoles
 		DELETE FROM AspNetUserClaims
 		DELETE FROM AspnetUsers

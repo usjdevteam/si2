@@ -1,7 +1,7 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
 		DECLARE @RowsTotal  INT = 0
-
+	
 		DECLARE @Id_Role_SuperAdmin UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_Administrator UNIQUEIDENTIFIER = NEWID()
 		DECLARE @Id_Role_User UNIQUEIDENTIFIER = NEWID()
@@ -35,75 +35,33 @@
 				(@Id_Role_User, @Id_User_User1)
 		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 		
-		BULK
-		INSERT [Address]
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/address.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
+		DECLARE @id_ContactIfor_1 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_ContactIfor_2 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_ContactIfor_3 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Address_1 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Address_2 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Address_3 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Institution_1 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Institution_2 UNIQUEIDENTIFIER = NEWID()
+		DECLARE @id_Institution_3 UNIQUEIDENTIFIER = NEWID()
 
-		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
-
-		BULK
-		INSERT ContactInfo
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/contactInfo.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
-
-		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
-
-		BULK
-		INSERT Institution
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/institutions.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
-
-		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
-
-		BULK
-		INSERT ProgramLevel
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programLevel.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
-
-		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
-
-		BULK
-		INSERT Program
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programs.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
-
+		INSERT INTO ContactInfo (Id, Email, Fax, Phone)
+		VALUES	(@id_ContactIfor_1, 'usj@usj.com.lb', '96179029376','9614567567' ),
+				(@id_ContactIfor_2, 'inci@inciusj.com.lb', '9615647333','96198765423' ),
+				(@id_ContactIfor_3, 'ffm@inciusj.com.lb', '96156765234','9619876567' )
 		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 		
-		BULK
-		INSERT Course
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/courses.csv'
-		WITH
-		(
-		FIELDTERMINATOR = ',',
-		ROWTERMINATOR = '\n',
-		CODEPAGE = '65001'
-		)
+		INSERT INTO [Address] (Id, CityAr, CityFr, CountryAr, CountryFr, StreetAr, StreetFr, Latitude, Longitude )
+		VALUES	(@id_Address_1, N'بيروت', 'Beyrouth', N'لبنان', 'Liban', N'شارع جامعة القديس يوسف', 'Rue Université Saint Joseph', 33.88894, 35.49442 ),
+				(@id_Address_2, N'اينسي بيروت', 'INCI Beyrouth', N'اينسي لبنان', 'INCI Liban', N'اينسي شارع جامعة القديس يوسف', 'INCI Rue Université Saint Joseph', 34.88894, 36.49442 ),
+				(@id_Address_3, N'اففم بيروت', 'FFM Beyrouth', N'اففم لبنان', 'FFM Liban', N'اففم شارع جامعة القديس يوسف', 'FFM Rue Université Saint Joseph', 35.88894, 37.49442 )
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
+		
+		INSERT INTO Institution (Id, NameAr, NameEn, NameFr, Code, AddressId, ContactInfoId, ParentId)
+		VALUES	(@id_Institution_1, N'جامعة القديس يوسف في بيروت', 'Saint Joseph University of Beirut', 'Université Saint Joseph de Beyrouth', 'USJ', @id_Address_1, @id_ContactIfor_1, NULL),
+				(@id_Institution_2, N'اينسي جامعة القديس يوسف في بيروت', 'INCI Saint Joseph University of Beirut', 'INCI Université Saint Joseph de Beyrouth', 'INCI', @id_Address_2, @id_ContactIfor_2, @id_Institution_1),
+				(@id_Institution_3, N'اففم جامعة القديس يوسف في بيروت', 'FFM Saint Joseph University of Beirut', 'FFM Université Saint Joseph de Beyrouth', 'FFM', @id_Address_3, @id_ContactIfor_3, @id_Institution_1)
+		SET @RowsTotal = @RowsTotal + @@ROWCOUNT
 
 		COMMIT TRANSACTION
 	

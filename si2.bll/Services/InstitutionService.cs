@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Institution;
 using si2.bll.Dtos.Results.Institution;
@@ -7,12 +6,10 @@ using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
-using Si2.common.Exceptions;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static si2.common.Enums;
 
 namespace si2.bll.Services
 {
@@ -38,7 +35,6 @@ namespace si2.bll.Services
             }
             return institutionDto;
         }
-
 
         public async Task<InstitutionDto> UpdateInstitutionAsync(Guid id, UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
         {
@@ -77,60 +73,26 @@ namespace si2.bll.Services
             return institutionDto;
         }
 
-        /*public async Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct)
-        {
-            InstitutionDto institutionDto = null;
-
-            //still have to update the below code: will need to return all the childrens
-            var institutionEntity = await _uow.Institutions.FindAllAsync(c => c.Parent.Id == id, ct);
-            if (institutionEntity != null)
-            {
-                institutionDto = _mapper.Map<InstitutionDto>(institutionEntity);
-            }
-
-            return institutionDto;
-        }*/
-        /*
-                public async Task DeleteInstitutionByIdAsync(Guid id, CancellationToken ct)
-                {
-                    try
-                    {
-                        var institutionEntity = await _uow.Institutions.FirstAsync(c => c.Id == id, ct);
-                        _uow.Institutions.Delete(institutionEntity);
-                        await _uow.SaveChangesAsync(ct);
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                        _logger.LogError(e, string.Empty);
-                    }
-                }
-        */
         public async Task<PagedList<InstitutionDto>> GetInstitutionsAsync(InstitutionResourceParameters resourceParameters, CancellationToken ct)
         {
             var institutionEntities = _uow.Institutions
                 .GetAllComplete()
                 .Where(c => resourceParameters.ParentId == null || c.ParentId == resourceParameters.ParentId);
 
-            if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+            if (institutionEntities.Count() > 1)
             {
-                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
-                institutionEntities = institutionEntities
-                    .Where(a => a.NameFr.ToLower().Contains(searchQueryForWhereClause)
-                            || a.NameAr.ToLower().Contains(searchQueryForWhereClause)
-                            || a.NameEn.ToLower().Contains(searchQueryForWhereClause)
-                            || a.Code.ToLower().Contains(searchQueryForWhereClause)).AsQueryable<Institution>();
-            }
-
-            var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
+                var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
                 resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
-            var result = _mapper.Map<PagedList<InstitutionDto>>(pagedListEntities);
-            result.TotalCount = pagedListEntities.TotalCount;
-            result.TotalPages = pagedListEntities.TotalPages;
-            result.CurrentPage = pagedListEntities.CurrentPage;
-            result.PageSize = pagedListEntities.PageSize;
+                var result = _mapper.Map<PagedList<InstitutionDto>>(pagedListEntities);
+                result.TotalCount = pagedListEntities.TotalCount;
+                result.TotalPages = pagedListEntities.TotalPages;
+                result.CurrentPage = pagedListEntities.CurrentPage;
+                result.PageSize = pagedListEntities.PageSize;
 
-            return result;
+                return result;
+            }
+            return null;
         }
 
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
@@ -141,9 +103,5 @@ namespace si2.bll.Services
             return false;
         }
 
-        //public Task<InstitutionDto> GetChildrenInstitutionByIdAsync(Guid id, CancellationToken ct)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

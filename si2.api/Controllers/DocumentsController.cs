@@ -11,9 +11,7 @@ using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.dal.Entities;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +27,6 @@ namespace si2.api.Controllers
         private readonly ILogger<DocumentsController> _logger;
         private readonly IDocumentService _documentService;
         private readonly UserManager<ApplicationUser> _userManager;
-
 
         public DocumentsController(LinkGenerator linkGenerator, ILogger<DocumentsController> logger, IDocumentService documentService, UserManager<ApplicationUser> userManager)
         {

@@ -1,18 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using si2.bll.Dtos.Requests.Cohort;
-using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Requests.UserCourse;
-using si2.bll.Dtos.Results.Cohort;
 using si2.bll.Dtos.Results.Course;
-using si2.bll.Dtos.Results.Dataflow;
-using si2.bll.Dtos.Results.UserCohort;
 using si2.bll.Dtos.Results.UserCourse;
 using si2.bll.Helpers.PagedList;
-using si2.bll.Helpers.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
@@ -46,7 +38,6 @@ namespace si2.bll.Services
 
                 foreach (var ac in manageUsersCoursesDto.AddCoursesIds)
                 {
-                    //if (!user.UserCourses.Any(c => ac == c.CourseId))
                     var usersCourse = _uow.UserCourses.FindBy(c => c.CourseId == ac && c.UserId == id).Count();
 
                     if (usersCourse == 0)
@@ -60,16 +51,10 @@ namespace si2.bll.Services
             {
                 foreach (var dc in manageUsersCoursesDto.DeleteCoursesIds)
                 {
-                    //var userCourse = user.UserCourses.FirstOrDefault(c => c.CourseId == dc && c.UserId == id);
-                    //var userCourse = user.UserCourses.Where(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
-
-                    //var userCourse = await _uow.UserCourses.FirstAsync(c => c.CourseId == dc && c.UserId == id, ct);
-
                     var userCourse = _uow.UserCourses.FindBy(c => c.CourseId == dc && c.UserId == id).FirstOrDefault();
 
                     if (userCourse != null)
                     {
-                        //user.UserCourses.Remove(userCourse);
                         _uow.UserCourses.Delete(userCourse);
                     }
                 }
@@ -103,7 +88,6 @@ namespace si2.bll.Services
             {
                 return null;
             }
-
 
         }
 

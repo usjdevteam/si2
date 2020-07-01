@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using si2.common;
+﻿using si2.common;
 
 namespace si2.bll.ResourceParameters
 {
