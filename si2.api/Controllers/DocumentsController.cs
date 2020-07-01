@@ -11,9 +11,7 @@ using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.dal.Entities;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,6 +62,11 @@ namespace si2.api.Controllers
                 file.ContentType,
                 user.Id,
                 ct);
+
+            if(documentToReturn == null)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtRoute("GetDocument", new { id = documentToReturn.Id }, documentToReturn);
         }

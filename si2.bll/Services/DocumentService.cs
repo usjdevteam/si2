@@ -27,6 +27,22 @@ namespace si2.bll.Services
 
             try
             {
+
+                if (createDocumentDto.InstitutionId != null)
+                {
+                    if (await _uow.Institutions.GetAsync(createDocumentDto.InstitutionId, ct) == null)
+
+                        return null;
+                }
+
+                if (createDocumentDto.ProgramId != null)
+                {
+                    if (await _uow.Programs.GetAsync(createDocumentDto.ProgramId, ct) == null)
+
+                        return null;
+                }
+
+
                 documentEntity = _mapper.Map<Document>(createDocumentDto);
 
                 documentEntity.OriginalFileName = fileName;
@@ -50,6 +66,7 @@ namespace si2.bll.Services
             return documentDto;
         }
 
+        
 
         public async Task<DocumentDto> GetDocumentByIdAsync(Guid id, CancellationToken ct)
         {
