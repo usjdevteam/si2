@@ -31,7 +31,7 @@ namespace si2.dal.Entities
         public string CountryAr { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(9,7)")]
+        [Column(TypeName = "decimal(10,7)")]
         public decimal Longitude { get; set; }
 
         [Required]
