@@ -28,13 +28,13 @@ namespace si2.bll.Dtos.Requests.Address
         public string CountryAr { get; set; }
 
         [Required]
-        [RegularExpression(@"^-?\d+\.\d{0,7}$", ErrorMessage = "Please enter up to 10 digits for Longitude")]
+        [RegularExpression(@"^-?\d+\.\d{0,7}$", ErrorMessage = "Please enter up to 10 decimal digits for Longitude")]
         [Range(-180, 180)]
         [Column(TypeName = "decimal(10,7)")]
         public decimal Longitude { get; set; }
 
         [Required]
-        [RegularExpression(@"^-?\d+\.\d{0,7}$", ErrorMessage = "Please enter up to 9 digits for Latitude")]
+        [RegularExpression(@"^-?\d+\.\d{0,7}$", ErrorMessage = "Please enter up to 9 decimal digits for Latitude")]
         [Range(-90, 90)]
         [Column(TypeName = "decimal(9,7)")]
         public decimal Latitude { get; set; }
