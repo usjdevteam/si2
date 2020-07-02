@@ -1,7 +1,5 @@
 ﻿using si2.common;
 
-
-
 namespace si2.bll.ResourceParameters
 {
     public class CourseResourceParameters

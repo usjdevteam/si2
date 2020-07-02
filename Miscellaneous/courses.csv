@@ -1,0 +1,57 @@
+﻿id,RowVersion,code,namefr,namear,nameen,credits,institution_id
+A17B910A-57D4-BFDA-F6ED-696975C02840,null,002SS01L4,SS01 Introduction à la Statistique  Biomédicale (ancien SP01),SS01 Introduction à la Statistique  Biomédicale (ancien SP01),SS01 Introduction à la Statistique  Biomédicale (ancien SP01),3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+56F15945-E068-2F9D-98B8-38F0A57812D1,null,002SS11L5,SS11 Eléments de Statistique Analytique,SS11 Eléments de Statistique Analytique,SS11 Eléments de Statistique Analytique,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+75B48541-2EBE-789E-619F-23D2B603E3D4,null,002FC01L1,Fc01 Introduction à la chimie générale appliquée à la science médicale (version 2003),Fc01 Introduction à la chimie générale appliquée à la science médicale (version 2003),Fc01 Introduction à la chimie générale appliquée à la science médicale (version 2003),3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+259A0F09-4395-965E-A345-D9CD8EBF1B35,null,002FC07L1,FC04 Eléments de chimie Générale II,FC04 Eléments de chimie Générale II,FC04 Eléments de chimie Générale II,2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+D950B8B7-B256-DC32-69B5-86BF794ECA40,null,002FB01L7,Fb01 Cytologie (version 2003),Fb01 Cytologie (version 2003),Fb01 Cytologie (version 2003),5,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+45A25D43-9509-AF49-4BE2-61CABA291616,null,002FB02L7,Fb02 Introduction à la biologie générale (version 2003),Fb02 Introduction à la biologie générale (version 2003),Fb02 Introduction à la biologie générale (version 2003),2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+A1FC02E1-C592-47A6-B573-A4862A3012B3,null,002BA02L1,Ba02 - Éléments d'anatomie générale humaine : myologie et névrologie,Ba02 - Éléments d'anatomie générale humaine : myologie et névrologie,Ba02 - Éléments d'anatomie générale humaine : myologie et névrologie,2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+D7D26AE3-ED37-257A-69A8-6ADF5B38C96C,null,002BP01L2,BP01 Eléments de Biophysique I,BP01 Eléments de Biophysique I,BP01 Eléments de Biophysique I,2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+24D70608-C792-5319-45C6-254DA67BADE8,null,002BH02L3,Bh02 - Bases d'histologie des organes,Bh02 - Bases d'histologie des organes,Bh02 - Bases d'histologie des organes,2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+50F9016A-A6FA-CBDA-C1C9-BC1D66275A86,null,002BC01L2,BC01 Biochimie Structurale pour les Etudes Médicales,BC01 Biochimie Structurale pour les Etudes Médicales,BC01 Biochimie Structurale pour les Etudes Médicales,4,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+14E53DAC-651C-0F93-8294-4BC56C23BA1B,null,002BG01L2,Bg01 - Introduction à la génétique humaine,Bg01 - Introduction à la génétique humaine,Bg01 - Introduction à la génétique humaine,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+94ABD341-A082-9DAE-71BC-26B564058CF7,null,002BG02L3,Bg02 - Bases moléculaires du génie génétique,Bg02 - Bases moléculaires du génie génétique,Bg02 - Bases moléculaires du génie génétique,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+AEF60851-24A5-B027-ABF0-D5F2F5B2436F,null,002FH06L2,Fh06 Initiation à la sociologie générale (version 2003),Fh06 Initiation à la sociologie générale (version 2003),Fh06 Initiation à la sociologie générale (version 2003),2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+52A673CB-D340-9361-CDB6-7C4E50B32AD1,null,002FH02L2,Fh02 Eléments de psychologie Fondamentale (version 2003),Fh02 Eléments de psychologie Fondamentale (version 2003),Fh02 Eléments de psychologie Fondamentale (version 2003),2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+7430DE54-9138-AC1C-3B38-81E9D4C57071,null,002FH01L3,Fh01 - Initiation philosophique à l'éthique (Version 2003),Fh01 - Initiation philosophique à l'éthique (Version 2003),Fh01 - Initiation philosophique à l'éthique (Version 2003),1.5,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+A4920EB7-6C31-FB26-4DCA-2A5F520E42B5,null,002KH12L1,KH12 Histoire et Philosophie des Sciences de la Nature (Renommée HP12) ,KH12 Histoire et Philosophie des Sciences de la Nature (Renommée HP12) ,KH12 Histoire et Philosophie des Sciences de la Nature (Renommée HP12) ,2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+6E7D27BD-567F-F246-D463-71D0CE258A1C,null,002FG04L6,Fg04 Histoire des religions (Version 2003),Fg04 Histoire des religions (Version 2003),Fg04 Histoire des religions (Version 2003),2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+E9C6C25E-7F82-A1F6-9D71-39CD1D3CEA65,null,002FG01L1,Fg01 - Techniques de travail et d'expression,Fg01 - Techniques de travail et d'expression,Fg01 - Techniques de travail et d'expression,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+30423B20-16CF-FD14-756D-9E319790615B,null,002FT01L1,FT01 Application de l'Informatique de Base (ancienne FM01),FT01 Application de l'Informatique de Base (ancienne FM01),FT01 Application de l'Informatique de Base (ancienne FM01),2,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+4F80A71C-4E85-9242-E847-CED2963F2AB6,null,002SC11L7,SC11 Stages Infirmiers pour les Médecins (ancien ID01),SC11 Stages Infirmiers pour les Médecins (ancien ID01),SC11 Stages Infirmiers pour les Médecins (ancien ID01),3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+837BA80F-3301-6B72-23C2-CE767CF56F96,null,002BH01L2,Bh01 - Histologie générale (version 2003),Bh01 - Histologie générale (version 2003),Bh01 - Histologie générale (version 2003),4,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+48CEF4C4-EF47-D919-F67B-59C2E2AEFA90,null,002PA01L3,Pa01 - Eléments d'anatomie pathologique générale,Pa01 - Eléments d'anatomie pathologique générale,Pa01 - Eléments d'anatomie pathologique générale,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+AFA39F9A-1810-DAF9-35F7-5E3C21FC1DFC,null,002BE01L2,BE01 Introduction à l'Embryologie Humaine,BE01 Introduction à l'Embryologie Humaine,BE01 Introduction à l'Embryologie Humaine,1,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+CDB87DA4-3DC3-6D95-3927-A1E6E424348A,null,002BU01L3,BU01 Immunologie Fondamentale (ancienne PH01),BU01 Immunologie Fondamentale (ancienne PH01),BU01 Immunologie Fondamentale (ancienne PH01),3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+40A98EC8-D3CE-479B-6256-B893FA1CF9DA,null,002PM01L4,Pm01 - Bactériologie générale et systématique,Pm01 - Bactériologie générale et systématique,Pm01 - Bactériologie générale et systématique,3,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+93978589-AB9E-94A0-8F35-DF0DF2EC5E1C,null,020MNUES1,Méthodes numériques,Méthodes numériques,Méthodes numériques,3,7A83F250-A04A-90B9-60C9-795A1EF0F942
+C6964873-5A39-57AD-EAF9-67C08CE02FFC,null,020ASLES1,Analyse des systèmes linéaires,Analyse des systèmes linéaires,Analyse des systèmes linéaires,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+AB5DEF1F-D12C-CD17-3EBE-621F3DA8362F,null,020BMAES1,Bureau d'étude Mathématiques Appliquées,Bureau d'étude Mathématiques Appliquées,Bureau d'étude Mathématiques Appliquées,2,7A83F250-A04A-90B9-60C9-795A1EF0F942
+856BA827-5ED3-B058-7F42-1E7B9349C156,null,020EANES1,Electronique analogique,Electronique analogique,Electronique analogique,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+D730A5DE-BEAE-B63E-8D5E-4D57E675291B,null,020POOES1,Programmation orientée objets,Programmation orientée objets,Programmation orientée objets,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+FD6541BD-255E-E741-53CE-BFDC3E1CECBF,null,020TP1ES1,Travaux pratiques électricité 1,Travaux pratiques électricité 1,Travaux pratiques électricité 1,3,7A83F250-A04A-90B9-60C9-795A1EF0F942
+BD153920-361F-9C4C-2B7E-4EF80A749B6E,null,020ENUES2,Electronique numérique,Electronique numérique,Electronique numérique,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+9C65F717-DAE2-B05C-8270-EC4F5951B591,null,020EREES2,Eléments de réseaux électriques,Eléments de réseaux électriques,Eléments de réseaux électriques,6,7A83F250-A04A-90B9-60C9-795A1EF0F942
+24F7CDC1-F835-BA70-5488-2ADC7E3F80A7,null,020ELAES2,Etude en laboratoire électronique,Etude en laboratoire électronique,Etude en laboratoire électronique,3,7A83F250-A04A-90B9-60C9-795A1EF0F942
+E6A80345-2152-EBFB-2923-9AE9C4690E2B,null,020TWBES2,Technologies WEB,Technologies WEB,Technologies WEB,2,7A83F250-A04A-90B9-60C9-795A1EF0F942
+74B8A57F-D585-26AB-D7A9-6A6F4EFC7D3F,null,020THSES2,Théorie du signal,Théorie du signal,Théorie du signal,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+E5F0E6E0-D053-B2E6-25B0-F1F369C6DBF4,null,020TP2ES2,Travaux pratiques électricité 2,Travaux pratiques électricité 2,Travaux pratiques électricité 2,3,7A83F250-A04A-90B9-60C9-795A1EF0F942
+39D7C9F3-4A1F-9567-6F45-4C460649025C,null,020TCOES2,Techniques d'expression et de communication,Techniques d'expression et de communication,Techniques d'expression et de communication,2,7A83F250-A04A-90B9-60C9-795A1EF0F942
+801DFB9A-0584-BE24-A470-9F7C250718A4,null,020IA2ES4,Intelligence artificielle,Intelligence artificielle,Intelligence artificielle,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+B232C05E-294F-ABD4-A6A8-BFC29F7F8A3E,null,020PSYES5,Programmation système,Programmation système,Programmation système,4,7A83F250-A04A-90B9-60C9-795A1EF0F942
+230B307A-605A-9AEA-8635-A5F4CB4525DC,null,020PIGES4,Projet informatique de gestion,Projet informatique de gestion,Projet informatique de gestion,5,7A83F250-A04A-90B9-60C9-795A1EF0F942
+9E240DBF-B3C6-3CA0-30E9-3A2CB847D848,null,026ADWIM1,Administration Windows,Administration Windows,Administration Windows,6,4C4D2749-F832-65EB-945B-58648D4E0369
+8AC02A64-9AE7-A1AF-9BF7-C108E73064F5,null,026ELA1L2,Électronique 1,Électronique 1,Électronique 1,6,4C4D2749-F832-65EB-945B-58648D4E0369
+52BF29A9-D978-1FD8-8C7B-E0A782762BA3,null,026NTIPM1,Nouvelles technologies pour réseaux IP,Nouvelles technologies pour réseaux IP,Nouvelles technologies pour réseaux IP,6,4C4D2749-F832-65EB-945B-58648D4E0369
+E5A6E6EB-2DBE-4D26-4E63-FC01234AA4FA,null,026CILOL1,Circuits logiques,Circuits logiques,Circuits logiques,6,4C4D2749-F832-65EB-945B-58648D4E0369
+7BA90525-F468-580A-A123-6A951B9C0468,null,026ANL1L1,Analyse 1,Analyse 1,Analyse 1,6,4C4D2749-F832-65EB-945B-58648D4E0369
+DF286568-8C57-2D2F-5172-7985A5D3AE1F,null,026RSL1L1,Réseaux et systèmes linéaires 1,Réseaux et systèmes linéaires 1,Réseaux et systèmes linéaires 1,6,4C4D2749-F832-65EB-945B-58648D4E0369
+45C89BC9-6252-FE7D-5C13-62F1E354CD84,null,026ACS1L2,Activités sportives 1,Activités sportives 1,Activités sportives 1,1,4C4D2749-F832-65EB-945B-58648D4E0369
+4B71E1D3-DEC1-E679-730C-6852DFA6B56E,null,026ADUNM1,Administration Unix,Administration Unix,Administration Unix,6,4C4D2749-F832-65EB-945B-58648D4E0369
+6043D484-F08C-209C-62B5-B20EA40E9A78,null,026ELMAL3,Électromagnétisme,Électromagnétisme,Électromagnétisme,5,4C4D2749-F832-65EB-945B-58648D4E0369
+185E48EF-C4F3-563C-F15C-8B9DB0F59875,null,026ALGBL1,"Algèbre",4,4C4D2749-F832-65EB-945B-58648D4E0369
+B6526369-FB3F-4DFD-4787-B713B0C7CD43,null,026PHYGL1,Physique générale,Physique générale,Physique générale,5,4C4D2749-F832-65EB-945B-58648D4E0369
+E13FD837-EBC3-A856-58F4-79590EDF1208,null,026PRJ1M2,Projet 1,Projet 1,Projet 1,6,4C4D2749-F832-65EB-945B-58648D4E0369
+EBAEB717-CAEF-2352-C7FC-6DCD4AD48B46,null,026ELNUL3,Électronique numérique,Électronique numérique,Électronique numérique,5,4C4D2749-F832-65EB-945B-58648D4E0369
+52D2B238-7CA0-1CF9-F13B-60132E7C1E31,null,026ACS2L3,Activités sportives 2,Activités sportives 2,Activités sportives 2,1,4C4D2749-F832-65EB-945B-58648D4E0369
+505E8A10-8EBC-E8FE-F8C8-E9860EB5A368,null,026INREL4,Introduction aux réseaux ,Introduction aux réseaux ,Introduction aux réseaux ,5,4C4D2749-F832-65EB-945B-58648D4E0369

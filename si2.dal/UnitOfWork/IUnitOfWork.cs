@@ -8,11 +8,8 @@ namespace si2.dal.UnitOfWork
     {
         IDataflowRepository Dataflows { get; }
         IVehicleRepository Vehicles { get; }
-
         IDataflowVehicleRepository DataflowsVehicles { get; }
-
         IProgramLevelRepository ProgramLevels { get; }
-
         IContactInfoRepository ContactInfos { get; }
         IAddressRepository Addresses { get; }
         IInstitutionRepository Institutions { get; }
@@ -22,8 +19,6 @@ namespace si2.dal.UnitOfWork
         ICourseRepository Courses { get; }
         IUserCourseRepository UserCourses { get; }
         ICourseCohortRepository CourseCohorts { get; }
-
-      
         IDocumentRepository Documents { get; }
 
         Task<int> SaveChangesAsync(CancellationToken ct);

@@ -18,9 +18,6 @@ using si2.dal.Entities;
 using si2.dal.Repositories;
 using si2.dal.UnitOfWork;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace si2.api
@@ -94,7 +91,6 @@ namespace si2.api
             services.AddTransient<IUserCourseService, UserCourseService>();
             services.AddTransient<ICourseCohortService, CourseCohortService>();
 
-
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
             IMapper mapper = mappingConfig.CreateMapper();
@@ -131,10 +127,8 @@ namespace si2.api
             // Register the Swagger generator, defining 1 or more Swagger documents
             //var versionInfo = FileVersionInfo.GetVersionInfo(Directory.GetCurrentDirectory() + "\\" + "si2.api.dll");
             //var versionInfo = FileVersionInfo.GetVersionInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\" + "si2.api.dll");
-
             //var version = "VN : " + versionInfo.FileVersion + " - " + DateTime.UtcNow.ToString("M/d/yyyy HH:mm");
                           
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -184,8 +178,6 @@ namespace si2.api
             app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
-
-             
             
             app.UseEndpoints(endpoints =>
             {

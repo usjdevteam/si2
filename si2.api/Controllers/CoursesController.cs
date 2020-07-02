@@ -91,50 +91,6 @@ namespace si2.api.Controllers
             return Ok(CourseDtos);
         }
 
-        [HttpPost("{id}/courses")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseDto))]
-        public async Task<ActionResult> CreateChildCourse([FromRoute]Guid id, [FromBody] CreateCourseDto createCourseDto, CancellationToken ct)
-        {
-            if (!await _CourseService.ExistsAsync(id, ct))
-                return NotFound();
-
-            var CourseToReturn = await _CourseService.CreateChildCourseAsync(id, createCourseDto, ct);
-            if (CourseToReturn == null)
-                return BadRequest();
-
-            return CreatedAtRoute("GetCourse", new { id = CourseToReturn.Id }, CourseToReturn);
-        }
-
-        [HttpGet("{id}/courses", Name = "GetChildrenCourse")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetChildrenCourse(Guid id, CancellationToken ct)
-        {
-            var CourseDto = await _CourseService.GetChildrenCourseByIdAsync(id, ct);
-
-            if (CourseDto == null)
-                return NotFound();
-
-            return Ok(CourseDto);
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateCourse([FromRoute]Guid id, [FromBody] UpdateCourseDto updateCourseDto, CancellationToken ct)
-        {
-            if (!await _CourseService.ExistsAsync(id, ct))
-                return NotFound();
-
-            var CourseToReturn = await _CourseService.UpdateCourseAsync(id, updateCourseDto, ct);
-            if (CourseToReturn == null)
-                return BadRequest();
-
-            return Ok(CourseToReturn);
-        }
-
         private string CreateCoursesResourceUri(DataflowResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
             switch (type)
@@ -184,7 +140,7 @@ namespace si2.api.Controllers
             return Ok(UserCourseDto);
         }
 
-
+        //subscribe users to a course
         [HttpPost("{id}/users", Name = "UpdateUseersCourse")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -197,7 +153,7 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-            var userCohortToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
+            var userCourseToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
             return Ok();
         }
     }

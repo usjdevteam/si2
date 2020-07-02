@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
-using si2.bll.Dtos.Requests.ProgramLevel;
+﻿using si2.bll.Dtos.Requests.ProgramLevel;
 using si2.bll.Dtos.Results.ProgramLevel;
 using si2.bll.Helpers.PagedList;
-using si2.bll.Helpers.ResourceParameters;
-using si2.dal.Entities;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
