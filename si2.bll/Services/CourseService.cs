@@ -1,22 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
 using si2.bll.Dtos.Requests.Course;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Results.Course;
-using si2.bll.Dtos.Results.UserCourse;
 using si2.bll.Helpers.PagedList;
 using si2.bll.Helpers.ResourceParameters;
 using si2.bll.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
-using Si2.common.Exceptions;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static si2.common.Enums;
 
 namespace si2.bll.Services
 {
@@ -119,16 +115,7 @@ namespace si2.bll.Services
             return false;
         }
 
-        public Task<CourseDto> CreateChildCourseAsync(Guid id, CreateCourseDto createCourseDto, CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CourseDto> GetChildrenCourseByIdAsync(Guid id, CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<PagedList<UserDto>> GetUsersCourseAsync(Guid courseId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
             var courseUsersIds = await _uow.UserCourses.FindByAsync(c => c.CourseId == courseId, ct);

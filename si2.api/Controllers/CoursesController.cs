@@ -21,8 +21,6 @@ namespace si2.api.Controllers
 {
     [ApiController]
     [Route("api/courses")]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
     public class CoursesController : ControllerBase
     {
         private readonly LinkGenerator _linkGenerator;
@@ -41,6 +39,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseDto))]
         public async Task<ActionResult> CreateCourse([FromBody] CreateCourseDto createCourseDto, CancellationToken ct)
@@ -67,6 +66,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name = "GetCourses")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetCourses([FromQuery]DataflowResourceParameters pagedResourceParameters, CancellationToken ct)
         {
             var CourseDtos = await _CourseService.GetCoursesAsync(pagedResourceParameters, ct);
@@ -91,49 +91,6 @@ namespace si2.api.Controllers
             return Ok(CourseDtos);
         }
 
-        [HttpPost("{id}/courses")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseDto))]
-        public async Task<ActionResult> CreateChildCourse([FromRoute]Guid id, [FromBody] CreateCourseDto createCourseDto, CancellationToken ct)
-        {
-            if (!await _CourseService.ExistsAsync(id, ct))
-                return NotFound();
-
-            var CourseToReturn = await _CourseService.CreateChildCourseAsync(id, createCourseDto, ct);
-            if (CourseToReturn == null)
-                return BadRequest();
-
-            return CreatedAtRoute("GetCourse", new { id = CourseToReturn.Id }, CourseToReturn);
-        }
-
-        [HttpGet("{id}/courses", Name = "GetChildrenCourse")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetChildrenCourse(Guid id, CancellationToken ct)
-        {
-            var CourseDto = await _CourseService.GetChildrenCourseByIdAsync(id, ct);
-
-            if (CourseDto == null)
-                return NotFound();
-
-            return Ok(CourseDto);
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateCourse([FromRoute]Guid id, [FromBody] UpdateCourseDto updateCourseDto, CancellationToken ct)
-        {
-            if (!await _CourseService.ExistsAsync(id, ct))
-                return NotFound();
-
-            var CourseToReturn = await _CourseService.UpdateCourseAsync(id, updateCourseDto, ct);
-            if (CourseToReturn == null)
-                return BadRequest();
-
-            return Ok(CourseToReturn);
-        }
 
         private string CreateCoursesResourceUri(DataflowResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
@@ -147,7 +104,8 @@ namespace si2.api.Controllers
                             searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber - 1,
                             pageSize = pagedResourceParameters.PageSize
-                        }); // TODO get the aboslute path 
+                        });
+
                 case Enums.ResourceUriType.NextPage:
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetCourses",
                         new
@@ -157,6 +115,7 @@ namespace si2.api.Controllers
                             pageNumber = pagedResourceParameters.PageNumber + 1,
                             pageSize = pagedResourceParameters.PageSize
                         });
+
                 default:
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetCourses",
                        new
@@ -185,9 +144,9 @@ namespace si2.api.Controllers
         }
 
 
-        [HttpPost("{id}/users", Name = "UpdateUseersCourse")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost("{id}/users", Name = "UpdateUsersCourse")]
         [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersToCourseDto, CancellationToken ct)
         {
             var course = await _CourseService.GetCourseEntityByIdAsync(id, ct);
@@ -197,7 +156,7 @@ namespace si2.api.Controllers
                 return NotFound();
             }
 
-            var userCohortToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
+            var userCourseToReturn = await _userCourseService.AssignUsersToCourseAsync(id, manageUsersToCourseDto, ct);
             return Ok();
         }
     }
