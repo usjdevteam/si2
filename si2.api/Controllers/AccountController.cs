@@ -70,11 +70,8 @@ namespace si2.api.Controllers
             }
 
             //send Confirmation Email to the user---------------------------------------
-            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //var confirmationLink = Url.Action(nameof(model.Email), "Account", new { token, email = user.Email }, Request.Scheme);
             //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
             //await _emailSender.SendEmailAsync(message);
-            //_logger.Log(LogLevel.Warning, "the token is" + token);
             //---------------------------------------------------------------------------
 
             return BadRequest(result.Errors);
@@ -85,13 +82,11 @@ namespace si2.api.Controllers
         public async Task<IActionResult> Logout(CancellationToken ct)
         {
             //await _signInManager.SignOutAsync();
-
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await _signInManager.SignOutAsync();
             HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
 
             //return RedirectToAction("AccessDenied", "Error");
-
             return Ok();
         }
 
@@ -112,7 +107,6 @@ namespace si2.api.Controllers
                 var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
                 //-------------------------------------------
 
-                //if (result.Succeeded)
                 if (result.Succeeded && resultConfirm == true)
                 {
                     var userClaims = await _userManager.GetClaimsAsync(user);
@@ -169,30 +163,6 @@ namespace si2.api.Controllers
             return new CreatedResult("", results);
         }
 
-        /*[HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword([FromBody] ResetRequestDto model)
-        {
-            /*if (!ModelState.IsValid)
-            {
-                return View(model);
-            }*/
-        /*var user = await _userManager.FindByNameAsync(model.Email);
-        if (user == null)
-        {
-            // Don't reveal that the user does not exist
-        }
-        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-        if (result.Succeeded)
-        {
-            return Ok();
-        }
-        //AddErrors(result);
-        //return View();
-        return BadRequest(result.Errors);
-    }*/
-
         [HttpPost]
         [Route("ForgotPassword")]
         public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequestDto)
@@ -217,15 +187,6 @@ namespace si2.api.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            //redirect to the reset password action
-            /*System.Diagnostics.Process.Start(
-                string.Format(
-                    "http://localhost:44301/api/account/forgotPasswordReset/{0}/{1}",
-                    HttpUtility.UrlEncode(user.UserName),
-                    HttpUtility.UrlEncode(token)
-                )
-            );*/
-
             var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
 
             return Ok(passwordResetLink);
@@ -248,19 +209,11 @@ namespace si2.api.Controllers
 
             var result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);
 
-            //update EmailConfirmed column------------------------
-            //Can't be done here
-            //await _userManager.ConfirmEmailAsync(user,model.Token);
-            //user.EmailConfirmed = true;
-            //await _userManager.UpdateAsync(user);
-            //-----------------------------------------------------
-
             if (result.Succeeded)
             {
                 return Ok("Email Reset Successfully");
             }
 
-            //throw new InvalidOperationException(string.Join("\r\n", result.Errors));
             return BadRequest(result.Errors);
         }
 
@@ -275,7 +228,6 @@ namespace si2.api.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, code2);
 
-            //return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
             if (result.Succeeded)
             {
                 result = await _userManager.ResetPasswordAsync(user, code1, resetRequestDto.Password);

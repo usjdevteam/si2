@@ -1,9 +1,7 @@
 ﻿using si2.bll.Dtos.Requests.UserCohort;
-using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace si2.bll.Dtos.Requests.Cohort
 {

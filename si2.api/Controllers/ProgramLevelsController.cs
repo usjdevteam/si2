@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-//using Newtonsoft.Json;
 using si2.bll.Dtos.Requests.ProgramLevel;
 using si2.bll.Dtos.Results.ProgramLevel;
 using si2.bll.Services;
@@ -79,7 +77,7 @@ namespace si2.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProgramLevelDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateDataflow([FromRoute]Guid id, [FromBody] UpdateProgramLevelDto UpdateProgramLevelDto, CancellationToken ct)
+        public async Task<ActionResult> UpdateProgramLevel([FromRoute]Guid id, [FromBody] UpdateProgramLevelDto UpdateProgramLevelDto, CancellationToken ct)
         {
             if (!await _programLevelService.ExistsAsync(id, ct))
                 return NotFound();

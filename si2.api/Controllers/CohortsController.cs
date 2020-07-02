@@ -40,24 +40,13 @@ namespace si2.api.Controllers
 
         }
 
-        /* APIs
-         * -----------------------------------
-         * POST /api/cohorts
-         * GET /api/cohorts
-         * POST /api/cohorts/{id}/users
-         * PUT /api/cohorts/{id}/users
-         * GET /api/cohorts/{id}/users
-         * POST /api/cohorts/{id}/courses
-         */
-
-
         /*-------------------------------- COHORT -------------------------------- */
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CohortDto))]
-        public async Task<ActionResult> CreateStudent([FromBody] CreateCohortDto createCohortDto, CancellationToken ct)
+        public async Task<ActionResult> CreateCohort([FromBody] CreateCohortDto createCohortDto, CancellationToken ct)
         {
             var cohortToReturn = await _cohortService.CreateCohortAsync(createCohortDto, ct);
             if (cohortToReturn == null)
@@ -93,30 +82,12 @@ namespace si2.api.Controllers
         }
 
         /*-------------------------------- USERS COHORT -------------------------------- */
-        /*[HttpPost]
-        [Route("{id}/users", Name = "AddUsersToCohort")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
-
-        {
-            if (!await _cohortService.ExistsAsync(id, ct))
-                return NotFound();
-
-
-            await _cohortService.AssignUsersToCohortAsync(id, addUsersToCohortDto, ct);
-
-            return Ok();
-
-
-        }*/
-
+        
         [HttpPost]
         [Route("{id}/users", Name = "AddUsersToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> AddUsersToCohort([FromRoute]Guid id, [FromBody] ManageCohortsUserDto manageCohortsUserDto, CancellationToken ct)
-
         {
             if (!await _cohortService.ExistsAsync(id, ct))
                 return NotFound();
@@ -125,8 +96,6 @@ namespace si2.api.Controllers
             await _cohortService.AssignUsersToCohortAsync(id, manageCohortsUserDto, ct);
 
             return Ok();
-
-
         }
 
         [HttpGet]
@@ -161,21 +130,6 @@ namespace si2.api.Controllers
 
         }
 
-        /*[HttpPut]
-        [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> UpdateUsersCohort([FromRoute]Guid id, [FromBody] AddUsersToCohortDto addUsersToCohortDto, CancellationToken ct)
-        {
-            if (!await _cohortService.ExistsAsync(id, ct))
-                return NotFound();
-
-            await _cohortService.UpdateUsersCohort(id, addUsersToCohortDto, ct);
-
-            return Ok();
-        }*/
-
         /*-------------------------------- COURSE COHORT -------------------------------- */
         [HttpPost]
         [Route("{id}/courses", Name = "AddCoursesToCohort")]
@@ -189,10 +143,7 @@ namespace si2.api.Controllers
             await _cohortService.AddCoursesToCohortAsync(id, manageCoursesCohortDto, ct);
 
             return Ok();
-
-
         }
-
 
         [HttpGet]
         [Route("{id}/courses", Name = "GetCoursesInCohort")]
