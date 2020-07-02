@@ -47,6 +47,11 @@ namespace si2.dal.Repositories
             return await _db.Set<TEntity>().FindAsync(new object[] { id }, ct);
         }
 
+        public virtual async Task<TEntity> GetAsync(Guid? id, CancellationToken ct)
+        {
+            return await _db.Set<TEntity>().FindAsync(new object[] { id }, ct);
+        }
+
         public virtual void Add(TEntity t)
         {
             _db.Set<TEntity>().Add(t);

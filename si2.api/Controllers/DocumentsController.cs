@@ -62,6 +62,11 @@ namespace si2.api.Controllers
                 user.Id,
                 ct);
 
+            if(documentToReturn == null)
+            {
+                return BadRequest();
+            }
+
             return CreatedAtRoute("GetDocument", new { id = documentToReturn.Id }, documentToReturn);
         }
 
