@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
-using si2.bll.Dtos.Requests.Dataflow;
 using si2.bll.Dtos.Requests.ProgramLevel;
-using si2.bll.Dtos.Results.Dataflow;
 using si2.bll.Dtos.Results.ProgramLevel;
 using si2.bll.Helpers.PagedList;
-using si2.bll.Helpers.ResourceParameters;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
-using Si2.common.Exceptions;
 using System;
 using System.Linq;
 using System.Threading;
@@ -23,7 +18,6 @@ namespace si2.bll.Services
         public ProgramLevelService(IUnitOfWork uow, IMapper mapper, ILogger<IProgramLevelService> logger) : base(uow, mapper, logger)
         {
         }
-
 
         public async Task<ProgramLevelDto> CreateProgramLevelAsync(CreateProgramLevelDto createProgramLevelDto, CancellationToken ct)
         {
@@ -77,7 +71,6 @@ namespace si2.bll.Services
 
             return result;
         }
-
 
         public async Task<ProgramLevelDto> UpdateProgramLevelAsync(Guid id, UpdateProgramLevelDto updateProgramLevelDto, CancellationToken ct)
         {

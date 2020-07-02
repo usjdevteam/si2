@@ -1,8 +1,4 @@
 ﻿using si2.common;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static si2.common.Enums;
 
 namespace si2.bll.ResourceParameters
 {

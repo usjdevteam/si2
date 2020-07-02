@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ namespace si2.dal.Repositories
     public interface IRepository<TEntity> where TEntity : class
     {
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
-
         Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
         void Add(TEntity t);
         Task AddAsync(TEntity t, CancellationToken ct);

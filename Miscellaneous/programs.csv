@@ -1,0 +1,11 @@
+﻿id,rowVersion,code,namefr,namear,nameen,programlevelid,cod_ins
+E853480E-98B4-6938-867B-D33E5F6A8FA8,null,002FML,Licence en Sciences Médicales,برنامج الأجازة في العلوم الطبية ,Licence en Sciences Médicales,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+ECE7F567-1B5D-E71C-8BE3-8B8CBC69469D,null,002FMD,Doctorat en Médecine,شهادة دكتور في الطب,Doctorat en Médecine,295FEA1E-17CD-1E68-45D1-A82B494B1A43,68FC740B-68B5-FABF-C971-91CBF28C1CA3
+D84126E1-7357-F641-247D-EBD9849E865A,null,020PRC,Préparatoire CE,المرحلة التحضيرية,Préparatoire CE,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,7A83F250-A04A-90B9-60C9-795A1EF0F942
+90F6FCA5-8CD4-D787-D328-154E15C6E03A,null,020GC1,Génie Civil,الهندسة المدنية,Génie Civil,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,7A83F250-A04A-90B9-60C9-795A1EF0F942
+8B5D4EAE-E50D-730F-F574-B841C5F94C91,null,020GE1,Génie Electrique,هندسة الكهرباء,Génie Electrique,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,7A83F250-A04A-90B9-60C9-795A1EF0F942
+5645E6D9-2F10-8B64-742C-1B43E8717D15,null,026LIB,Licence en informatique - BS in computer science,إجازة في ألمعلوماتية,Bachelor of Science in Computer Science,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,4C4D2749-F832-65EB-945B-58648D4E0369
+4768FD78-69EA-DC8B-E74E-8410FED34623,null,026MSS,Master 2 en systèmes et réseaux - option sécurité de l'information,ألماستر في الأنظمة والشبكات - فرع حماية ألمعلومات,Master 2 en systèmes et réseaux - option sécurité de l'information,1CFA931C-D15A-EB09-CFDC-C3602CF1640F,4C4D2749-F832-65EB-945B-58648D4E0369
+CFB45FDF-3F7E-C243-5EF7-6F2427B75E6E,null,026MAS,Master 1 en systèmes et réseaux,ألماستر في الأنظمة والشبكات,Master 1 en systèmes et réseaux,1CFA931C-D15A-EB09-CFDC-C3602CF1640F,4C4D2749-F832-65EB-945B-58648D4E0369
+4340AC8C-C17A-D4E4-1BF3-9BC41B8B8B04,null,026LIC,Licence en data science,Licence en data science,Licence en data science,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,4C4D2749-F832-65EB-945B-58648D4E0369
+362A685E-5A19-FB7B-2540-ABC487373092,null,026LIM,Licence en télécommunications,إجازة في الاتّصالات,Bachelor of Science in telecommunications,D78E4C43-29B5-43FE-FB1D-F9372BCD901E,4C4D2749-F832-65EB-945B-58648D4E0369

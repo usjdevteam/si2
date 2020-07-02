@@ -3,13 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using si2.bll.Dtos.Requests.Account;
 using si2.bll.Dtos.Requests.Administration;
-using si2.bll.Dtos.Requests.Cohort;
 using si2.bll.Dtos.Results.Administration;
 using si2.bll.Dtos.Requests.UserCourse;
-using si2.bll.Models;
+using si2.bll.Dtos.Requests.UserCohort;
 using si2.bll.Services;
 using si2.dal.Entities;
 using System;
@@ -18,8 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using si2.bll.Dtos.Requests.Course;
-using si2.bll.Dtos.Requests.UserCohort;
+
 
 namespace si2.api.Controllers
 {
@@ -208,7 +204,6 @@ namespace si2.api.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] UpdateUserDto model, CancellationToken ct)
         {
-            //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound();
@@ -239,7 +234,6 @@ namespace si2.api.Controllers
             if (user == null)
                 return NotFound();
 
-            //var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, removeRoles.Roles.ToArray());
 
             var finalRoles = await _userManager.GetRolesAsync(user);
@@ -284,9 +278,6 @@ namespace si2.api.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> UpdateCohortsUser([FromRoute] String userId, [FromBody] ManageCohortsUserDto manageCohortsToUserDto, CancellationToken ct)
         {
-            //if (!await _userCohortService.ExistsAsync(userId, ct))
-                //return NotFound();
-
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -330,10 +321,12 @@ namespace si2.api.Controllers
             {
                 return NotFound();
             }
-            var userCohortToReturn = await _userCourseService.AssignCoursesToUserAsync(userId, manageCoursesToUserDto, ct);
+            
+            var userCourseToReturn = await _userCourseService.AssignCoursesToUserAsync(userId, manageCoursesToUserDto, ct);
             return Ok();
-            //return CreatedAtRoute("GetCohortsOfUser", userId, userCohortToReturn);	
+            	
         }
+
         [HttpGet]
         [Route("users/{userId}/courses", Name = "GetCoursesOfUser")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
