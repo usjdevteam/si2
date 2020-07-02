@@ -9,21 +9,20 @@ namespace si2.dal.Entities
     [Table("Course")]
     public class Course : Si2BaseDataEntity<Guid>, IAuditable
     {
-       
         [Required]
-        [StringLength(10, ErrorMessage = "Code field must be equal or below 10 characters")]
+        [MaxLength(10)]
         public string Code { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Name field must be equal or below 200 characters")]
+        [MaxLength(200)]
         public string NameFr { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Name field must be equal or below 200 characters")]
+        [MaxLength(200)]
         public string NameAr { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Name field must be equal or below 200 characters")]
+        [MaxLength(200)]
         public string NameEn { get; set; }
 
         [Required]
