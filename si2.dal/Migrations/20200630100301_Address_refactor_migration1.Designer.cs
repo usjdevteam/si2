@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using si2.dal.Context;
 
 namespace si2.dal.Migrations
 {
     [DbContext(typeof(Si2DbContext))]
-    partial class Si2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20200630100301_Address_refactor_migration1")]
+    partial class Address_refactor_migration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,7 +247,7 @@ namespace si2.dal.Migrations
                         .HasColumnType("decimal(9,7)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(10,7)");
+                        .HasColumnType("decimal(9,7)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

@@ -31,11 +31,11 @@ namespace si2.dal.Entities
         public string CountryAr { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(9,6)")]
+        [Column(TypeName = "decimal(10,7)")]
         public decimal Longitude { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(8,6)")]
+        [Column(TypeName = "decimal(9,7)")]
         public decimal Latitude { get; set; }
 
         public ICollection<Institution> Institutions { get; set; }
