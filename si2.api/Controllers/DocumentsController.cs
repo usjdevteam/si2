@@ -48,6 +48,11 @@ namespace si2.api.Controllers
 
             byte[] fileBytesArray = null;
             
+            if (file == null || file.Length == 0) 
+            {
+                return BadRequest();
+            }
+
             using (var fileMemoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(fileMemoryStream, ct);
