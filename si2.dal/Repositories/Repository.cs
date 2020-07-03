@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +16,6 @@ namespace si2.dal.Repositories
         {
             return await _db.Set<TEntity>().FirstOrDefaultAsync(match, ct);
         }
-
 
         public virtual async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct)
         {
@@ -45,6 +43,11 @@ namespace si2.dal.Repositories
         }
 
         public virtual async Task<TEntity> GetAsync(Guid id, CancellationToken ct)
+        {
+            return await _db.Set<TEntity>().FindAsync(new object[] { id }, ct);
+        }
+
+        public virtual async Task<TEntity> GetAsync(Guid? id, CancellationToken ct)
         {
             return await _db.Set<TEntity>().FindAsync(new object[] { id }, ct);
         }

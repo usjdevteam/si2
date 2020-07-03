@@ -91,7 +91,6 @@ namespace si2.api.Controllers
             return Ok(CourseDtos);
         }
 
-
         private string CreateCoursesResourceUri(DataflowResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
         {
             switch (type)
@@ -143,7 +142,7 @@ namespace si2.api.Controllers
             return Ok(UserCourseDto);
         }
 
-
+         //subscribe users to a course
         [HttpPost("{id}/users", Name = "UpdateUsersCourse")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

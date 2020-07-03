@@ -11,9 +11,7 @@ using si2.bll.ResourceParameters;
 using si2.bll.Services;
 using si2.dal.Entities;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +27,6 @@ namespace si2.api.Controllers
         private readonly ILogger<DocumentsController> _logger;
         private readonly IDocumentService _documentService;
         private readonly UserManager<ApplicationUser> _userManager;
-
 
         public DocumentsController(LinkGenerator linkGenerator, ILogger<DocumentsController> logger, IDocumentService documentService, UserManager<ApplicationUser> userManager)
         {
@@ -51,6 +48,11 @@ namespace si2.api.Controllers
 
             byte[] fileBytesArray = null;
             
+            if (file == null || file.Length == 0) 
+            {
+                return BadRequest();
+            }
+
             using (var fileMemoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(fileMemoryStream, ct);
@@ -64,6 +66,11 @@ namespace si2.api.Controllers
                 file.ContentType,
                 user.Id,
                 ct);
+
+            if(documentToReturn == null)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtRoute("GetDocument", new { id = documentToReturn.Id }, documentToReturn);
         }

@@ -11,15 +11,11 @@ namespace si2.dal.Entities
 
         [ForeignKey("InstitutionId")]
         public Guid? InstitutionId { get; set; }
-
         public Institution Institution { get; set; }
-
 
         [ForeignKey("ProgramId")]
         public Guid? ProgramId { get; set; }
-
         public Program Program { get; set; }
-
 
         public string OriginalFileName { get; set; }
 

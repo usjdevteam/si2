@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ namespace si2.dal.Repositories
     public interface IRepository<TEntity> where TEntity : class
     {
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
-
         Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> match, CancellationToken ct);
         void Add(TEntity t);
         Task AddAsync(TEntity t, CancellationToken ct);
@@ -29,6 +27,7 @@ namespace si2.dal.Repositories
         Task<ICollection<TEntity>> GetAllAsync(CancellationToken ct);
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> GetAsync(Guid id, CancellationToken ct);
+        Task<TEntity> GetAsync(Guid? id, CancellationToken ct);
         void Save();
         Task<int> SaveAsync(CancellationToken ct);
         TEntity Update(TEntity t, object key, byte[] rowVersion = null);

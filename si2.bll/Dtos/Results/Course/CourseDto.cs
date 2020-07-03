@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 
 namespace si2.bll.Dtos.Results.Course
 {
@@ -16,19 +14,6 @@ namespace si2.bll.Dtos.Results.Course
         public byte[] RowVersion { get; set; }
 
         public override bool Equals(Object obj) => Equals(obj as CourseDto);
-
-        public bool Equals(CourseDto obj)
-        {
-            return (this.Id == obj.Id
-                && string.Equals(this.Code, obj.Code, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(this.NameFr, obj.NameFr, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(this.NameAr, obj.NameAr, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(this.NameEn, obj.NameEn, StringComparison.OrdinalIgnoreCase)
-                && this.Credits == obj.Credits
-                && this.InstitutionId == obj.InstitutionId
-                //&& this.RowVersion.SequenceEqual(obj.RowVersion)
-                );
-        }
 
         public override int GetHashCode()
         {

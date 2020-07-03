@@ -20,13 +20,28 @@ namespace si2.bll.Services
           
         }
 
-
-       public async Task<DocumentDto> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
+        public async Task<DocumentDto> UploadDocumentAsync(CreateDocumentDto createDocumentDto, byte[] fileData, string fileName, string contentType, string userID, CancellationToken ct)
         {
             Document documentEntity = null;
 
             try
             {
+
+                if (createDocumentDto.InstitutionId != null)
+                {
+                    if (await _uow.Institutions.GetAsync(createDocumentDto.InstitutionId, ct) == null)
+
+                        return null;
+                }
+
+                if (createDocumentDto.ProgramId != null)
+                {
+                    if (await _uow.Programs.GetAsync(createDocumentDto.ProgramId, ct) == null)
+
+                        return null;
+                }
+
+
                 documentEntity = _mapper.Map<Document>(createDocumentDto);
 
                 documentEntity.OriginalFileName = fileName;
@@ -50,6 +65,7 @@ namespace si2.bll.Services
             return documentDto;
         }
 
+        
 
         public async Task<DocumentDto> GetDocumentByIdAsync(Guid id, CancellationToken ct)
         {
@@ -62,7 +78,6 @@ namespace si2.bll.Services
 
             return result;
         }
-
 
         public async Task<DownloadDocumentDto> DownloadDocumentAsync(Guid id, CancellationToken ct)
         {
@@ -81,8 +96,6 @@ namespace si2.bll.Services
 
             return result;
         }
-
-
 
         public async Task<PagedList<DocumentDto>> GetDocumentsAsync(DocumentResourceParameters resourceParameters, CancellationToken ct)
         {
@@ -125,8 +138,6 @@ namespace si2.bll.Services
             return result;
         }
 
-
-
         public async Task<DocumentDto> UpdateDocumentAsync(Guid id, UpdateDocumentDto updateDocumentDto, CancellationToken ct)
         {
             DocumentDto documentDto = null;
@@ -152,14 +163,12 @@ namespace si2.bll.Services
             return documentDto;
         }
 
-
         public async Task SoftDeleteDocumentAsync(Guid id, CancellationToken ct)
         {
             try
             {
                 var documentEntity = await _uow.Documents.GetAsync(id, ct);
                 documentEntity.IsDeleted = true;
-                //await _uow.Documents.UpdateAsync(documentEntity, id, ct, documentEntity.RowVersion);
                 await _uow.SaveChangesAsync(ct);
             }
             catch (Exception ex)
@@ -168,7 +177,6 @@ namespace si2.bll.Services
             }
         }
 
-
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
         {
             if (await _uow.Documents.GetAsync(id, ct) != null)
@@ -176,7 +184,6 @@ namespace si2.bll.Services
 
             return false;
         }
-
 
         public async Task<bool> IsDeletedAsync(Guid id, CancellationToken ct)
         {

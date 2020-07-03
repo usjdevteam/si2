@@ -242,10 +242,10 @@ namespace si2.dal.Migrations
                         .HasMaxLength(50);
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(8,6)");
+                        .HasColumnType("decimal(9,7)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(9,6)");
+                        .HasColumnType("decimal(10,7)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -960,11 +960,11 @@ namespace si2.dal.Migrations
 
             modelBuilder.Entity("si2.dal.Entities.Document", b =>
                 {
-                    b.HasOne("si2.dal.Entities.Institution", null)
+                    b.HasOne("si2.dal.Entities.Institution", "Institution")
                         .WithMany("Documents")
                         .HasForeignKey("InstitutionId");
 
-                    b.HasOne("si2.dal.Entities.Program", null)
+                    b.HasOne("si2.dal.Entities.Program", "Program")
                         .WithMany("Documents")
                         .HasForeignKey("ProgramId");
 

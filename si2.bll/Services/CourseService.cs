@@ -42,7 +42,6 @@ namespace si2.bll.Services
             return CourseDto;
         }
 
-
         public async Task<CourseDto> UpdateCourseAsync(Guid id, UpdateCourseDto updateCourseDto, CancellationToken ct)
         {
             CourseDto CourseDto = null;
@@ -55,8 +54,7 @@ namespace si2.bll.Services
             CourseDto = _mapper.Map<CourseDto>(CourseEntity);
 
             return CourseDto;
-        }
-        
+        }  
 
         public async Task<CourseDto> GetCourseByIdAsync(Guid id, CancellationToken ct)
         {
@@ -80,7 +78,6 @@ namespace si2.bll.Services
             else
                 return null;
         }
-
 
         public async Task<PagedList<CourseDto>> GetCoursesAsync(DataflowResourceParameters resourceParameters, CancellationToken ct)
         {
@@ -115,7 +112,6 @@ namespace si2.bll.Services
             return false;
         }
 
-        
         public async Task<PagedList<UserDto>> GetUsersCourseAsync(Guid courseId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
             var courseUsersIds = await _uow.UserCourses.FindByAsync(c => c.CourseId == courseId, ct);

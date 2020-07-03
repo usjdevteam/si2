@@ -4,8 +4,6 @@ using si2.bll.Dtos.Requests.ContactInfo;
 using si2.dal.Entities;
 using si2.dal.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +11,7 @@ namespace si2.bll.Services
 {
     public class ContactInfoService : ServiceBase, IContactInfoService
     {
+        //the methods here aren't currently used, we will need them most probably in the UI later
         public ContactInfoService(IUnitOfWork uow, IMapper mapper, ILogger<IContactInfoService> logger) : base(uow, mapper, logger)
         {
         }
