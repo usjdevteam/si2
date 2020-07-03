@@ -21,8 +21,6 @@ namespace si2.api.Controllers
 {
     [ApiController]
     [Route("api/courses")]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
     public class CoursesController : ControllerBase
     {
         private readonly LinkGenerator _linkGenerator;
@@ -41,6 +39,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CourseDto))]
         public async Task<ActionResult> CreateCourse([FromBody] CreateCourseDto createCourseDto, CancellationToken ct)
@@ -67,6 +66,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name = "GetCourses")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetCourses([FromQuery]DataflowResourceParameters pagedResourceParameters, CancellationToken ct)
         {
             var CourseDtos = await _CourseService.GetCoursesAsync(pagedResourceParameters, ct);
@@ -103,7 +103,8 @@ namespace si2.api.Controllers
                             searchQuery = pagedResourceParameters.SearchQuery,
                             pageNumber = pagedResourceParameters.PageNumber - 1,
                             pageSize = pagedResourceParameters.PageSize
-                        }); // TODO get the aboslute path 
+                        });
+
                 case Enums.ResourceUriType.NextPage:
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetCourses",
                         new
@@ -113,6 +114,7 @@ namespace si2.api.Controllers
                             pageNumber = pagedResourceParameters.PageNumber + 1,
                             pageSize = pagedResourceParameters.PageSize
                         });
+
                 default:
                     return _linkGenerator.GetUriByName(this.HttpContext, "GetCourses",
                        new
@@ -140,10 +142,10 @@ namespace si2.api.Controllers
             return Ok(UserCourseDto);
         }
 
-        //subscribe users to a course
-        [HttpPost("{id}/users", Name = "UpdateUseersCourse")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+         //subscribe users to a course
+        [HttpPost("{id}/users", Name = "UpdateUsersCourse")]
         [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateUsersCourse([FromRoute] Guid id, [FromBody] ManageCoursesUserDto manageUsersToCourseDto, CancellationToken ct)
         {
             var course = await _CourseService.GetCourseEntityByIdAsync(id, ct);
