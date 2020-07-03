@@ -98,7 +98,8 @@ namespace si2.api.Controllers
             return Ok();
         }
 
-        [HttpGet]
+
+        /*[HttpGet]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -126,8 +127,36 @@ namespace si2.api.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(userDtos);
+        }*/
 
 
+        [HttpGet]
+        [Route("users", Name = "GetUsersSubscribedToCohort")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> GetUsersSubscribedToCohort([FromQuery]ApplicationUserResourceParameters pagedResourceParameters, CancellationToken ct)
+        {
+            var userDtos = await _cohortService.GetUsersCohortAsync(pagedResourceParameters, ct);
+
+            var previousPageLink = userDtos.HasPrevious ? CreateUserResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
+            var nextPageLink = userDtos.HasNext ? CreateUserResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
+
+             var paginationMetadata = new
+             {
+                 totalCount = userDtos.TotalCount,
+                 pageSize = userDtos.PageSize,
+                 currentPage = userDtos.CurrentPage,
+                 totalPages = userDtos.TotalPages,
+                 previousPageLink,
+                 nextPageLink
+             };
+
+            if (userDtos.Count < 1)
+                return NotFound();
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
+
+            return Ok(userDtos);
         }
 
         /*-------------------------------- COURSE COHORT -------------------------------- */

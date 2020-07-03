@@ -128,7 +128,7 @@ namespace si2.bll.Services
 
         }
 
-        public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
+        /*public async Task<PagedList<UserDto>> GetUsersCohortAsync(Guid cohortId, ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
         {
             var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.CohortId == cohortId, ct);
 
@@ -147,7 +147,28 @@ namespace si2.bll.Services
             result.PageSize = pagedListEntities.PageSize;
 
             return result;
+        }*/
+       
 
+        public async Task<PagedList<UserDto>> GetUsersCohortAsync(ApplicationUserResourceParameters resourceParameters, CancellationToken ct)
+        {
+            var cohortUsersIds = await _uow.UserCohorts.FindByAsync(c => c.CohortId == resourceParameters.CohortId, ct);
+
+            var usersIds = cohortUsersIds.Select(c => c.UserId);
+
+            var usersEntity = _userManager.Users.Where(user => usersIds.Contains(user.Id));
+
+
+            var pagedListEntities = await PagedList<ApplicationUser>.CreateAsync(usersEntity, resourceParameters.PageNumber, resourceParameters.PageSize, ct);
+
+            var result = _mapper.Map<PagedList<UserDto>>(pagedListEntities);
+
+            result.TotalCount = pagedListEntities.TotalCount;
+            result.TotalPages = pagedListEntities.TotalPages;
+            result.CurrentPage = pagedListEntities.CurrentPage;
+            result.PageSize = pagedListEntities.PageSize;
+
+            return result;
         }
 
         /* -------------------------------------- COURSE COHORT -------------------------------------- */
