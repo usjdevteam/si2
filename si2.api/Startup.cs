@@ -48,10 +48,13 @@ namespace si2.api
                 options.SignIn.RequireConfirmedEmail = true;
 
             }).AddEntityFrameworkStores<Si2DbContext>()
-            .AddDefaultTokenProviders(); 
-            
+            .AddDefaultTokenProviders();
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
     
