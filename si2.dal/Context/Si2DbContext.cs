@@ -56,10 +56,9 @@ namespace si2.dal.Context
 
             base.OnModelCreating(builder);
 
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameFr).IsUnique().HasName("IX_ProgramLevel_NameFr"); ;
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameEn).IsUnique().HasName("IX_ProgramLevel_NameEn"); ;
-			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameAr).IsUnique().HasName("IX_ProgramLevel_NameAr"); ;
-            //builder.Entity<Cohort>().HasIndex(c => c.Promotion).IsUnique();
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameFr).IsUnique().HasName("IX_ProgramLevel_NameFr");
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameEn).IsUnique().HasName("IX_ProgramLevel_NameEn");
+			builder.Entity<ProgramLevel>().HasIndex(pl => pl.NameAr).IsUnique().HasName("IX_ProgramLevel_NameAr");
             builder.Entity<Cohort>().HasIndex(c => new { c.Promotion, c.ProgramId }).IsUnique();
             builder.Entity<UserCohort>().HasIndex(uc => new { uc.UserId, uc.CohortId }).IsUnique();
             builder.Entity<Program>().HasIndex(p => p.Code).IsUnique();
