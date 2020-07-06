@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System;
+using MailKit.Security;
 
 namespace si2.bll.Services
 {
@@ -47,7 +48,7 @@ namespace si2.bll.Services
                     {
                         // The third parameter is useSSL (true if the client should make an SSL-wrapped
                         // connection to the server; otherwise, false).
-                        await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
+                        await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, false);
                     }
                     else
                     {
@@ -55,7 +56,7 @@ namespace si2.bll.Services
                     }
 
                     // Note: only needed if the SMTP server requires authentication
-                    await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
+                    //await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
 
                     await client.SendAsync(mimeMessage);
 

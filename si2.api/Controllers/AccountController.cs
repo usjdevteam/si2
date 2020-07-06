@@ -69,13 +69,16 @@ namespace si2.api.Controllers
                 var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action("ConfirmEmail", "Account", new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
 
+                //send email------------------------------------------------
+                var email = model.Email;
+                //var email = "marie.kassis@usj.edu.lb";
+                var subject = "SI-Prototype - Register";
+                var message = "Please click on this link to confirm your email and reset your password: " + confirmationLink;
+                await _emailSender.SendEmailAsync(email, subject, message);
+                //-----------------------------------------------------------
+
                 return Created("", new object[] { confirmationLink, user });
             }
-
-            //send Confirmation Email to the user---------------------------------------
-            //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-            //await _emailSender.SendEmailAsync(message);
-            //---------------------------------------------------------------------------
 
             return BadRequest(result.Errors);
         }
@@ -193,9 +196,10 @@ namespace si2.api.Controllers
             var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
 
             //send email------------------------------------------------
-            var email = "marie.kassis@usj.edu.lb";
-            var subject = "Email Test";
-            var message = "This is a test message. " + passwordResetLink;
+            var email = forgotPasswordRequestDto.Email;
+            //var email = "marie.kassis@usj.edu.lb";
+            var subject = "SI-Prototype - Forgot Password";
+            var message = "Please click on this link to reset your password: " + passwordResetLink;
             await _emailSender.SendEmailAsync(email, subject, message);
             //-----------------------------------------------------------
 
