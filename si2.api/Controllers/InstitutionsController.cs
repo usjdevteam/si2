@@ -17,8 +17,7 @@ namespace si2.api.Controllers
 {
     [ApiController]
     [Route("api/institutions")]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
+   
     public class InstitutionsController : ControllerBase
     {
         private readonly LinkGenerator _linkGenerator;
@@ -33,6 +32,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstitutionDto))]
         public async Task<ActionResult> CreateInstitution([FromBody] CreateInstitutionDto createInstitutionDto, CancellationToken ct)
@@ -59,6 +59,7 @@ namespace si2.api.Controllers
         }
 
         [HttpGet(Name = "GetInstitutions")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetInstitutions([FromQuery]InstitutionResourceParameters pagedResourceParameters, CancellationToken ct)
         {
             var institutionDtos = await _institutionService.GetInstitutionsAsync(pagedResourceParameters, ct);
@@ -84,6 +85,7 @@ namespace si2.api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateInstitution([FromRoute]Guid id, [FromBody] UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
