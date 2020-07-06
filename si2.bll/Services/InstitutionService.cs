@@ -38,6 +38,11 @@ namespace si2.bll.Services
 
         public async Task<InstitutionDto> UpdateInstitutionAsync(Guid id, UpdateInstitutionDto updateInstitutionDto, CancellationToken ct)
         {
+            if (id == updateInstitutionDto.ParentId)
+            {
+                return null;
+            }
+
             var existingEntity = await _uow.Institutions.GetAsync(id, ct);
 
             var updatedInstitutionEntity = _mapper.Map<Institution>(updateInstitutionDto);
