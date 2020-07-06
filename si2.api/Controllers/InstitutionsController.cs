@@ -76,7 +76,7 @@ namespace si2.api.Controllers
                 nextPageLink
             };
 
-            if (institutionDtos == null)
+              if (institutionDtos.Count < 1)
                 return NotFound();
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));

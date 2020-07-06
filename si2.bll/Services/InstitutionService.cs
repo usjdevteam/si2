@@ -79,8 +79,6 @@ namespace si2.bll.Services
                 .GetAllComplete()
                 .Where(c => resourceParameters.ParentId == null || c.ParentId == resourceParameters.ParentId);
 
-            if (institutionEntities.Count() > 1)
-            {
                 var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
                 resourceParameters.PageNumber, resourceParameters.PageSize, ct);
 
@@ -91,8 +89,6 @@ namespace si2.bll.Services
                 result.PageSize = pagedListEntities.PageSize;
 
                 return result;
-            }
-            return null;
         }
 
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct)
