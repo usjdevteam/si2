@@ -95,10 +95,18 @@ namespace si2.api.Controllers
             if (!await _institutionService.ExistsAsync(id, ct))
                 return NotFound();
 
+
+            if (id == updateInstitutionDto.ParentId)
+            {
+                return BadRequest("ParentId cannot be equal to the Institution's Id !");
+            }
+
+
             var institutionToReturn = await _institutionService.UpdateInstitutionAsync(id, updateInstitutionDto, ct);
+
             if (institutionToReturn == null)
                 return BadRequest();
-
+           
             return Ok(institutionToReturn);
         }
 
