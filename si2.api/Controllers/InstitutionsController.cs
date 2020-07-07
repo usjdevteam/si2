@@ -41,7 +41,14 @@ namespace si2.api.Controllers
             if (institutionToReturn == null)
                 return BadRequest();
 
-            return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
+            var institutionDto = await _institutionService.GetInstitutionByIdAsync(institutionToReturn.Id, ct);
+
+            if (institutionDto == null)
+                return NotFound();
+
+            return Ok(institutionDto);
+
+            //return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
         [HttpGet("{id}", Name = "GetInstitution")]

@@ -20,7 +20,9 @@ namespace si2.dal.Repositories
                 .AsNoTracking()
                 .Include(c => c.Address)
                 .Include(c => c.ContactInfo)
-                .Include(c => c.Parent);
+                .Include(c => c.Parent)
+                .Include(c => c.Parent.Address)
+                .Include(c => c.Parent.ContactInfo);    
         }
 
         public async Task<Institution> GetCompleteAsync(Guid id, CancellationToken ct)
@@ -30,6 +32,8 @@ namespace si2.dal.Repositories
                 .Include(c => c.Address)
                 .Include(c => c.ContactInfo)
                 .Include(c => c.Parent)
+                .Include(c => c.Parent.Address)
+                .Include(c => c.Parent.ContactInfo)
                 .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
     }
