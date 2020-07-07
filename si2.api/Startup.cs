@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ using si2.dal.Entities;
 using si2.dal.Repositories;
 using si2.dal.UnitOfWork;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace si2.api
@@ -149,6 +151,16 @@ namespace si2.api
                     //    Url = new Uri("https://example.com/license"),
                     //}
                 });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //added for the api versioning
+            });
+
+            //add api versioning
+            services.AddControllers();
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
             });
         }
 
@@ -169,7 +181,8 @@ namespace si2.api
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("./v1/swagger.json", "My API V1"); //originally "./swagger/v1/swagger.json" changed for the api versioning
             });
 
             app.UseHttpsRedirection();

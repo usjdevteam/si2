@@ -23,9 +23,9 @@ using Microsoft.AspNetCore.Routing;
 namespace si2.api.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/{v:apiVersion}/administration")]
-    public class AdministrationController : ControllerBase
+    public class AdministrationControllerV2 : ControllerBase
     {
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -34,7 +34,7 @@ namespace si2.api.Controllers
         private readonly IUserCourseService _userCourseService;
         private LinkGenerator _linkGenerator;
 
-        public AdministrationController(ILogger<AdministrationController> logger,
+        public AdministrationControllerV2(ILogger<AdministrationController> logger,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserCohortService userCohortService, IUserCourseService userCourseService, LinkGenerator linkGenerator)
         {
             _logger = logger;
@@ -346,53 +346,12 @@ namespace si2.api.Controllers
             }
 
             var courseDtos = await _userCourseService.GetCoursesUserAsync(userId, ct);
-            var previousPageLink = courseDtos.HasPrevious ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
-            var nextPageLink = courseDtos.HasNext ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
-
-            var paginationMetadata = new
-            {
-                totalCount = courseDtos.TotalCount,
-                pageSize = courseDtos.PageSize,
-                currentPage = courseDtos.CurrentPage,
-                totalPages = courseDtos.TotalPages,
-                previousPageLink,
-                nextPageLink
-            };
-
+           
             if (courseDtos.Count < 1)
                 return NotFound();
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(courseDtos);
         }
 
-        private string CreateCourseResourceUri(CourseResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
-        {
-            switch (type)
-            {
-                case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber - 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
-                case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber + 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
-                default:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                       new
-                       {
-                           pageNumber = pagedResourceParameters.PageNumber,
-                           pageSize = pagedResourceParameters.PageSize
-                       });
-            }
-        }
     }
 }
