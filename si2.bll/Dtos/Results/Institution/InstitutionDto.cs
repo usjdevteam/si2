@@ -14,6 +14,7 @@ namespace si2.bll.Dtos.Results.Institution
         public AddressDto Address { get; set; }
         public ContactInfoDto ContactInfo { get; set; }
         public InstitutionDto Parent { get; set; }
+        //public Guid? ParentId { get; set; }
         public byte[] RowVersion { get; set; }
 
         public override int GetHashCode()
