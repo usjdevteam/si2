@@ -64,6 +64,11 @@ namespace si2.api.Controllers
         {
             var institutionDtos = await _institutionService.GetInstitutionsAsync(pagedResourceParameters, ct);
 
+            if(institutionDtos == null)
+            {
+                return NotFound();
+            }
+
             var previousPageLink = institutionDtos.HasPrevious ? CreateInstitutionsResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
             var nextPageLink = institutionDtos.HasNext ? CreateInstitutionsResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
 
@@ -76,9 +81,6 @@ namespace si2.api.Controllers
                 previousPageLink,
                 nextPageLink
             };
-
-            if (institutionDtos == null)
-                return NotFound();
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
             return Ok(institutionDtos);

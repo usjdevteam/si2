@@ -11,23 +11,27 @@ namespace si2.dal.Entities
     public class Institution : Si2BaseDataEntity<Guid>, IAuditable
     {
         [Required]
+        [MaxLength(6)]
         public string Code { get; set; }
 
         [Required]
+        [MaxLength(400)]
         public string NameFr { get; set; }
 
         [Required]
+        [MaxLength(400)]
         public string NameAr { get; set; }
 
         [Required]
+        [MaxLength(400)]
         public string NameEn { get; set; }
 
         public Guid AddressId { get; set; }
         [ForeignKey("AddressId")]
         public Address Address { get; set; }
 
-        public Guid ContactInfoId { get; set; }
         [ForeignKey("ContactInfoId")]
+        public Guid ContactInfoId { get; set; }
         public ContactInfo ContactInfo { get; set; }
 
         [ForeignKey("Parent")]

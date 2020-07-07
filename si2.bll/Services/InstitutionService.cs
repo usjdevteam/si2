@@ -79,7 +79,7 @@ namespace si2.bll.Services
                 .GetAllComplete()
                 .Where(c => resourceParameters.ParentId == null || c.ParentId == resourceParameters.ParentId);
 
-            if (institutionEntities.Count() > 1)
+            if (institutionEntities != null && institutionEntities.Count() > 0)
             {
                 var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
                 resourceParameters.PageNumber, resourceParameters.PageSize, ct);
@@ -92,6 +92,7 @@ namespace si2.bll.Services
 
                 return result;
             }
+
             return null;
         }
 
