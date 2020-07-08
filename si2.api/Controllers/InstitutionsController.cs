@@ -45,7 +45,7 @@ namespace si2.api.Controllers
         }
 
         [ApiVersion("1.0")]
-        [HttpGet("{id}/{v:apiVersion}", Name = "GetInstitution")]
+        [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -60,7 +60,7 @@ namespace si2.api.Controllers
         }
 
         [ApiVersion("2.0")]
-        [HttpGet("{id}/{v:apiVersion}", Name = "GetInstitution")]
+        [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

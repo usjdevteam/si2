@@ -24,7 +24,7 @@ namespace si2.api.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/{v:apiVersion}/administration")]
+    [Route("api/v{version:apiVersion}/administration")]
     public class AdministrationController : ControllerBase
     {
         private readonly ILogger<AdministrationController> _logger;
@@ -59,14 +59,15 @@ namespace si2.api.Controllers
 
         [HttpPost("roles")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto model, CancellationToken ct)
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto model, ApiVersion version, CancellationToken ct)
         {
             var result = await _roleManager.CreateAsync(new IdentityRole() { Name = model.RoleName });
 
             if (result.Succeeded)
             {
                 var roleToReturn = _roleManager.Roles.FirstOrDefault(c => c.Name == model.RoleName);
-                return CreatedAtRoute("GetRole", new { id = roleToReturn.Id }, roleToReturn);
+                //return CreatedAtRoute("GetRole", new { id = roleToReturn.Id }, roleToReturn);
+                return CreatedAtRoute("GetRole", new { id = roleToReturn.Id, version = $"{version}" }, roleToReturn);
             }
 
             return BadRequest(result.Errors);
@@ -98,7 +99,7 @@ namespace si2.api.Controllers
 
         [HttpPost("users/{userId}/claims")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> ManageUserClaims([FromRoute]string userId, [FromBody] UserClaimsDto model, CancellationToken ct)
+        public async Task<IActionResult> ManageUserClaims([FromRoute]string userId, [FromBody] UserClaimsDto model, ApiVersion version, CancellationToken ct)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -129,7 +130,8 @@ namespace si2.api.Controllers
             if (!result.Succeeded)
                 return BadRequest(); // TODO Bad request is not the best returned error 
 
-            return CreatedAtRoute("GetUserClaims", new { userId = userId }, model);
+            //return CreatedAtRoute("GetUserClaims", new { userId = userId }, model);
+            return CreatedAtRoute("GetUserClaims", new { userId = userId, version = $"{version}" }, model);
         }
 
         [HttpGet("users/{userId}/claims", Name = "GetUserClaims")]
@@ -372,26 +374,29 @@ namespace si2.api.Controllers
             switch (type)
             {
                 case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
+                    /*return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
                         new
                         {
                             pageNumber = pagedResourceParameters.PageNumber - 1,
                             pageSize = pagedResourceParameters.PageSize
-                        });
+                        });*/
+                    return Url.Action(action: "GetCoursesOfUser", values: new 
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber - 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber + 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
+                    return Url.Action(action: "GetCoursesOfUser", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber + 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 default:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                       new
-                       {
-                           pageNumber = pagedResourceParameters.PageNumber,
-                           pageSize = pagedResourceParameters.PageSize
-                       });
+                    return Url.Action(action: "GetCoursesOfUser", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
             }
         }
     }
