@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using si2.bll.Dtos.Requests.Account;
 using si2.bll.Helpers;
+using si2.bll.Services;
 using si2.dal.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,14 +27,16 @@ namespace si2.api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IConfiguration _configuration;
-      
+        private readonly IEmailSender _emailSender;
+
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            ILogger<AccountController> logger, IConfiguration configuration)
+            ILogger<AccountController> logger, IConfiguration configuration, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -66,13 +69,16 @@ namespace si2.api.Controllers
                 var token2 = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action("ConfirmEmail", "Account", new { code1 = token1, code2 = token2, email = user.Email }, Request.Scheme);
 
+                //send email------------------------------------------------
+                var email = model.Email;
+                //var email = "marie.kassis@usj.edu.lb";
+                var subject = "SI-Prototype - Register";
+                var message = "Please click on this link to confirm your email and reset your password: " + confirmationLink;
+                await _emailSender.SendEmailAsync(email, subject, message);
+                //-----------------------------------------------------------
+
                 return Created("", new object[] { confirmationLink, user });
             }
-
-            //send Confirmation Email to the user---------------------------------------
-            //var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-            //await _emailSender.SendEmailAsync(message);
-            //---------------------------------------------------------------------------
 
             return BadRequest(result.Errors);
         }
@@ -188,6 +194,14 @@ namespace si2.api.Controllers
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             var passwordResetLink = Url.Action("ForgotPasswordReset", "Account", new { code1 = token, email = forgotPasswordRequestDto.Email }, Request.Scheme);
+
+            //send email------------------------------------------------
+            var email = forgotPasswordRequestDto.Email;
+            //var email = "marie.kassis@usj.edu.lb";
+            var subject = "SI-Prototype - Forgot Password";
+            var message = "Please click on this link to reset your password: " + passwordResetLink;
+            await _emailSender.SendEmailAsync(email, subject, message);
+            //-----------------------------------------------------------
 
             return Ok(passwordResetLink);
         }
