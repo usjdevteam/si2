@@ -1,5 +1,8 @@
 ﻿BEGIN TRANSACTION T1
 	BEGIN TRY
+		--DELETE FROM DocumentData
+		--DELETE FROM Document
+		DELETE FROM CourseCohort
 		DELETE FROM UserCourse
 		DELETE FROM UserCohort
 		DELETE FROM AspNetUserRoles
