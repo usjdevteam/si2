@@ -117,7 +117,8 @@ namespace si2.api
                     {
                         builder.WithOrigins("http://localhost:8080")
                             .AllowAnyMethod()
-                            .AllowAnyHeader();
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("X-Pagination");
                     });
             });
 

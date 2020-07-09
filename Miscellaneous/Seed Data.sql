@@ -37,7 +37,7 @@
 		
 		BULK
 		INSERT [Address]
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/address.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/address.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
@@ -49,7 +49,7 @@
 
 		BULK
 		INSERT ContactInfo
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/contactInfo.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/contactInfo.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
@@ -61,7 +61,7 @@
 
 		BULK
 		INSERT Institution
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/institutions.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/institutions.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
@@ -73,7 +73,7 @@
 
 		BULK
 		INSERT ProgramLevel
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programLevel.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/programLevel.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
@@ -85,7 +85,7 @@
 
 		BULK
 		INSERT Program
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/programs.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/programs.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
@@ -97,7 +97,7 @@
 		
 		BULK
 		INSERT Course
-		FROM 'C:/Users/Administrator/source/repos/si2_2/Miscellaneous/courses.csv'
+		FROM 'C:/Users/Administrator/source/repos/si2_sprint2/Miscellaneous/courses.csv'
 		WITH
 		(
 		FIELDTERMINATOR = ',',
