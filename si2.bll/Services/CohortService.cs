@@ -147,9 +147,8 @@ namespace si2.bll.Services
             result.PageSize = pagedListEntities.PageSize;
 
             return result;
-
         }
-
+       
         /* -------------------------------------- COURSE COHORT -------------------------------------- */
         public async Task AddCoursesToCohortAsync(Guid cohortId, ManageCoursesCohortDto manageCoursesCohortDto, CancellationToken ct)
         {

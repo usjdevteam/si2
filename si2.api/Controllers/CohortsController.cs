@@ -98,6 +98,7 @@ namespace si2.api.Controllers
             return Ok();
         }
 
+
         [HttpGet]
         [Route("{id}/users", Name = "GetUsersSubscribedToCohort")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -126,9 +127,8 @@ namespace si2.api.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(userDtos);
-
-
         }
+
 
         /*-------------------------------- COURSE COHORT -------------------------------- */
         [HttpPost]
@@ -181,26 +181,23 @@ namespace si2.api.Controllers
             switch (type)
             {
                 case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetUsersSubscribedToCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber - 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
+                    return Url.Action(action: "GetUsersSubscribedToCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber - 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetUsersSubscribedToCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber + 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
+                    return Url.Action(action: "GetUsersSubscribedToCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber + 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 default:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetUsersSubscribedToCohort",
-                       new
-                       {
-                           pageNumber = pagedResourceParameters.PageNumber,
-                           pageSize = pagedResourceParameters.PageSize
-                       });
+                    return Url.Action(action: "GetUsersSubscribedToCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
             }
         }
 
@@ -209,26 +206,23 @@ namespace si2.api.Controllers
             switch (type)
             {
                 case Enums.ResourceUriType.PreviousPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber - 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
+                    return Url.Action(action: "GetCoursesInCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber - 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 case Enums.ResourceUriType.NextPage:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber + 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });
+                    return Url.Action(action: "GetCoursesInCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber + 1,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
                 default:
-                    return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesInCohort",
-                       new
-                       {
-                           pageNumber = pagedResourceParameters.PageNumber,
-                           pageSize = pagedResourceParameters.PageSize
-                       });
+                    return Url.Action(action: "GetCoursesInCohort", values: new
+                    {
+                        pageNumber = pagedResourceParameters.PageNumber,
+                        pageSize = pagedResourceParameters.PageSize
+                    });
             }
         }
     }
