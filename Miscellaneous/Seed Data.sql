@@ -108,6 +108,9 @@
 		COMMIT TRANSACTION
 	
 		SELECT CAST(@RowsTotal AS VARCHAR(100)) + ' rows added'
+
+		UPDATE Institution set ParentId = null where code = 'USJ'
+
 END TRY
 BEGIN CATCH 
 	IF (@@TRANCOUNT > 0)
