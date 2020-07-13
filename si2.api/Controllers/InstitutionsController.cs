@@ -51,7 +51,8 @@ namespace si2.api.Controllers
             //return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
-        [HttpGet("{id}", Name = "GetInstitution")]
+        [ApiVersion("1.0")]
+        [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,6 +64,21 @@ namespace si2.api.Controllers
                 return NotFound();
 
             return Ok(institutionDto);
+        }
+
+        [ApiVersion("2.0")]
+        [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetInstitutionV2(Guid id, CancellationToken ct)
+        {
+            var institutionDto = await _institutionService.GetInstitutionByIdAsync(id, ct);
+
+            if (institutionDto == null)
+                return NotFound();
+
+            return Ok();
         }
 
         [HttpGet(Name = "GetInstitutions")]

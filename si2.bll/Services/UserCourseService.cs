@@ -74,7 +74,7 @@ namespace si2.bll.Services
 
             if (coursesEntity.Count() > 0)
             {
-                var pagedListEntities = await PagedList<Course>.CreateAsync(coursesEntity, 1, coursesEntity.Count(), ct);
+                var pagedListEntities = await PagedList<Course>.CreateAsync(coursesEntity, coursesEntity.Count()/3, 3, ct);
 
                 var result = _mapper.Map<PagedList<CourseDto>>(pagedListEntities);
                 result.TotalCount = pagedListEntities.TotalCount;

@@ -23,9 +23,9 @@ using Microsoft.AspNetCore.Routing;
 namespace si2.api.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/administration")]
-    public class AdministrationController : ControllerBase
+    public class AdministrationControllerV2 : ControllerBase
     {
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -34,7 +34,7 @@ namespace si2.api.Controllers
         private readonly IUserCourseService _userCourseService;
         private LinkGenerator _linkGenerator;
 
-        public AdministrationController(ILogger<AdministrationController> logger,
+        public AdministrationControllerV2(ILogger<AdministrationController> logger,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserCohortService userCohortService, IUserCourseService userCourseService, LinkGenerator linkGenerator)
         {
             _logger = logger;
@@ -66,7 +66,6 @@ namespace si2.api.Controllers
             if (result.Succeeded)
             {
                 var roleToReturn = _roleManager.Roles.FirstOrDefault(c => c.Name == model.RoleName);
-                //return CreatedAtRoute("GetRole", new { id = roleToReturn.Id }, roleToReturn);
                 return CreatedAtRoute("GetRole", new { id = roleToReturn.Id, version = $"{version}" }, roleToReturn);
             }
 
@@ -130,7 +129,6 @@ namespace si2.api.Controllers
             if (!result.Succeeded)
                 return BadRequest(); // TODO Bad request is not the best returned error 
 
-            //return CreatedAtRoute("GetUserClaims", new { userId = userId }, model);
             return CreatedAtRoute("GetUserClaims", new { userId = userId, version = $"{version}" }, model);
         }
 
@@ -348,56 +346,12 @@ namespace si2.api.Controllers
             }
 
             var courseDtos = await _userCourseService.GetCoursesUserAsync(userId, ct);
-            var previousPageLink = courseDtos.HasPrevious ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.PreviousPage) : null;
-            var nextPageLink = courseDtos.HasNext ? CreateCourseResourceUri(pagedResourceParameters, Enums.ResourceUriType.NextPage) : null;
-
-            var paginationMetadata = new
-            {
-                totalCount = courseDtos.TotalCount,
-                pageSize = courseDtos.PageSize,
-                currentPage = courseDtos.CurrentPage,
-                totalPages = courseDtos.TotalPages,
-                previousPageLink,
-                nextPageLink
-            };
-
+           
             if (courseDtos.Count < 1)
                 return NotFound();
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(courseDtos);
         }
 
-        private string CreateCourseResourceUri(CourseResourceParameters pagedResourceParameters, Enums.ResourceUriType type)
-        {
-            switch (type)
-            {
-                case Enums.ResourceUriType.PreviousPage:
-                    /*return _linkGenerator.GetUriByName(this.HttpContext, "GetCoursesOfUser",
-                        new
-                        {
-                            pageNumber = pagedResourceParameters.PageNumber - 1,
-                            pageSize = pagedResourceParameters.PageSize
-                        });*/
-                    return Url.Action(action: "GetCoursesOfUser", values: new 
-                    {
-                        pageNumber = pagedResourceParameters.PageNumber - 1,
-                        pageSize = pagedResourceParameters.PageSize
-                    });
-                case Enums.ResourceUriType.NextPage:
-                    return Url.Action(action: "GetCoursesOfUser", values: new
-                    {
-                        pageNumber = pagedResourceParameters.PageNumber + 1,
-                        pageSize = pagedResourceParameters.PageSize
-                    });
-                default:
-                    return Url.Action(action: "GetCoursesOfUser", values: new
-                    {
-                        pageNumber = pagedResourceParameters.PageNumber,
-                        pageSize = pagedResourceParameters.PageSize
-                    });
-            }
-        }
     }
 }
