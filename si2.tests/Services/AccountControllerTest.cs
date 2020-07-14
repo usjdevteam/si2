@@ -29,9 +29,9 @@ namespace si2.tests.Services
         {
             _mockService = new Mock<IEmailSender>();
             _emailSender = new EmailSender();
-            _email = "jane.doe@usj.edu.lb";
-            _subject = "SI_Prototype - Register process";
-            _message = "Please use this link to confirm your email and reset your password";
+            _email = "john.doe@usj.edu.lb";
+            _subject = "SI_Prototype - Register";
+            _message = "Please click on this link to confirm your email and reset your password";
         }
 
 
