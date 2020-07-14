@@ -14,6 +14,10 @@ namespace si2.bll.Services
         private readonly EmailSettings _emailSettings;
         private readonly IHostingEnvironment _env;
 
+        public EmailSender()
+        {
+        }
+
         public EmailSender(
             IOptions<EmailSettings> emailSettings,
             IHostingEnvironment env)
