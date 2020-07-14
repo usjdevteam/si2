@@ -16,17 +16,7 @@ namespace si2.tests.Services
         private string _message;
 
 
-        // Used if test is being performed from the UnitTestAccountController class
-        public AccountControllerTest(string email, string subject, string message)
-        {
-            _email = email;
-            _subject = subject;
-            _message = message;
-            this._mockService = new Mock<IEmailSender>();
-            this._emailSender = new EmailSender();
-        }
-
-        private SendEmailDto mockSendEmailDto = new SendEmailDto()
+        private readonly SendEmailDto mockSendEmailDto = new SendEmailDto()
         {
             Email = "john.doe@usj.edu.lb",
             Subject = "SI_Prototype - Register",
@@ -34,15 +24,14 @@ namespace si2.tests.Services
         };
 
 
-        // Used if test is being performed directly from this class
         [SetUp]
         public void AccountControllerTestSetup()
         {
-            this._mockService = new Mock<IEmailSender>();
-            this._emailSender = new EmailSender();
-            // _email = "jane.doe@usj.edu.lb";
-            //_subject = "SI_Prototype - Register process";
-            //_message = "Please use this link to confirm your email and reset your password";
+            _mockService = new Mock<IEmailSender>();
+            _emailSender = new EmailSender();
+            _email = "jane.doe@usj.edu.lb";
+            _subject = "SI_Prototype - Register process";
+            _message = "Please use this link to confirm your email and reset your password";
         }
 
 
@@ -50,15 +39,17 @@ namespace si2.tests.Services
         public void SendEmailAsync_WhenMatchingEmail()
         {
             // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
+            //_email = mockSendEmailDto.Email;
+            _mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
 
 
             // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
+            var expected = _emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
+
 
             // Assert
-            Assert.AreEqual(mockSendEmailDto.Email, _email, "Mock email and provided email are equal");
-            Assert.IsTrue(mockSendEmailDto.Email.Equals(_email), "Mock email value is true to provided email value");
+            Assert.AreEqual(mockSendEmailDto.Email, _email, "Mock email and provided email are not equal");
+            //Assert.IsTrue(mockSendEmailDto.Email.Equals(_email), "Mock email value and provided email value are not true");
         }
 
 
@@ -66,14 +57,15 @@ namespace si2.tests.Services
         public void SendEmailAsync_WhenMatchingSubject()
         {
             // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
+            //_subject = mockSendEmailDto.Subject;
+            _mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
 
             // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
+            var expected = _emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
 
             // Assert
-            Assert.AreEqual(mockSendEmailDto.Subject, _subject, "Mock email subject and provided subject are equal");
-            Assert.IsTrue(mockSendEmailDto.Subject.Equals(_subject), "Mock email subject value is true to provided subject value");
+            Assert.AreEqual(mockSendEmailDto.Subject, _subject, "Mock email subject and provided subject are not equal");
+            //Assert.IsTrue(mockSendEmailDto.Subject.Equals(_subject), "Mock email subject value and provided subject value are not true");
         }
 
 
@@ -81,63 +73,15 @@ namespace si2.tests.Services
         public void SendEmailAsync_WhenMatchingMessage()
         {
             // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
+           //_message = mockSendEmailDto.Message;
+            _mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
 
             // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
+            var expected = _emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
 
             // Assert
-            Assert.AreEqual(mockSendEmailDto.Message, _message, "Mock email message and provided message are equal");
-            Assert.IsTrue(mockSendEmailDto.Message.Equals(_message), "Mock email message value is true to provided message value");
-        }
-
-
-        [Test]
-        public void SendEmailAsync_WhenNotMatchingEmail()
-        {
-            // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
-
-
-            // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
-
-            // Assert
-            Assert.AreNotEqual(mockSendEmailDto.Email, _email, "Mock email is not equal to provided email ");
-            Assert.IsFalse(mockSendEmailDto.Email.Equals(_email), "Mock email value is false to provided email value");
-        }
-
-
-
-        [Test]
-        public void SendEmailAsync_WhenNotMatchingSubject()
-        {
-            // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
-
-
-            // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
-
-            // Assert
-            Assert.AreNotEqual(mockSendEmailDto.Subject, _subject, "Mock email subject is not equal to provided email subject");
-            Assert.IsFalse(mockSendEmailDto.Subject.Equals(_subject), "Mock email subject value is false to provided email subject value");
-        }
-
-
-        [Test]
-        public void SendEmailAsync_WhenNotMatchingMessage()
-        {
-            // Arrange
-            this._mockService.Setup(_mockService => _mockService.SendEmailAsync(_email, _subject, _message)).Returns(Task.FromResult(mockSendEmailDto));
-
-
-            // Act
-            var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
-
-            // Assert
-            Assert.AreNotEqual(mockSendEmailDto.Message, _message, "Mock email message is not equal to provided email message");
-            Assert.IsFalse(mockSendEmailDto.Message.Equals(_message), "Mock email message value is false to provided email message value");
+            Assert.AreEqual(mockSendEmailDto.Message, _message, "Mock email message and provided message are not equal");
+            //Assert.IsTrue(mockSendEmailDto.Message.Equals(_message), "Mock email message value and provided message value are not true");
         }
 
 
@@ -152,6 +96,9 @@ namespace si2.tests.Services
             var expected = this._emailSender.SendEmailAsync(mockSendEmailDto.Email, mockSendEmailDto.Subject, mockSendEmailDto.Message);
 
             // Assert
+            // _email = null;
+            // _subject = null;
+            // _message = null;
             Assert.IsNotNull(_email, "Mock email cannot be null");
             Assert.IsNotNull(_subject, "Mock email subject cannot be null");
             Assert.IsNotNull(_message, "Mock email message cannot be null");
