@@ -120,7 +120,7 @@ namespace si2.api
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080", "https://si2clientstaticstorage.z13.web.core.windows.net/")
+                        builder.AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .WithExposedHeaders("X-Pagination");
@@ -193,6 +193,7 @@ namespace si2.api
 
             app.UseRouting();
             app.UseCors();
+         
             app.UseAuthentication();
             app.UseAuthorization();
             
