@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace si2.api.Controllers
 {
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [ApiController]
     [Route("api/institutions")]
    
@@ -51,7 +53,7 @@ namespace si2.api.Controllers
             //return CreatedAtRoute("GetInstitution", new { id = institutionToReturn.Id }, institutionToReturn);
         }
 
-        [ApiVersion("1.0")]
+        [MapToApiVersion("1.0")]
         [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]
@@ -66,7 +68,7 @@ namespace si2.api.Controllers
             return Ok(institutionDto);
         }
 
-        [ApiVersion("2.0")]
+        [MapToApiVersion("2.0")]
         [HttpGet("{id}/v{version:apiVersion}", Name = "GetInstitution")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstitutionDto))]

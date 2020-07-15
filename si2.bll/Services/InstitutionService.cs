@@ -79,6 +79,16 @@ namespace si2.bll.Services
                 .GetAllComplete()
                 .Where(c => resourceParameters.ParentId == null || c.ParentId == resourceParameters.ParentId);
 
+            if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+            {
+                var searchQueryForWhereClause = resourceParameters.SearchQuery.Trim().ToLower();
+                institutionEntities = institutionEntities
+                    .Where(a => a.NameFr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameAr.ToLower().Contains(searchQueryForWhereClause)
+                            || a.NameEn.ToLower().Contains(searchQueryForWhereClause)
+                            || a.Code.ToLower().Contains(searchQueryForWhereClause)).AsQueryable<Institution>();
+            }
+
             if (institutionEntities != null && institutionEntities.Count() > 0)
             {
                 var pagedListEntities = await PagedList<Institution>.CreateAsync(institutionEntities,
